@@ -21,8 +21,8 @@ jobs:
       with:
         dotnet-version: 9.0.x
     - name: Restore dependencies
-      run: dotnet restore Diploma.API/Diploma.API/Diploma.API.cproj
+      run: dotnet restore Diploma.API/Diploma.API/Diploma.API.csproj
     - name: Build
-      run: dotnet build Diploma.API/Diploma.API/Diploma.API.cproj --no-restore
+      run: dotnet build Diploma.API/Diploma.API/Diploma.API.csproj --no-restore
     - name: Test
-      run: dotnet test Diploma.API/Diploma.API/Diploma.API.cproj --no-build --verbosity normal
+      run: dotnet test Diploma.API/Diploma.API/Diploma.API.csproj --no-build --verbosity normal
