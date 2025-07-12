@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36203.30
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.API", "Diploma.API\Diploma.API.csproj", "{5217B250-5D71-4198-A56D-71E90CCC3E55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REGON", "REGON\REGON.csproj", "{3169285C-98BC-4BF0-A6C9-84763E46397B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5217B250-5D71-4198-A56D-71E90CCC3E55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5217B250-5D71-4198-A56D-71E90CCC3E55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5217B250-5D71-4198-A56D-71E90CCC3E55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5217B250-5D71-4198-A56D-71E90CCC3E55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3169285C-98BC-4BF0-A6C9-84763E46397B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3169285C-98BC-4BF0-A6C9-84763E46397B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3169285C-98BC-4BF0-A6C9-84763E46397B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3169285C-98BC-4BF0-A6C9-84763E46397B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {23155D47-188B-4FCA-BCC1-09DB0E27C493}
+	EndGlobalSection
+EndGlobal
