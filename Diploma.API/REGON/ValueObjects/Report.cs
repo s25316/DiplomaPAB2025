@@ -54,7 +54,7 @@ namespace REGON.ValueObjects
                         2 => MainFRolnicza,
                         3 => MainFPozostala,
                         4 => MainFWKrupgn,
-                        //_ => MainFOsoba, // Not Implemented
+                        _ => throw new NotImplementedException(MainFOsoba)
                     };
                     PKD = PkdF;
                     ListaJednostekLokalnych = ListLF; // Not Implemented

@@ -255,6 +255,10 @@ namespace REGON.Providers
                 "",
                 lines.Select(x => x.Trim())
                 );
+            if (string.IsNullOrWhiteSpace(responseContent))
+            {
+                throw new Exception();
+            }
             return ReplaceSpecifySignsToXml(responseContent);
         }
 
