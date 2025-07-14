@@ -1,5 +1,7 @@
 ﻿// Ignore Spelling: REGON, Pkd, Kod, Nazwa, Przewazajace
-namespace REGON.Responses.PkdData
+using REGON.Responses.PkdData;
+
+namespace REGON.Models
 {
     public class Pkd
     {

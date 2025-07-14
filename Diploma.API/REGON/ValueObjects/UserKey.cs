@@ -16,10 +16,7 @@ namespace REGON.ValueObjects
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new RegonClientException(
-                    Messages.UserKey_Empty,
-                    ExceptionType.UserKey
-                    );
+                throw new RegonKeyException(Messages.Empty_UserKey);
             }
             Value = value.Trim();
         }

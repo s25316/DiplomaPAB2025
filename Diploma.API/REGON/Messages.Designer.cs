@@ -61,52 +61,52 @@ namespace REGON {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Niepoprawna wartość, KRS zawiera 10 cyfr..
+        ///   Looks up a localized string similar to Klucz użytkownika jest pusty..
         /// </summary>
-        internal static string Krs_Invalid {
+        internal static string Empty_UserKey {
             get {
-                return ResourceManager.GetString("Krs_Invalid", resourceCulture);
+                return ResourceManager.GetString("Empty_UserKey", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Niepoprawna wartość, NIP zawiera  10 cyfr..
+        ///   Looks up a localized string similar to Wartość KRS zawiera 10 cyfr..
         /// </summary>
-        internal static string Nip_Invalid {
+        internal static string Invalid_Krs {
             get {
-                return ResourceManager.GetString("Nip_Invalid", resourceCulture);
+                return ResourceManager.GetString("Invalid_Krs", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Niepoprawna wartość,  REGON zawiera  9 lub 14 cyfr..
+        ///   Looks up a localized string similar to Wartość NIP zawiera 10 cyfr..
         /// </summary>
-        internal static string Regon_Invalid {
+        internal static string Invalid_Nip {
             get {
-                return ResourceManager.GetString("Regon_Invalid", resourceCulture);
+                return ResourceManager.GetString("Invalid_Nip", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Klucz nie może być pusty..
+        ///   Looks up a localized string similar to Wartość REGON zawiera 9 lub 14 cyfr..
         /// </summary>
-        internal static string UserKey_Empty {
+        internal static string Invalid_Regon {
             get {
-                return ResourceManager.GetString("UserKey_Empty", resourceCulture);
+                return ResourceManager.GetString("Invalid_Regon", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Niepoprawny klucz..
+        ///   Looks up a localized string similar to Klucz użytkownika jest niepoprawny..
         /// </summary>
-        internal static string UserKey_Invalid {
+        internal static string Invalid_UserKey {
             get {
-                return ResourceManager.GetString("UserKey_Invalid", resourceCulture);
+                return ResourceManager.GetString("Invalid_UserKey", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Twoja wartość:.
+        ///   Looks up a localized string similar to Twoja wartość.
         /// </summary>
         internal static string YourValue {
             get {

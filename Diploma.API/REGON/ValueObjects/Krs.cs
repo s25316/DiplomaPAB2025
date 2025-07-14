@@ -21,10 +21,7 @@ namespace REGON.ValueObjects
             value = CustomStringProvider.ExtractDigits(value);
             if (!_regex.IsMatch(value))
             {
-                throw new RegonClientException(
-                    $"{Messages.Krs_Invalid} {Messages.YourValue}: {value}",
-                    ExceptionType.InputData
-                    );
+                throw new InvalidInputDataException($"{Messages.Invalid_Krs} {Messages.YourValue}: {value}.");
             }
             Value = value;
         }

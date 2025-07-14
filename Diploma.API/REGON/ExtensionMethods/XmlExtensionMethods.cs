@@ -1,4 +1,5 @@
 ﻿// Ignore Spelling: Deserialize, REGON, Zaloguj, Wyloguj
+using REGON.Exceptions;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -6,41 +7,36 @@ namespace REGON.ExtensionMethods
 {
     internal static class XmlExtensionMethods
     {
-        // Properties
+        // Fields
+        private const string ZALOGUJ_RESULT = "ZalogujResult";
+        private const string WYLOGUJ_RESULT = "WylogujResult";
+        private const string GET_VALUE_RESULT = "GetValueResult";
+        private const string ROOT = "root";
+
         private static readonly XNamespace _namespace = "http://CIS/BIR/PUBL/2014/07";
         private static readonly XNamespace _namespaceGetValueResult = "http://CIS/BIR/2014/07";
 
 
         // Methods
-        /// <summary>
-        /// </summary>
-        /// <param name="document"></param>
-        /// <returns>If correct UserKey element contains SessionId, if not empty element </returns>
-        public static XElement? GetZalogujResult(this XDocument document)
+        public static XElement GetZalogujResult(this XDocument document)
         {
-            return document
-                .Descendants(_namespace + "ZalogujResult")
-                .FirstOrDefault();
+            return document.GetElement(_namespace, ZALOGUJ_RESULT);
         }
 
-        public static XElement? GetWylogujResult(this XDocument document)
+        public static XElement GetWylogujResult(this XDocument document)
         {
-            return document
-                .Descendants(_namespace + "WylogujResult")
-                .FirstOrDefault();
+            return document.GetElement(_namespace, WYLOGUJ_RESULT);
         }
 
-        public static XElement? GetValueResult(this XDocument document)
+        public static XElement GetValueResult(this XDocument document)
         {
-            return document
-                .Descendants(_namespaceGetValueResult + "GetValueResult")
-                .FirstOrDefault();
+            return document.GetElement(_namespaceGetValueResult, GET_VALUE_RESULT);
         }
 
         public static XElement? GetRoot(this XDocument document)
         {
             return document
-                .Descendants(_namespace + "root")
+                .Descendants(_namespace + ROOT)
                 .FirstOrDefault();
         }
 
@@ -64,6 +60,18 @@ namespace REGON.ExtensionMethods
                 throw new NotImplementedException(element.Value);
             }
             return (TEnum)Enum.ToObject(typeof(TEnum), enumId);
+        }
+
+        // Private Methods
+        private static XElement GetElement(
+            this XDocument document,
+            XNamespace @namespace,
+            string elementName)
+        {
+            return document
+               .Descendants(@namespace + elementName)
+               .FirstOrDefault()
+               ?? throw new RegonException();
         }
     }
 }

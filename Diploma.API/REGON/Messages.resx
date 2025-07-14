@@ -117,22 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Krs_Invalid" xml:space="preserve">
-    <value>Niepoprawna wartość, KRS zawiera 10 cyfr.</value>
+  <data name="Empty_UserKey" xml:space="preserve">
+    <value>Klucz użytkownika jest pusty.</value>
   </data>
-  <data name="Nip_Invalid" xml:space="preserve">
-    <value>Niepoprawna wartość, NIP zawiera  10 cyfr.</value>
+  <data name="Invalid_UserKey" xml:space="preserve">
+    <value>Klucz użytkownika jest niepoprawny.</value>
   </data>
-  <data name="Regon_Invalid" xml:space="preserve">
-    <value>Niepoprawna wartość,  REGON zawiera  9 lub 14 cyfr.</value>
+  <data name="Invalid_Krs" xml:space="preserve">
+    <value>Wartość KRS zawiera 10 cyfr.</value>
   </data>
-  <data name="UserKey_Empty" xml:space="preserve">
-    <value>Klucz nie może być pusty.</value>
+  <data name="Invalid_Nip" xml:space="preserve">
+    <value>Wartość NIP zawiera 10 cyfr.</value>
   </data>
-  <data name="UserKey_Invalid" xml:space="preserve">
-    <value>Niepoprawny klucz.</value>
+  <data name="Invalid_Regon" xml:space="preserve">
+    <value>Wartość REGON zawiera 9 lub 14 cyfr.</value>
   </data>
   <data name="YourValue" xml:space="preserve">
-    <value>Twoja wartość:</value>
+    <value>Twoja wartość</value>
   </data>
 </root>

@@ -10,7 +10,7 @@ namespace Diploma.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddSingleton<RegonClient>(opt => new RegonClient(
+            builder.Services.AddSingleton<RegonService>(opt => new RegonService(
                 builder.Configuration["RegonKey"] ?? throw new ArgumentException(),
                 true));
 
@@ -18,7 +18,6 @@ namespace Diploma.API
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            //builder.Services.AddOpenApi();
 
             var app = builder.Build();
 
@@ -27,7 +26,6 @@ namespace Diploma.API
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-                //app.MapOpenApi();
             }
 
             app.UseAuthorization();

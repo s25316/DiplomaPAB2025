@@ -8,21 +8,13 @@ namespace Diploma.API.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        private readonly RegonClient _client;
+        private readonly RegonService _client;
 
-        public ValuesController(RegonClient client)
+        public ValuesController(RegonService client)
         {
             _client = client;
         }
 
-
-        [HttpGet("StatusUslugi")]
-        public async Task<IActionResult> GetStatusUslugiAsync(
-            CancellationToken cancellationToken)
-        {
-            var result = await _client.StatusUslugiAsync(cancellationToken);
-            return Ok(result);
-        }
 
 
         [HttpGet]
@@ -31,28 +23,7 @@ namespace Diploma.API.Controllers
             GetBy by,
             CancellationToken cancellationToken)
         {
-            var result = await _client.DaneSzukajAsync(value, by, cancellationToken);
-            return Ok(result);
-        }
-
-
-        [HttpGet("PobierzPelnyRaport")]
-        public async Task<IActionResult> GetPobierzPelnyRaportAsync(
-            string value,
-            GetBy by,
-            CancellationToken cancellationToken)
-        {
-            var result = await _client.PobierzPelnyRaportAsync(value, by, cancellationToken);
-            return Ok(result);
-        }
-
-        [HttpGet("PobierzPKD")]
-        public async Task<IActionResult> PobierzPKDAsync(
-            string value,
-            GetBy by,
-            CancellationToken cancellationToken)
-        {
-            var result = await _client.PobierzPKDAsync(value, by, cancellationToken);
+            var result = await _client.GetAsync(value, by, cancellationToken);
             return Ok(result);
         }
     }
