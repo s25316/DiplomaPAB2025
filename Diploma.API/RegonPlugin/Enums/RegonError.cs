@@ -1,0 +1,17 @@
+﻿// Ignore Spelling: Regon, Plugin, Enums
+using System.Text.Json.Serialization;
+
+namespace RegonPlugin.Enums
+{
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum RegonError
+    {
+        KodCaptcha = 1,
+        DaneSzukajWieleIdentyfikatorow = 2,
+        NieZnalezionoPodmiotów = 4,
+        BrakUprawnienDoRaportu = 5,
+        BrakSesji = 7,
+        NiepoprawneDaneWejsciowe,
+        Inny = 1000,
+    }
+}

@@ -1,5 +1,5 @@
 
-using REGON;
+using RegonPlugin;
 
 namespace Diploma.API
 {
@@ -8,11 +8,12 @@ namespace Diploma.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var regonKey = builder.Configuration["RegonKey"]
+                ?? throw new ArgumentException("RegonKey");
+
 
             // Add services to the container.
-            builder.Services.AddSingleton<RegonService>(opt => new RegonService(
-                builder.Configuration["RegonKey"] ?? throw new ArgumentException(),
-                true));
+            builder.Services.AddSingleton(new RegonService(regonKey));
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
