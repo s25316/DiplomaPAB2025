@@ -1,5 +1,5 @@
 ﻿// Ignore Spelling: Regon, Plugin, Raport
-// Ignore Spelling: Fizyczna, Lokalna, Prawna, CEIDG, Rolnicza, Pozostala
+// Ignore Spelling: Fizyczna, Lokalna, Prawna, CEIDG, Krupgn, Rolnicza, Pozostala
 using RegonPlugin.Enums;
 using RegonPlugin.Responses;
 
@@ -12,11 +12,10 @@ namespace RegonPlugin.ValueObjects
         public record LokalnaFizyczna(string Jednostki, string PKD) : Raport(Jednostki, PKD);
 
         public abstract record Fizyczna(string Jednostki, string PKD) : Raport(Jednostki, PKD);
-        public record CEIDG(string Jednostki, string PKD) : Fizyczna(Jednostki, PKD);
+        public record Ceidg(string Jednostki, string PKD) : Fizyczna(Jednostki, PKD);
         public record Rolnicza(string Jednostki, string PKD) : Fizyczna(Jednostki, PKD);
         public record Pozostala(string Jednostki, string PKD) : Fizyczna(Jednostki, PKD);
-        public record KRUPGN(string Jednostki, string PKD) : Fizyczna(Jednostki, PKD);
-
+        public record Krupgn(string Jednostki, string PKD) : Fizyczna(Jednostki, PKD);
 
 
         private static Raport _prawna = new Prawna(
@@ -31,7 +30,7 @@ namespace RegonPlugin.ValueObjects
             ConfigureData.RAPORT_LOKALNA_FIZYCZNEJ,
             ConfigureData.RAPORT_LOKALNA_FIZYCZNEJ_PKD);
 
-        private static Raport _fizycznaCEIDG = new CEIDG(
+        private static Raport _fizycznaCEIDG = new Ceidg(
             ConfigureData.RAPORT_FIZYCZNA_CEIDG,
             ConfigureData.RAPORT_FIZYCZNA_PKD);
 
@@ -43,7 +42,7 @@ namespace RegonPlugin.ValueObjects
             ConfigureData.RAPORT_FIZYCZNA_POZOSTALA,
             ConfigureData.RAPORT_FIZYCZNA_PKD);
 
-        private static Raport _fizycznaKRUPGN = new KRUPGN(
+        private static Raport _fizycznaKRUPGN = new Krupgn(
             ConfigureData.RAPORT_FIZYCZNA_W_KRUPGN,
             ConfigureData.RAPORT_FIZYCZNA_PKD);
 

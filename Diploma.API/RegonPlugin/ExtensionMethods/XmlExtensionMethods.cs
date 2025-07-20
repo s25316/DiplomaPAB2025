@@ -1,6 +1,7 @@
 ﻿// Ignore Spelling: Regon, Plugin, Deserialize, Zaloguj, Wyloguj, Szukaj
 // Ignore Spelling: Nullable
 using RegonPlugin.Exceptions;
+using RegonPlugin.Models;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -32,13 +33,6 @@ namespace RegonPlugin.ExtensionMethods
                 _namespaceGetValueResult,
                 ConfigureData.RESPONSE_ELEMENT_GET_VALUE_RESULT);
         }
-        /*
-        public static XElement? GetRoot(this XDocument document)
-        {
-            return document.GetNullableElement(
-                _namespace,
-                ConfigureData.RESPONSE_ELEMENT_ROOT);
-        }*/
 
         public static IEnumerable<XElement> GetDane(this XDocument document)
         {
@@ -103,8 +97,7 @@ namespace RegonPlugin.ExtensionMethods
             XNamespace @namespace,
             string elementName)
         {
-            return document
-               .Descendants(@namespace + elementName);
+            return document.Descendants(@namespace + elementName);
         }
     }
 }

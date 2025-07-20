@@ -1,6 +1,6 @@
 ﻿// Ignore Spelling: Regon, Plugin, Pkd, Kod, Nazwa
 using PkdResponse = RegonPlugin.Responses.Raporty.PKD.Pkd;
-namespace RegonPlugin.Models
+namespace RegonPlugin.Models.DTOs
 {
     public record Pkd
     {

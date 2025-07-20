@@ -5,6 +5,7 @@ using RegonPlugin.Enums;
 using RegonPlugin.Enums.GetValues;
 using RegonPlugin.Exceptions;
 using RegonPlugin.ExtensionMethods;
+using RegonPlugin.Models;
 using RegonPlugin.Providers;
 using RegonPlugin.Requests;
 using RegonPlugin.Requests.AuthorizationEnvelopes;

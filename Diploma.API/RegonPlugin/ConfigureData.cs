@@ -72,8 +72,6 @@ namespace RegonPlugin
 
         public const string RESPONSE_ELEMENT_GET_VALUE_RESULT = "GetValueResult";
 
-        public const string RESPONSE_ELEMENT_ROOT = "root";
-
         public const string RESPONSE_ELEMENT_DANE = "dane";
 
         // NAMESPACES 

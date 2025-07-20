@@ -3,9 +3,10 @@
 using RegonPlugin.Enums;
 using RegonPlugin.Exceptions;
 using RegonPlugin.Models;
+using RegonPlugin.Models.DTOs;
 using RegonPlugin.Responses;
 using RegonPlugin.ValueObjects;
-using RaportJednostkiModel = RegonPlugin.Models.RaportJednostki;
+using RaportJednostkiModel = RegonPlugin.Models.DTOs.RaportJednostki;
 using RaportJednostkiResponses = RegonPlugin.Responses.Raporty.Jednostki.RaportJednostki;
 
 namespace RegonPlugin
@@ -19,7 +20,7 @@ namespace RegonPlugin
         public RegonService(string key, bool isProduction = true)
         {
             _client = new RegonClient(new UserKey(key), isProduction);
-            //_client.ZalogujAsync().Wait();
+            _client.ZalogujAsync().Wait();
         }
 
 

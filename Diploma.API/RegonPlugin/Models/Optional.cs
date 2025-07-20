@@ -1,7 +1,7 @@
 ﻿// Ignore Spelling: Regon, Plugin
-namespace RegonPlugin
+namespace RegonPlugin.Models
 {
-    internal sealed class Optional<T>
+    internal sealed record Optional<T>
     {
         public bool IsNull { get; }
         public T? Value { get; }
