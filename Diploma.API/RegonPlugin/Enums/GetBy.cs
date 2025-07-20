@@ -1,10 +1,10 @@
-﻿// Ignore Spelling: Regon, Enums, Szukaj
+﻿// Ignore Spelling: Regon, Plugin, Enums
 namespace RegonPlugin.Enums
 {
     public enum GetBy
     {
-        KRS = 1,
-        NIP,
         REGON,
+        KRS,
+        NIP,
     }
 }

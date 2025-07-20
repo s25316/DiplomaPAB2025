@@ -6,6 +6,10 @@ namespace RegonPlugin
 {
     internal static class ConfigureData
     {
+        //=================================================================================
+        // REQUESTS PART
+        //=================================================================================
+
         // ENDPOINTY 
         public const string PRODUCTION_ENDPOINT = "https://wyszukiwarkaregon.stat.gov.pl/wsBIR/UslugaBIRzewnPubl.svc";
 
@@ -57,7 +61,11 @@ namespace RegonPlugin
         public const string RAPORT_PRAWNA_WSPOLNICY = "PublDaneRaportWspolnicyPrawnej";
 
 
-        // RESPONSES 
+        //=================================================================================
+        // RESPONSES PART
+        //=================================================================================
+
+        // RESPONSES ELEMENTS
         public const string RESPONSE_ELEMENT_ZALOGUJ = "ZalogujResult";
 
         public const string RESPONSE_ELEMENT_WYLOGUJ = "WylogujResult";
@@ -66,6 +74,14 @@ namespace RegonPlugin
 
         public const string RESPONSE_ELEMENT_ROOT = "root";
 
+        // NAMESPACES 
+        public const string NAMESPACE = "http://CIS/BIR/PUBL/2014/07";
+
+        public const string NAMESPACE_GET_VALUE_RESULT = "http://CIS/BIR/2014/07";
+
+        //=================================================================================
+        // OTHER
+        //=================================================================================
 
         // REGEX
         // Sometimes Returns REGON with 5 zeros, and this removes

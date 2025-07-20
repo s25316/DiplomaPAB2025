@@ -57,7 +57,7 @@ namespace RegonPlugin
         {
             return await RetryAsync(
                 () => _client.DaneSzukajAsync(value, by, cancellationToken),
-                value => value.Any(),
+                value => value?.Any() ?? false,
                 TimeSpan.Zero,
                 2,
                 cancellationToken);
@@ -98,8 +98,8 @@ namespace RegonPlugin
         }
 
         private async Task<Response<T>> RetryAsync<T>(
-               Func<Task<T>> operation,
-               Func<T, bool> hasContainsValue,
+               Func<Task<T?>> operation,
+               Func<T?, bool> hasContainsValue,
                TimeSpan delay,
                int retryCount,
                CancellationToken cancellationToken)
@@ -108,15 +108,17 @@ namespace RegonPlugin
             try
             {
                 var operationResult = await operation();
-                if (hasContainsValue(operationResult))
+                if (hasContainsValue(operationResult) &&
+                    operationResult is not null)
                 {
                     return Response<T>.IsCorrect(operationResult);
                 }
 
                 var reason = await _client.KomunikatKodAsync(cancellationToken);
-                if (reason is not KomunikatKod.BrakSesji)
+                if (reason is not null &&
+                    reason is not KomunikatKod.BrakSesji)
                 {
-                    return Response<T>.KomunikatKodError(reason);
+                    return Response<T>.KomunikatKodError(reason.Value);
                 }
 
                 await _client.ZalogujAsync(cancellationToken);

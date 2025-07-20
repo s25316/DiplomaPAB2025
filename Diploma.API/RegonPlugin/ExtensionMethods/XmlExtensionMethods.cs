@@ -1,4 +1,5 @@
-﻿// Ignore Spelling: Regon, Plugin, Deserialize, Zaloguj, Wyloguj
+﻿// Ignore Spelling: Regon, Plugin, Deserialize, Zaloguj, Wyloguj, Szukaj
+// Ignore Spelling: Nullable
 using RegonPlugin.Exceptions;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -7,8 +8,8 @@ namespace RegonPlugin.ExtensionMethods
 {
     internal static class XmlExtensionMethods
     {
-        private static readonly XNamespace _namespace = "http://CIS/BIR/PUBL/2014/07";
-        private static readonly XNamespace _namespaceGetValueResult = "http://CIS/BIR/2014/07";
+        private static readonly XNamespace _namespace = ConfigureData.NAMESPACE;
+        private static readonly XNamespace _namespaceGetValueResult = ConfigureData.NAMESPACE_GET_VALUE_RESULT;
 
 
         public static XElement GetZalogujResult(this XDocument document)
@@ -34,43 +35,64 @@ namespace RegonPlugin.ExtensionMethods
 
         public static XElement? GetRoot(this XDocument document)
         {
-            return document
-                .Descendants(_namespace + ConfigureData.RESPONSE_ELEMENT_ROOT)
-                .FirstOrDefault();
+            return document.GetNullableElement(
+                _namespace,
+                ConfigureData.RESPONSE_ELEMENT_ROOT);
         }
 
-        public static T DeserializeClass<T>(this XElement element)
+        public static T? DeserializeToClass<T>(this XElement element)
             where T : class
         {
-            var serializer = new XmlSerializer(typeof(T));
-            using (var reader = element.CreateReader())
+            if (string.IsNullOrWhiteSpace(element.Value))
             {
-                return serializer.Deserialize(reader) as T
-                    ?? throw new Exception();
+                return default;
             }
+
+            var serializer = new XmlSerializer(typeof(T));
+            using var reader = element.CreateReader();
+
+            if (serializer.CanDeserialize(reader))
+            {
+                return serializer.Deserialize(reader) as T;
+            }
+
+            throw new RegonDeserializationException($"Class Type: {nameof(T)}; Element Name: {element.Name}; Value: {element.Value};");
         }
 
-        public static TEnum DeserializeEnum<TEnum>(this XElement element)
+        public static TEnum? DeserializeToEnum<TEnum>(this XElement element)
             where TEnum : Enum
         {
-            if (string.IsNullOrWhiteSpace(element.Value) ||
-                !int.TryParse(element.Value, out var enumId))
+            if (string.IsNullOrWhiteSpace(element.Value))
             {
-                throw new NotImplementedException(element.Value);
+                return default;
             }
-            return (TEnum)Enum.ToObject(typeof(TEnum), enumId);
+
+            if (int.TryParse(element.Value, out var enumId))
+            {
+                return (TEnum)Enum.ToObject(typeof(TEnum), enumId);
+            }
+
+            throw new RegonDeserializationException($"Enum Type: {nameof(TEnum)}; Element Name: {element.Name}; Value: {element.Value};");
         }
 
         // Private Methods
-        private static XElement? GetElement(
+        private static XElement GetElement(
+            this XDocument document,
+            XNamespace @namespace,
+            string elementName)
+        {
+            return GetNullableElement(document, @namespace, elementName)
+               ?? throw new RegonDeserializationException($"Element: {elementName}; Namespace: {@namespace}; Document: {document};");
+        }
+
+        private static XElement? GetNullableElement(
             this XDocument document,
             XNamespace @namespace,
             string elementName)
         {
             return document
                .Descendants(@namespace + elementName)
-               .FirstOrDefault()
-               ?? throw new RegonException("Deserialization Problem");
+               .FirstOrDefault();
         }
     }
 }

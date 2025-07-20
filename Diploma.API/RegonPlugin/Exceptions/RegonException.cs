@@ -1,8 +1,13 @@
-﻿// Ignore Spelling: Regon, Plugin
+﻿// Ignore Spelling: Regon, Plugin, Deserialization
 namespace RegonPlugin.Exceptions
 {
-    public class RegonException : Exception
-    {
-        public RegonException(string message) : base(message) { }
-    }
+    /// <summary>
+    /// Base RegonPlugin Exception
+    /// </summary>
+    /// <param name="message"></param>
+    public abstract class RegonException(string message) : Exception(message);
+
+    public class RegonKeyException(string message) : RegonException(message);
+    public class RegonDeserializationException(string message) : RegonException(message);
+    public class RegonInvalidInputDataException(string message) : RegonException(message);
 }

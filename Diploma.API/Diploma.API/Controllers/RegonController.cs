@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RegonPlugin.Enums;
 
 namespace Diploma.API.Controllers
 {
@@ -17,9 +18,9 @@ namespace Diploma.API.Controllers
 
         [HttpGet("daneSzukaj")]
         public async Task<IActionResult> DaneSzukajAsync(
+            CancellationToken cancellationToken,
             string value,
-            RegonPlugin.Enums.GetBy by,
-            CancellationToken cancellationToken)
+            GetBy by = GetBy.REGON)
         {
             var result = await _client.DaneSzukajAsync(value, by, cancellationToken);
             return Ok(result);
@@ -27,9 +28,9 @@ namespace Diploma.API.Controllers
 
         [HttpGet("RaportJednostki")]
         public async Task<IActionResult> PobierzRaportJednostkiAsync(
+            CancellationToken cancellationToken,
             string value,
-            RegonPlugin.Enums.GetBy by,
-            CancellationToken cancellationToken)
+            GetBy by = GetBy.REGON)
         {
             var result = await _client.PobierzRaportJednostkiAsync(value, by, cancellationToken);
             return Ok(result);

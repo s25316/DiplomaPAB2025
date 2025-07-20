@@ -38,19 +38,15 @@ namespace RegonPlugin
         }
 
 
-        public async Task<StatusUslugi> StatusUslugiAsync(CancellationToken cancellationToken = default)
-        {
-            return await GetValueAsync<StatusUslugi>(GetValue.StatusUslugi, cancellationToken);
-        }
-
-        public async Task<KomunikatKod> KomunikatKodAsync(CancellationToken cancellationToken = default)
-        {
-            return await GetValueAsync<KomunikatKod>(GetValue.KomunikatKod, cancellationToken);
-        }
-
+        // Working without Login In
         public async Task<StatusSesji> StatusSesjiAsync(CancellationToken cancellationToken = default)
         {
             return await GetValueAsync<StatusSesji>(GetValue.StatusSesji, cancellationToken);
+        }
+
+        public async Task<StatusUslugi> StatusUslugiAsync(CancellationToken cancellationToken = default)
+        {
+            return await GetValueAsync<StatusUslugi>(GetValue.StatusUslugi, cancellationToken);
         }
 
         public async Task<string> KomunikatUslugiAsync(CancellationToken cancellationToken = default)
@@ -58,9 +54,41 @@ namespace RegonPlugin
             return await GetValueAsync(GetValue.KomunikatUslugi, cancellationToken);
         }
 
+        // Required Login In
+        public async Task<KomunikatKod?> KomunikatKodAsync(CancellationToken cancellationToken = default)
+        {
+            return await GetValueAsync<KomunikatKod>(GetValue.KomunikatKod, cancellationToken);
+        }
+
         public async Task<string> KomunikatTrescAsync(CancellationToken cancellationToken = default)
         {
             return await GetValueAsync(GetValue.KomunikatTresc, cancellationToken);
+        }
+
+        public async Task<IEnumerable<DaneSzukaj>> DaneSzukajAsync(
+            string value,
+            GetBy by,
+            CancellationToken cancellationToken = default)
+        {
+            DaneSzukajEnvelope request = by switch
+            {
+                GetBy.KRS => new DaneSzukajEnvelope((Krs)value, EndPoint),
+                GetBy.NIP => new DaneSzukajEnvelope((Nip)value, EndPoint),
+                GetBy.REGON => new DaneSzukajEnvelope((Regon)value, EndPoint),
+                _ => throw new NotImplementedException($"{nameof(GetBy)}: {(int)by}")
+            };
+
+            var response = await SendAsync(request, cancellationToken);
+            var rootElement = response.GetRoot();
+
+            if (string.IsNullOrWhiteSpace(rootElement?.Value))
+            {
+                return [];
+            }
+
+            return rootElement
+                .DeserializeToClass<Root<DaneSzukaj>>()?
+                .Dane ?? throw new NotImplementedException($"{value} - {by}");
         }
 
         public async Task<RaportJednostki?> PobierzRaportJednostkiAsync(
@@ -111,34 +139,7 @@ namespace RegonPlugin
                 : null;
         }
 
-        public async Task<IEnumerable<DaneSzukaj>> DaneSzukajAsync(
-            string value,
-            GetBy by,
-            CancellationToken cancellationToken = default)
-        {
-            DaneSzukajEnvelope request = by switch
-            {
-                GetBy.KRS => new DaneSzukajEnvelope((Krs)value, EndPoint),
-                GetBy.NIP => new DaneSzukajEnvelope((Nip)value, EndPoint),
-                GetBy.REGON => new DaneSzukajEnvelope((Regon)value, EndPoint),
-                _ => throw new NotImplementedException($"{nameof(GetBy)}: {(int)by}")
-            };
-
-            var response = await SendAsync(request, cancellationToken);
-            var rootElement = response.GetRoot();
-
-            if (string.IsNullOrWhiteSpace(rootElement?.Value))
-            {
-                return [];
-            }
-
-            return rootElement
-                .DeserializeClass<Root<DaneSzukaj>>()
-                .Dane;
-        }
-
         // Private Static Methods
-
         private static HttpRequestMessage PrepareRequest(string envelope)
         {
             return new HttpRequestMessage()
@@ -153,26 +154,13 @@ namespace RegonPlugin
 
         private static string ExtractEnvelope(string responseContent)
         {
-            /* Body Response looks like for Zaloguj
-            [
-                  "0 ",
-                  "1 --uuid:d7df59b9-21aa-45e0-97c3-54d9a4e79d76+id=42489",
-                  "2 Content-ID: <http://tempuri.org/0>",
-                  "3 Content-Transfer-Encoding: 8bit",
-                  "4 Content-Type: application/xop+xml;charset=utf-8;type=\"application/soap+xml\"",
-                  "5 ",
-                  "6  => HERE ENVELOPE
-                  "7 --uuid:d7df59b9-21aa-45e0-97c3-54d9a4e79d76+id=42489--",
-                  "8 " 
-            ]   
-             */
             var lines = responseContent
                 .Split("\n")
                 .ToList();
 
             if (lines.Count < RESPONSE_MIN_LINES)
             {
-                throw new NotImplementedException(responseContent); // Here 
+                throw new NotImplementedException(responseContent);
             }
 
             for (int i = 0; i < 6; i++)
@@ -186,12 +174,13 @@ namespace RegonPlugin
 
             responseContent = string.Join(
                 "",
-                lines.Select(x => x.Trim())
-                );
+                lines.Select(x => x.Trim()));
+
             if (string.IsNullOrWhiteSpace(responseContent))
             {
                 throw new NotImplementedException(responseContent);
             }
+
             return CustomStringProvider.DecodeXmlEnvelope(responseContent);
         }
 
@@ -211,7 +200,7 @@ namespace RegonPlugin
             return XDocument.Parse(xmlEnvelope);
         }
 
-        private async Task<TEnum> GetValueAsync<TEnum>(
+        private async Task<TEnum?> GetValueAsync<TEnum>(
             GetValue type,
             CancellationToken cancellationToken = default)
             where TEnum : Enum
@@ -220,7 +209,7 @@ namespace RegonPlugin
             var response = await SendAsync(request, cancellationToken);
             return response
                 .GetValueResult()
-                .DeserializeEnum<TEnum>();
+                .DeserializeToEnum<TEnum>();
         }
 
         private async Task<string> GetValueAsync(
@@ -250,8 +239,8 @@ namespace RegonPlugin
             }
 
             return rootElement
-                .DeserializeClass<Root<TResponse>>()
-                .Dane;
+                .DeserializeToClass<Root<TResponse>>()?
+                .Dane ?? throw new NotImplementedException($"{regon} - {reportName}");
         }
     }
 }
