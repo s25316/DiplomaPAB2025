@@ -1,4 +1,4 @@
-﻿// Ignore Spelling: Regon, Plugin, Raporty, Jednostki
+﻿// Ignore Spelling: Regon, Plugin, Raporty, Jednostki, dane
 // Ignore Spelling: Raport, Nazwa, Skrocona
 // Ignore Spelling: Kraj, Wojewodztwo, Powiat, Gmina, Kod, Pocztowy, Miejscowosc, Poczty
 // Ignore Spelling: Ulica, Numer, Nieruchomosci, Lokalu, Nietypowe, Miejsce, Lokalizacji
@@ -25,6 +25,7 @@ using System.Xml.Serialization;
 
 namespace RegonPlugin.Responses.Raporty.Jednostki
 {
+    [XmlRoot(ElementName = "dane", Namespace = "http://CIS/BIR/PUBL/2014/07", IsNullable = false)]
     public record RaportJednostki
     {
         [XmlChoiceIdentifier("RegonParameter")]

@@ -1,10 +1,11 @@
 ﻿// Ignore Spelling: Regon, Plugin, Nazwa, Wojewodztwo, Powiat, Gmina, Miejscowosc
-// Ignore Spelling: Ulica, Typ, Kod, Pocztowy Szukaj
+// Ignore Spelling: Ulica, Typ, Kod, Pocztowy Szukaj, dane
 using RegonPlugin.Enums;
 using System.Xml.Serialization;
 
 namespace RegonPlugin.Responses
 {
+    [XmlRoot(ElementName = "dane", Namespace = "http://CIS/BIR/PUBL/2014/07", IsNullable = false)]
     public record DaneSzukaj
     {
         [XmlElement("Regon")]

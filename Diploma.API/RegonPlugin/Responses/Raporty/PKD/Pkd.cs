@@ -1,9 +1,10 @@
-﻿// Ignore Spelling: Regon, Plugin, Raporty, PKD, Enums, Kod, Nazwa, Przewazajace
+﻿// Ignore Spelling: Regon, Plugin, Raporty, PKD, Enums, Kod, Nazwa, Przewazajace, dane
 using RegonPlugin.Responses.Raporty.PKD.Enums;
 using System.Xml.Serialization;
 
 namespace RegonPlugin.Responses.Raporty.PKD
 {
+    [XmlRoot(ElementName = "dane", Namespace = "http://CIS/BIR/PUBL/2014/07", IsNullable = false)]
     public record Pkd
     {
         [XmlChoiceIdentifier("KodProperty")]

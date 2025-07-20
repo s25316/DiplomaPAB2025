@@ -1,7 +1,7 @@
 ﻿// Ignore Spelling: Regon, Plugin
 // Ignore Spelling: RAPORT, TYP, JEDNOSTKI, PKD, LOKALNA, 
 // Ignore Spelling: PRAWNA, PRAWNEJ, FIZYCZNA, FIZYCZNEJ, WSPOLNICY, ZALOGUJ, WYLOGUJ
-// Ignore Spelling: CEIDG, ROLNICZA, POZOSTALA, KRUPGN, LISTA, LF, sid, xml
+// Ignore Spelling: CEIDG, ROLNICZA, POZOSTALA, KRUPGN, LISTA, LF, sid, xml, dane
 namespace RegonPlugin
 {
     internal static class ConfigureData
@@ -73,6 +73,8 @@ namespace RegonPlugin
         public const string RESPONSE_ELEMENT_GET_VALUE_RESULT = "GetValueResult";
 
         public const string RESPONSE_ELEMENT_ROOT = "root";
+
+        public const string RESPONSE_ELEMENT_DANE = "dane";
 
         // NAMESPACES 
         public const string NAMESPACE = "http://CIS/BIR/PUBL/2014/07";

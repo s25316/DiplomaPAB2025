@@ -1,12 +1,12 @@
 ﻿// Ignore Spelling: Regon, Plugin, Pobierz, Pelny, Raport, xmlns, wsa
 namespace RegonPlugin.Requests
 {
-    internal record struct PobierzPelnyRaportEnvelope
+    internal record struct RaportEnvelope
     {
         public string Value { get; }
 
 
-        public PobierzPelnyRaportEnvelope(
+        public RaportEnvelope(
             string regon,
             string reportName,
             string endPoint)
@@ -26,7 +26,7 @@ namespace RegonPlugin.Requests
         }
 
 
-        public static implicit operator string(PobierzPelnyRaportEnvelope envelope) => envelope.Value;
+        public static implicit operator string(RaportEnvelope envelope) => envelope.Value;
         public override string ToString() => Value;
     }
 }

@@ -1,6 +1,6 @@
 ﻿// Ignore Spelling: Regon, Plugin
 // Ignore Spelling: Uslugi, Komunikat, Kod, Sesji, Uslugi, Tresc, Pobierz, Raport, Jednostki
-// Ignore Spelling: Pkd, Zaloguj, Wyloguj, Szukaj
+// Ignore Spelling: Pkd, Zaloguj, Wyloguj, Szukaj, Krs
 using RegonPlugin.Enums;
 using RegonPlugin.Enums.GetValues;
 using RegonPlugin.Exceptions;
@@ -38,57 +38,74 @@ namespace RegonPlugin
         }
 
 
-        // Working without Login In
+        // LOGGIN IN/OUT OPERATIONS
+        public async Task ZalogujAsync(CancellationToken cancellationToken = default)
+        {
+            // Need synchronization: lock or semaphore
+            var sessionIdElement = await GetZalogujResultAsync(cancellationToken);
+            var sessionId = sessionIdElement.Value;
+
+            if (string.IsNullOrWhiteSpace(sessionId))
+            {
+                throw new RegonKeyException(Messages.Invalid_UserKey);
+            }
+
+            SetSessionIdHeader(sessionId);
+        }
+
+        public async Task<bool?> WylogujAsync(CancellationToken cancellationToken = default)
+        {
+            var sessionId = DefaultRequestHeaders.GetValues(ConfigureData.HEADER_NAME_SESSION_ID).First();
+
+            var wylogujResultElement = await GetWylogujResultAsync(sessionId, cancellationToken);
+            var wylogujResult = wylogujResultElement.Value;
+
+            return !string.IsNullOrWhiteSpace(wylogujResult)
+                ? bool.Parse(wylogujResult)
+                : null;
+        }
+
+
+        // CHECKING OPERATIONS WITHOUT LOGGIN IN
         public async Task<StatusSesji> StatusSesjiAsync(CancellationToken cancellationToken = default)
         {
-            return await GetValueAsync<StatusSesji>(GetValue.StatusSesji, cancellationToken);
+            var getValueElement = await GetValueResultAsync(GetValue.StatusSesji, cancellationToken);
+            return getValueElement.DeserializeToEnum<StatusSesji>().Value;
         }
 
         public async Task<StatusUslugi> StatusUslugiAsync(CancellationToken cancellationToken = default)
         {
-            return await GetValueAsync<StatusUslugi>(GetValue.StatusUslugi, cancellationToken);
+            var getValueElement = await GetValueResultAsync(GetValue.StatusUslugi, cancellationToken);
+            return getValueElement.DeserializeToEnum<StatusUslugi>().Value;
         }
 
         public async Task<string> KomunikatUslugiAsync(CancellationToken cancellationToken = default)
         {
-            return await GetValueAsync(GetValue.KomunikatUslugi, cancellationToken);
+            var getValueElement = await GetValueResultAsync(GetValue.KomunikatUslugi, cancellationToken);
+            return getValueElement.Value;
         }
 
-        // Required Login In
-        public async Task<KomunikatKod?> KomunikatKodAsync(CancellationToken cancellationToken = default)
+        // CHECKING OPERATIONS WITH LOGGIN IN
+        public async Task<Optional<KomunikatKod>> KomunikatKodAsync(CancellationToken cancellationToken = default)
         {
-            return await GetValueAsync<KomunikatKod>(GetValue.KomunikatKod, cancellationToken);
+            var getValueElement = await GetValueResultAsync(GetValue.KomunikatKod, cancellationToken);
+            return getValueElement.DeserializeToEnum<KomunikatKod>();
         }
 
         public async Task<string> KomunikatTrescAsync(CancellationToken cancellationToken = default)
         {
-            return await GetValueAsync(GetValue.KomunikatTresc, cancellationToken);
+            var getValueElement = await GetValueResultAsync(GetValue.KomunikatTresc, cancellationToken);
+            return getValueElement.Value;
         }
 
+        // GET DATA OPERATIONS
         public async Task<IEnumerable<DaneSzukaj>> DaneSzukajAsync(
             string value,
             GetBy by,
             CancellationToken cancellationToken = default)
         {
-            DaneSzukajEnvelope request = by switch
-            {
-                GetBy.KRS => new DaneSzukajEnvelope((Krs)value, EndPoint),
-                GetBy.NIP => new DaneSzukajEnvelope((Nip)value, EndPoint),
-                GetBy.REGON => new DaneSzukajEnvelope((Regon)value, EndPoint),
-                _ => throw new NotImplementedException($"{nameof(GetBy)}: {(int)by}")
-            };
-
-            var response = await SendAsync(request, cancellationToken);
-            var rootElement = response.GetRoot();
-
-            if (string.IsNullOrWhiteSpace(rootElement?.Value))
-            {
-                return [];
-            }
-
-            return rootElement
-                .DeserializeToClass<Root<DaneSzukaj>>()?
-                .Dane ?? throw new NotImplementedException($"{value} - {by}");
+            var request = PrepareDaneSzukajEnvelope(value, by);
+            return await GetDaneAsync<DaneSzukaj>(request, cancellationToken);
         }
 
         public async Task<RaportJednostki?> PobierzRaportJednostkiAsync(
@@ -96,8 +113,9 @@ namespace RegonPlugin
             string reportName,
             CancellationToken cancellationToken = default)
         {
-            var reports = await PobierzRaportAsync<RaportJednostki>(regon, reportName, cancellationToken);
-            return reports.FirstOrDefault();
+            var request = new RaportEnvelope(regon, reportName, EndPoint);
+            var dane = await GetDaneAsync<RaportJednostki>(request, cancellationToken);
+            return dane.FirstOrDefault();
         }
 
         public async Task<IEnumerable<Pkd>> PobierzPkdJednostkiAsync(
@@ -105,41 +123,11 @@ namespace RegonPlugin
             string reportName,
             CancellationToken cancellationToken = default)
         {
-            return await PobierzRaportAsync<Pkd>(regon, reportName, cancellationToken);
+            var request = new RaportEnvelope(regon, reportName, EndPoint);
+            return await GetDaneAsync<Pkd>(request, cancellationToken);
         }
 
-        public async Task ZalogujAsync(CancellationToken cancellationToken = default)
-        {
-            var zalogujEnvelope = new ZalogujEnvelope(_userKey, EndPoint);
-            var zalogujResponse = await SendAsync(zalogujEnvelope, cancellationToken);
-
-            var sessionId = zalogujResponse.GetZalogujResult().Value;
-            if (string.IsNullOrWhiteSpace(sessionId))
-            {
-                throw new RegonKeyException(Messages.Invalid_UserKey);
-            }
-
-            if (DefaultRequestHeaders.Contains(ConfigureData.HEADER_NAME_SESSION_ID))
-            {
-                DefaultRequestHeaders.Remove(ConfigureData.HEADER_NAME_SESSION_ID);
-            }
-            DefaultRequestHeaders.Add(ConfigureData.HEADER_NAME_SESSION_ID, sessionId);
-        }
-
-        public async Task<bool?> WylogujAsync(CancellationToken cancellationToken = default)
-        {
-            var sessionId = DefaultRequestHeaders.GetValues(ConfigureData.HEADER_NAME_SESSION_ID).First();
-
-            var wylogujRequest = new WylogujEnvelope(sessionId, EndPoint);
-            var wylogujResponse = await SendAsync(wylogujRequest, cancellationToken);
-            var wylogujResult = wylogujResponse.GetWylogujResult()?.Value;
-
-            return !string.IsNullOrWhiteSpace(wylogujResult)
-                ? bool.Parse(wylogujResult)
-                : null;
-        }
-
-        // Private Static Methods
+        // PRIVATE STATIC METHODS
         private static HttpRequestMessage PrepareRequest(string envelope)
         {
             return new HttpRequestMessage()
@@ -184,7 +172,7 @@ namespace RegonPlugin
             return CustomStringProvider.DecodeXmlEnvelope(responseContent);
         }
 
-        // Private NonStatic Methods
+        // PRIVATE NONSTATIC METHODS
         private async Task<XDocument> SendAsync(
             string envelope,
             CancellationToken cancellationToken = default)
@@ -200,47 +188,77 @@ namespace RegonPlugin
             return XDocument.Parse(xmlEnvelope);
         }
 
-        private async Task<TEnum?> GetValueAsync<TEnum>(
+        private async Task<XElement> GetZalogujResultAsync(CancellationToken cancellationToken = default)
+        {
+            var zalogujEnvelope = new ZalogujEnvelope(_userKey, EndPoint);
+            var zalogujResponse = await SendAsync(zalogujEnvelope, cancellationToken);
+            return zalogujResponse.GetZalogujResult();
+        }
+
+        private async Task<XElement> GetWylogujResultAsync(
+            string sessionId,
+            CancellationToken cancellationToken = default)
+        {
+            var wylogujRequest = new WylogujEnvelope(sessionId, EndPoint);
+            var wylogujResponse = await SendAsync(wylogujRequest, cancellationToken);
+            return wylogujResponse.GetWylogujResult();
+        }
+
+        private async Task<XElement> GetValueResultAsync(
             GetValue type,
             CancellationToken cancellationToken = default)
-            where TEnum : Enum
         {
             var request = new GetValueEnvelope(type, EndPoint);
             var response = await SendAsync(request, cancellationToken);
-            return response
-                .GetValueResult()
-                .DeserializeToEnum<TEnum>();
+            return response.GetValueResult();
         }
 
-        private async Task<string> GetValueAsync(
-            GetValue type,
+        private async Task<IEnumerable<T>> GetDaneAsync<T>(
+            string request,
             CancellationToken cancellationToken = default)
+            where T : class
         {
-            var request = new GetValueEnvelope(type, EndPoint);
             var response = await SendAsync(request, cancellationToken);
-            return response
-                .GetValueResult()
-                .Value;
-        }
+            var dane = response.GetDane();
 
-        private async Task<IEnumerable<TResponse>> PobierzRaportAsync<TResponse>(
-            string regon,
-            string reportName,
-            CancellationToken cancellationToken = default)
-            where TResponse : class
-        {
-            var request = new PobierzPelnyRaportEnvelope(regon, reportName, EndPoint);
-            var response = await SendAsync(request, cancellationToken);
-            var rootElement = response.GetRoot();
-
-            if (string.IsNullOrWhiteSpace(rootElement?.Value))
+            var resultList = new List<T>();
+            foreach (var item in dane)
             {
-                return [];
+                var deserializedItem = item.DeserializeToClass<T>();
+                if (deserializedItem.Value != null)
+                {
+                    resultList.Add(deserializedItem.Value);
+                }
             }
 
-            return rootElement
-                .DeserializeToClass<Root<TResponse>>()?
-                .Dane ?? throw new NotImplementedException($"{regon} - {reportName}");
+            return resultList;
+        }
+
+        private DaneSzukajEnvelope PrepareDaneSzukajEnvelope(
+            string value,
+            GetBy by)
+        {
+            return by switch
+            {
+                GetBy.KRS => new DaneSzukajEnvelope((Krs)value, EndPoint),
+                GetBy.NIP => new DaneSzukajEnvelope((Nip)value, EndPoint),
+                GetBy.REGON => new DaneSzukajEnvelope((Regon)value, EndPoint),
+                _ => throw new NotImplementedException($"{nameof(GetBy)}: {(int)by}")
+            };
+        }
+
+        private void SetSessionIdHeader(string sessionId)
+        {
+            if (DefaultRequestHeaders.Contains(ConfigureData.HEADER_NAME_SESSION_ID))
+            {
+                DefaultRequestHeaders.Remove(ConfigureData.HEADER_NAME_SESSION_ID);
+                Console.WriteLine($"Zaktualizowano");
+            }
+            else
+            {
+                Console.WriteLine($"Zalogowano");
+            }
+            DefaultRequestHeaders.Add(ConfigureData.HEADER_NAME_SESSION_ID, sessionId);
         }
     }
 }

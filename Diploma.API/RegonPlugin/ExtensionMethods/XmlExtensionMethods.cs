@@ -32,20 +32,27 @@ namespace RegonPlugin.ExtensionMethods
                 _namespaceGetValueResult,
                 ConfigureData.RESPONSE_ELEMENT_GET_VALUE_RESULT);
         }
-
+        /*
         public static XElement? GetRoot(this XDocument document)
         {
             return document.GetNullableElement(
                 _namespace,
                 ConfigureData.RESPONSE_ELEMENT_ROOT);
+        }*/
+
+        public static IEnumerable<XElement> GetDane(this XDocument document)
+        {
+            return document.GetElements(
+                _namespace,
+                ConfigureData.RESPONSE_ELEMENT_DANE);
         }
 
-        public static T? DeserializeToClass<T>(this XElement element)
+        public static Optional<T> DeserializeToClass<T>(this XElement element)
             where T : class
         {
             if (string.IsNullOrWhiteSpace(element.Value))
             {
-                return default;
+                return Optional<T>.None();
             }
 
             var serializer = new XmlSerializer(typeof(T));
@@ -53,23 +60,28 @@ namespace RegonPlugin.ExtensionMethods
 
             if (serializer.CanDeserialize(reader))
             {
-                return serializer.Deserialize(reader) as T;
+                var value = serializer.Deserialize(reader) as T;
+                if (value != null)
+                {
+                    return Optional<T>.Some(value);
+                }
             }
 
             throw new RegonDeserializationException($"Class Type: {nameof(T)}; Element Name: {element.Name}; Value: {element.Value};");
         }
 
-        public static TEnum? DeserializeToEnum<TEnum>(this XElement element)
+        public static Optional<TEnum> DeserializeToEnum<TEnum>(this XElement element)
             where TEnum : Enum
         {
             if (string.IsNullOrWhiteSpace(element.Value))
             {
-                return default;
+                return Optional<TEnum>.None();
             }
 
             if (int.TryParse(element.Value, out var enumId))
             {
-                return (TEnum)Enum.ToObject(typeof(TEnum), enumId);
+                var value = (TEnum)Enum.ToObject(typeof(TEnum), enumId);
+                return Optional<TEnum>.Some(value);
             }
 
             throw new RegonDeserializationException($"Enum Type: {nameof(TEnum)}; Element Name: {element.Name}; Value: {element.Value};");
@@ -81,18 +93,18 @@ namespace RegonPlugin.ExtensionMethods
             XNamespace @namespace,
             string elementName)
         {
-            return GetNullableElement(document, @namespace, elementName)
+            return GetElements(document, @namespace, elementName)
+                .FirstOrDefault()
                ?? throw new RegonDeserializationException($"Element: {elementName}; Namespace: {@namespace}; Document: {document};");
         }
 
-        private static XElement? GetNullableElement(
+        private static IEnumerable<XElement> GetElements(
             this XDocument document,
             XNamespace @namespace,
             string elementName)
         {
             return document
-               .Descendants(@namespace + elementName)
-               .FirstOrDefault();
+               .Descendants(@namespace + elementName);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿// Ignore Spelling: Regon, Plugin, Szukaj, Uslugi, Komunikat, Pobierz, Pelny, Raport
 // Ignore Spelling: Jednostki
 using RegonPlugin.Enums;
-using RegonPlugin.Enums.GetValues;
 using RegonPlugin.Exceptions;
 using RegonPlugin.Models;
 using RegonPlugin.Responses;
@@ -20,7 +19,7 @@ namespace RegonPlugin
         public RegonService(string key, bool isProduction = true)
         {
             _client = new RegonClient(new UserKey(key), isProduction);
-            _client.ZalogujAsync().Wait();
+            //_client.ZalogujAsync().Wait();
         }
 
 
@@ -44,6 +43,7 @@ namespace RegonPlugin
                 {
                     _client.WylogujAsync().Wait();
                     _client.Dispose();
+                    Console.WriteLine("Wylogowano");
                 }
                 _disposed = true;
             }
@@ -115,8 +115,7 @@ namespace RegonPlugin
                 }
 
                 var reason = await _client.KomunikatKodAsync(cancellationToken);
-                if (reason is not null &&
-                    reason is not KomunikatKod.BrakSesji)
+                if (!reason.IsNull)
                 {
                     return Response<T>.KomunikatKodError(reason.Value);
                 }
