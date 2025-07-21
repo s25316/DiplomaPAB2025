@@ -22,7 +22,7 @@ namespace Diploma.API.Controllers
             string value,
             GetBy by = GetBy.REGON)
         {
-            var result = await _client.DaneSzukajAsync(value, by, cancellationToken);
+            var result = await _client.GetDaneSzukajAsync(value, by, cancellationToken);
             return Ok(result);
         }
 
@@ -32,7 +32,17 @@ namespace Diploma.API.Controllers
             string value,
             GetBy by = GetBy.REGON)
         {
-            var result = await _client.PobierzRaportJednostkiAsync(value, by, cancellationToken);
+            var result = await _client.GetRaportJednostkiAsync(value, by, cancellationToken);
+            return Ok(result);
+        }
+
+        [HttpGet("RaportJednostkiWithPkd")]
+        public async Task<IActionResult> RaportJednostkiWithPkdAsync(
+            CancellationToken cancellationToken,
+            string value,
+            GetBy by = GetBy.REGON)
+        {
+            var result = await _client.GetRaportJednostkiWithPkdAsync(value, by, cancellationToken);
             return Ok(result);
         }
     }

@@ -5,7 +5,7 @@ using RegonPlugin.Enums;
 using RegonPlugin.Enums.GetValues;
 using RegonPlugin.Exceptions;
 using RegonPlugin.ExtensionMethods;
-using RegonPlugin.Models;
+using RegonPlugin.Models.Generics;
 using RegonPlugin.Providers;
 using RegonPlugin.Requests;
 using RegonPlugin.Requests.AuthorizationEnvelopes;
@@ -54,16 +54,22 @@ namespace RegonPlugin
             SetSessionIdHeader(sessionId);
         }
 
-        public async Task<bool?> WylogujAsync(CancellationToken cancellationToken = default)
+        public async Task<Optional<bool>> WylogujAsync(CancellationToken cancellationToken = default)
         {
             var sessionId = DefaultRequestHeaders.GetValues(ConfigureData.HEADER_NAME_SESSION_ID).First();
 
             var wylogujResultElement = await GetWylogujResultAsync(sessionId, cancellationToken);
             var wylogujResult = wylogujResultElement.Value;
 
-            return !string.IsNullOrWhiteSpace(wylogujResult)
-                ? bool.Parse(wylogujResult)
-                : null;
+            if (!string.IsNullOrWhiteSpace(wylogujResult))
+            {
+                return Optional<bool>.Some(bool.Parse(wylogujResult));
+            }
+            else
+            {
+                return Optional<bool>.None();
+
+            }
         }
 
 
@@ -100,32 +106,58 @@ namespace RegonPlugin
         }
 
         // GET DATA OPERATIONS
-        public async Task<IEnumerable<DaneSzukaj>> DaneSzukajAsync(
+        public async Task<Optional<IEnumerable<DaneSzukaj>>> DaneSzukajAsync(
             string value,
             GetBy by,
             CancellationToken cancellationToken = default)
         {
             var request = PrepareDaneSzukajEnvelope(value, by);
-            return await GetDaneAsync<DaneSzukaj>(request, cancellationToken);
+            var dane = await GetDaneAsync<DaneSzukaj>(request, cancellationToken);
+
+            if (dane.Any())
+            {
+                return Optional<IEnumerable<DaneSzukaj>>.Some(dane);
+            }
+            else
+            {
+                return Optional<IEnumerable<DaneSzukaj>>.None();
+            }
         }
 
-        public async Task<RaportJednostki?> PobierzRaportJednostkiAsync(
+        public async Task<Optional<RaportJednostki>> PobierzRaportJednostkiAsync(
             string regon,
             string reportName,
             CancellationToken cancellationToken = default)
         {
             var request = new RaportEnvelope(regon, reportName, EndPoint);
             var dane = await GetDaneAsync<RaportJednostki>(request, cancellationToken);
-            return dane.FirstOrDefault();
+
+            if (dane.Any())
+            {
+                return Optional<RaportJednostki>.Some(dane.First());
+            }
+            else
+            {
+                return Optional<RaportJednostki>.None();
+            }
         }
 
-        public async Task<IEnumerable<Pkd>> PobierzPkdJednostkiAsync(
+        public async Task<Optional<IEnumerable<Pkd>>> PobierzPkdJednostkiAsync(
             string regon,
             string reportName,
             CancellationToken cancellationToken = default)
         {
             var request = new RaportEnvelope(regon, reportName, EndPoint);
-            return await GetDaneAsync<Pkd>(request, cancellationToken);
+            var dane = await GetDaneAsync<Pkd>(request, cancellationToken);
+
+            if (dane.Any())
+            {
+                return Optional<IEnumerable<Pkd>>.Some(dane);
+            }
+            else
+            {
+                return Optional<IEnumerable<Pkd>>.None();
+            }
         }
 
         // PRIVATE STATIC METHODS

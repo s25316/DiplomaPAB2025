@@ -4,7 +4,7 @@
 using RegonPlugin.Providers;
 using RaportJednostkiResponse = RegonPlugin.Responses.Raporty.Jednostki.RaportJednostki;
 
-namespace RegonPlugin.Models.DTOs
+namespace RegonPlugin.Models.DTOs.Elements
 {
     public record Address
     {

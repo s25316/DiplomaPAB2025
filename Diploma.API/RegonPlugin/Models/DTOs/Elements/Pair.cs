@@ -1,7 +1,7 @@
 ﻿// Ignore Spelling: Regon, Plugin, Nazwa
 using RegonPlugin.Providers;
 
-namespace RegonPlugin.Models
+namespace RegonPlugin.Models.DTOs.Elements
 {
     public record Pair
     {

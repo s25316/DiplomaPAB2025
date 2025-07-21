@@ -2,7 +2,7 @@
 using RegonPlugin.Enums;
 using RegonPlugin.Enums.GetValues;
 
-namespace RegonPlugin.Models
+namespace RegonPlugin.Models.Generics
 {
     public class Response<T> where T : class
     {
@@ -22,16 +22,7 @@ namespace RegonPlugin.Models
             };
         }
 
-        public static Response<T> KomunikatKodError(KomunikatKod error)
-        {
-            return new Response<T>
-            {
-                StatusUslugi = Enums.GetValues.StatusUslugi.UslugaDostepna,
-                Error = (RegonError)((int)error),
-            };
-        }
-
-        public static Response<T> NiepoprawneDaneWejscioweError(string errorMessage)
+        public static Response<T> InputDataError(string errorMessage)
         {
             return new Response<T>
             {
@@ -41,7 +32,7 @@ namespace RegonPlugin.Models
             };
         }
 
-        public static Response<T> UndefinedError(StatusUslugi status)
+        public static Response<T> ServiceError(StatusUslugi status)
         {
             return new Response<T>
             {
@@ -50,7 +41,18 @@ namespace RegonPlugin.Models
             };
         }
 
-        public static Response<T> ParseErrorResponse<K>(Response<K> baseResponse)
+        public static Response<T> KomunikatKodError(KomunikatKod error)
+        {
+            return new Response<T>
+            {
+                StatusUslugi = Enums.GetValues.StatusUslugi.UslugaDostepna,
+                Error = (RegonError)(int)error,
+            };
+        }
+
+
+
+        public static Response<T> ParseError<K>(Response<K> baseResponse)
             where K : class
         {
             return new Response<T>

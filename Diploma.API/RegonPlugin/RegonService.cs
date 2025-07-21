@@ -1,13 +1,13 @@
 ﻿// Ignore Spelling: Regon, Plugin, Szukaj, Uslugi, Komunikat, Pobierz, Pelny, Raport
-// Ignore Spelling: Jednostki
+// Ignore Spelling: Jednostki, Pkd
 using RegonPlugin.Enums;
+using RegonPlugin.Enums.GetValues;
 using RegonPlugin.Exceptions;
-using RegonPlugin.Models;
 using RegonPlugin.Models.DTOs;
+using RegonPlugin.Models.Generics;
 using RegonPlugin.Responses;
 using RegonPlugin.ValueObjects;
 using RaportJednostkiModel = RegonPlugin.Models.DTOs.RaportJednostki;
-using RaportJednostkiResponses = RegonPlugin.Responses.Raporty.Jednostki.RaportJednostki;
 
 namespace RegonPlugin
 {
@@ -20,11 +20,11 @@ namespace RegonPlugin
         public RegonService(string key, bool isProduction = true)
         {
             _client = new RegonClient(new UserKey(key), isProduction);
-            _client.ZalogujAsync().Wait();
+            //_client.ZalogujAsync().Wait();
         }
 
 
-        // Dispose Methods
+        // DISPOSE METHODS
         ~RegonService()
         {
             Dispose(false);
@@ -50,94 +50,128 @@ namespace RegonPlugin
             }
         }
 
-        // Other Methods
-        public async Task<Response<IEnumerable<DaneSzukaj>>> DaneSzukajAsync(
+        // OTHER METHODS
+        public async Task<Response<IEnumerable<DaneSzukaj>>> GetDaneSzukajAsync(
             string value,
             GetBy by,
             CancellationToken cancellationToken = default)
         {
             return await RetryAsync(
                 () => _client.DaneSzukajAsync(value, by, cancellationToken),
-                value => value?.Any() ?? false,
+                value => value,
                 TimeSpan.Zero,
                 2,
                 cancellationToken);
         }
 
-        public async Task<Response<RaportJednostkiModel>> PobierzRaportJednostkiAsync(
+        public async Task<Response<RaportJednostkiModel>> GetRaportJednostkiAsync(
             string value,
             GetBy by,
             CancellationToken cancellationToken = default)
         {
-            var daneSzukajResponse = await DaneSzukajAsync(value, by, cancellationToken);
-            if (daneSzukajResponse.HasErrors)
+            var daneSzukaj = await GetDaneSzukajAsync(value, by, cancellationToken);
+            if (daneSzukaj.HasErrors)
             {
-                return Response<RaportJednostki>.ParseErrorResponse(daneSzukajResponse);
+                return Response<RaportJednostki>.ParseError(daneSzukaj);
             }
 
-            var item = daneSzukajResponse.Value.First();
+            var item = daneSzukaj.Value.First();
             var raport = Raport.GetRaport(item);
-            Func<RaportJednostkiResponses?, bool> hasContainsValue = value => value is not null;
-            var raportJednostkiResponse = await RetryAsync(
+
+            var raportJednostki = await RetryAsync(
                 () => _client.PobierzRaportJednostkiAsync(item.Regon, raport.Jednostki, cancellationToken),
-                hasContainsValue,
+                item => (RaportJednostki)item,
                 TimeSpan.Zero,
                 2,
                 cancellationToken);
 
-
-            if (raportJednostkiResponse.Value == null)
-            {
-                return Response<RaportJednostki>
-                    .ParseErrorResponse(raportJednostkiResponse);
-            }
-            else
-            {
-                return Response<RaportJednostki>
-                    .IsCorrect((RaportJednostki)raportJednostkiResponse.Value);
-            }
+            return raportJednostki;
         }
 
-        private async Task<Response<T>> RetryAsync<T>(
-               Func<Task<T?>> operation,
-               Func<T?, bool> hasContainsValue,
+        public async Task<Response<RaportJednostkiWithPkd>> GetRaportJednostkiWithPkdAsync(
+            string value,
+            GetBy by,
+            CancellationToken cancellationToken = default)
+        {
+            var daneSzukaj = await GetDaneSzukajAsync(value, by, cancellationToken);
+            if (daneSzukaj.HasErrors)
+            {
+                return Response<RaportJednostkiWithPkd>.ParseError(daneSzukaj);
+            }
+
+            var item = daneSzukaj.Value.First();
+            var raport = Raport.GetRaport(item);
+
+            var raportJednostki = await RetryAsync(
+                () => _client.PobierzRaportJednostkiAsync(item.Regon, raport.Jednostki, cancellationToken),
+                item => (RaportJednostki)item,
+                TimeSpan.Zero,
+                2,
+                cancellationToken);
+            if (raportJednostki.HasErrors)
+            {
+                return Response<RaportJednostkiWithPkd>.ParseError(daneSzukaj);
+            }
+
+            var pkd = await RetryAsync(
+                () => _client.PobierzPkdJednostkiAsync(item.Regon, raport.PKD, cancellationToken),
+                items => items.Select(item => (Pkd)item),
+                TimeSpan.Zero,
+                2,
+                cancellationToken);
+            if (pkd.HasErrors)
+            {
+                return Response<RaportJednostkiWithPkd>.ParseError(daneSzukaj);
+            }
+
+            return Response<RaportJednostkiWithPkd>.IsCorrect(new RaportJednostkiWithPkd
+            {
+                RaportJednostki = raportJednostki.Value,
+                Pkd = pkd.Value,
+            });
+        }
+
+        private async Task<Response<K>> RetryAsync<T, K>(
+               Func<Task<Optional<T>>> getItemAsync,
+               Func<T, K> parse,
                TimeSpan delay,
-               int retryCount,
-               CancellationToken cancellationToken)
+               int retryCount = 2,
+               CancellationToken cancellationToken = default)
             where T : class
+            where K : class
         {
             try
             {
-                var operationResult = await operation();
-                if (hasContainsValue(operationResult) &&
-                    operationResult is not null)
+                var item = await getItemAsync();
+                if (!item.IsNullOrEmpty)
                 {
-                    return Response<T>.IsCorrect(operationResult);
+                    return Response<K>.IsCorrect(parse(item.Value));
                 }
 
                 var reason = await _client.KomunikatKodAsync(cancellationToken);
-                if (!reason.IsNull)
+                if (!reason.IsNullOrEmpty &&
+                    reason.Value is not KomunikatKod.BrakSesji)
                 {
-                    return Response<T>.KomunikatKodError(reason.Value);
+                    return Response<K>.KomunikatKodError(reason.Value);
                 }
 
                 await _client.ZalogujAsync(cancellationToken);
                 if (retryCount > 0)
                 {
-                    return await RetryAsync<T>(
-                        operation,
-                        hasContainsValue,
+                    return await RetryAsync<T, K>(
+                        getItemAsync,
+                        parse,
                         delay,
                         retryCount - 1,
                         cancellationToken);
                 }
 
                 var statusUslugi = await _client.StatusUslugiAsync(cancellationToken);
-                return Response<T>.UndefinedError(statusUslugi);
+                return Response<K>.ServiceError(statusUslugi);
             }
             catch (RegonInvalidInputDataException ex)
             {
-                return Response<T>.NiepoprawneDaneWejscioweError(ex.Message);
+                return Response<K>.InputDataError(ex.Message);
             }
         }
     }

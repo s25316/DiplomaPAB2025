@@ -1,7 +1,7 @@
 ﻿// Ignore Spelling: Regon, Plugin, Deserialize, Zaloguj, Wyloguj, Szukaj
 // Ignore Spelling: Nullable
 using RegonPlugin.Exceptions;
-using RegonPlugin.Models;
+using RegonPlugin.Models.Generics;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 

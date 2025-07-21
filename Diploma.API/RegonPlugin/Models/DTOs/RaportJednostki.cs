@@ -2,6 +2,7 @@
 // Ignore spelling: Nazwa, Skrocona, Adres, Kontakty, Daty, Numerw, Rejestrze, Ewidencji
 // Ignore spelling: Rejestrowy, Rodzaj, Rejestru, Forma, Finansowania, Podstawowa, Prawna
 // Ignore spelling: Szczegolna, Zalozycielski, Wlasnosci, Dzialalnosci
+using RegonPlugin.Models.DTOs.Elements;
 using RegonPlugin.Providers;
 using System.Text.RegularExpressions;
 using RaportJednostkiResponse = RegonPlugin.Responses.Raporty.Jednostki.RaportJednostki;
