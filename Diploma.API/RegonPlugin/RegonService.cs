@@ -20,7 +20,7 @@ namespace RegonPlugin
         public RegonService(string key, bool isProduction = true)
         {
             _client = new RegonClient(new UserKey(key), isProduction);
-            //_client.ZalogujAsync().Wait();
+            _client.ZalogujAsync().Wait();
         }
 
 
@@ -44,7 +44,6 @@ namespace RegonPlugin
                 {
                     _client.WylogujAsync().Wait();
                     _client.Dispose();
-                    Console.WriteLine("Wylogowano");
                 }
                 _disposed = true;
             }

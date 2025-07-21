@@ -13,7 +13,7 @@ namespace Diploma.API
 
 
             // Add services to the container.
-            builder.Services.AddSingleton(new RegonService(regonKey));
+            builder.Services.AddSingleton(opt => new RegonService(regonKey));
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

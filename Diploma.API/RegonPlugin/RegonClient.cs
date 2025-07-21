@@ -63,12 +63,13 @@ namespace RegonPlugin
 
             if (!string.IsNullOrWhiteSpace(wylogujResult))
             {
+                CustomLgger.Log("LogOut", wylogujResult);
                 return Optional<bool>.Some(bool.Parse(wylogujResult));
             }
             else
             {
+                CustomLgger.Log("LogOut", "null");
                 return Optional<bool>.None();
-
             }
         }
 
@@ -285,11 +286,11 @@ namespace RegonPlugin
             if (DefaultRequestHeaders.Contains(ConfigureData.HEADER_NAME_SESSION_ID))
             {
                 DefaultRequestHeaders.Remove(ConfigureData.HEADER_NAME_SESSION_ID);
-                Console.WriteLine($"Zaktualizowano");
+                CustomLgger.Log("LoginIn", sessionId);
             }
             else
             {
-                Console.WriteLine($"Zalogowano");
+                CustomLgger.Log("LoginIn", sessionId);
             }
             DefaultRequestHeaders.Add(ConfigureData.HEADER_NAME_SESSION_ID, sessionId);
         }
