@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.API", "Diploma.API\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegonPlugin", "RegonPlugin\RegonPlugin.csproj", "{11A53BF6-A4D3-4283-84BE-D8444F3E7449}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadonPlugin", "RadonPlugin\RadonPlugin.csproj", "{49F85FDF-6800-4467-87A0-88CF8D0FAF7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{11A53BF6-A4D3-4283-84BE-D8444F3E7449}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11A53BF6-A4D3-4283-84BE-D8444F3E7449}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11A53BF6-A4D3-4283-84BE-D8444F3E7449}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49F85FDF-6800-4467-87A0-88CF8D0FAF7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49F85FDF-6800-4467-87A0-88CF8D0FAF7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49F85FDF-6800-4467-87A0-88CF8D0FAF7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49F85FDF-6800-4467-87A0-88CF8D0FAF7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

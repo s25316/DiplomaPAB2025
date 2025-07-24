@@ -35,7 +35,7 @@ namespace RegonPlugin.Models.DTOs
         {
             var regon = Regex.Replace(
                 response.Regon,
-                ConfigureData.REGEX_REGON_REPLACE_ZEROS,
+                ConfigurationData.REGEX_REGON_REPLACE_ZEROS,
                 "$1");
 
             return new RaportJednostki

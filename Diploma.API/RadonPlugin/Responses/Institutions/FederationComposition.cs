@@ -1,0 +1,20 @@
+﻿// Ignore Spelling: Plugin
+using System.Text.Json.Serialization;
+
+namespace RadonPlugin.Responses.Institutions
+{
+    public record FederationComposition
+    {
+        [JsonPropertyName("institutionUuid")]
+        public string Id { get; init; } = null!;
+
+        [JsonPropertyName("institutionName")]
+        public string Name { get; init; } = null!;
+
+        [JsonPropertyName("dateFrom")]
+        public DateOnly DateFrom { get; init; }
+
+        [JsonPropertyName("dateTo")]
+        public DateOnly? DateTo { get; init; }
+    }
+}

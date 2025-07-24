@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RadonPlugin\RadonPlugin.csproj" />
     <ProjectReference Include="..\RegonPlugin\RegonPlugin.csproj" />
   </ItemGroup>
 

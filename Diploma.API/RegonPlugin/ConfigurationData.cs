@@ -4,7 +4,7 @@
 // Ignore Spelling: CEIDG, ROLNICZA, POZOSTALA, KRUPGN, LISTA, LF, sid, xml, dane
 namespace RegonPlugin
 {
-    internal static class ConfigureData
+    internal static class ConfigurationData
     {
         //=================================================================================
         // REQUESTS PART

@@ -26,8 +26,8 @@ namespace RegonPlugin
         private readonly bool _isProduction;
 
         public string EndPoint => _isProduction
-            ? ConfigureData.PRODUCTION_ENDPOINT
-            : ConfigureData.TESTING_ENDPOINT;
+            ? ConfigurationData.PRODUCTION_ENDPOINT
+            : ConfigurationData.TESTING_ENDPOINT;
 
 
         public RegonClient(UserKey userKey, bool isProduction = true)
@@ -56,7 +56,7 @@ namespace RegonPlugin
 
         public async Task<Optional<bool>> WylogujAsync(CancellationToken cancellationToken = default)
         {
-            var sessionId = DefaultRequestHeaders.GetValues(ConfigureData.HEADER_NAME_SESSION_ID).First();
+            var sessionId = DefaultRequestHeaders.GetValues(ConfigurationData.HEADER_NAME_SESSION_ID).First();
 
             var wylogujResultElement = await GetWylogujResultAsync(sessionId, cancellationToken);
             var wylogujResult = wylogujResultElement.Value;
@@ -170,7 +170,7 @@ namespace RegonPlugin
                 Content = new StringContent(
                     envelope,
                     Encoding.UTF8,
-                    ConfigureData.REQUEST_MEDIA_TYPE)
+                    ConfigurationData.REQUEST_MEDIA_TYPE)
             };
         }
 
@@ -283,16 +283,16 @@ namespace RegonPlugin
 
         private void SetSessionIdHeader(string sessionId)
         {
-            if (DefaultRequestHeaders.Contains(ConfigureData.HEADER_NAME_SESSION_ID))
+            if (DefaultRequestHeaders.Contains(ConfigurationData.HEADER_NAME_SESSION_ID))
             {
-                DefaultRequestHeaders.Remove(ConfigureData.HEADER_NAME_SESSION_ID);
+                DefaultRequestHeaders.Remove(ConfigurationData.HEADER_NAME_SESSION_ID);
                 CustomLgger.Log("LoginIn", sessionId);
             }
             else
             {
                 CustomLgger.Log("LoginIn", sessionId);
             }
-            DefaultRequestHeaders.Add(ConfigureData.HEADER_NAME_SESSION_ID, sessionId);
+            DefaultRequestHeaders.Add(ConfigurationData.HEADER_NAME_SESSION_ID, sessionId);
         }
     }
 }

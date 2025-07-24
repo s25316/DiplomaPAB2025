@@ -9,36 +9,36 @@ namespace RegonPlugin.ExtensionMethods
 {
     internal static class XmlExtensionMethods
     {
-        private static readonly XNamespace _namespace = ConfigureData.NAMESPACE;
-        private static readonly XNamespace _namespaceGetValueResult = ConfigureData.NAMESPACE_GET_VALUE_RESULT;
+        private static readonly XNamespace _namespace = ConfigurationData.NAMESPACE;
+        private static readonly XNamespace _namespaceGetValueResult = ConfigurationData.NAMESPACE_GET_VALUE_RESULT;
 
 
         public static XElement GetZalogujResult(this XDocument document)
         {
             return document.GetElement(
                 _namespace,
-                ConfigureData.RESPONSE_ELEMENT_ZALOGUJ);
+                ConfigurationData.RESPONSE_ELEMENT_ZALOGUJ);
         }
 
         public static XElement GetWylogujResult(this XDocument document)
         {
             return document.GetElement(
                 _namespace,
-                ConfigureData.RESPONSE_ELEMENT_WYLOGUJ);
+                ConfigurationData.RESPONSE_ELEMENT_WYLOGUJ);
         }
 
         public static XElement GetValueResult(this XDocument document)
         {
             return document.GetElement(
                 _namespaceGetValueResult,
-                ConfigureData.RESPONSE_ELEMENT_GET_VALUE_RESULT);
+                ConfigurationData.RESPONSE_ELEMENT_GET_VALUE_RESULT);
         }
 
         public static IEnumerable<XElement> GetDane(this XDocument document)
         {
             return document.GetElements(
                 _namespace,
-                ConfigureData.RESPONSE_ELEMENT_DANE);
+                ConfigurationData.RESPONSE_ELEMENT_DANE);
         }
 
         public static Optional<T> DeserializeToClass<T>(this XElement element)

@@ -1,4 +1,5 @@
 
+using RadonPlugin;
 using RegonPlugin;
 
 namespace Diploma.API
@@ -14,6 +15,7 @@ namespace Diploma.API
 
             // Add services to the container.
             builder.Services.AddSingleton(opt => new RegonService(regonKey));
+            builder.Services.AddSingleton(opt => new RadonClient());
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

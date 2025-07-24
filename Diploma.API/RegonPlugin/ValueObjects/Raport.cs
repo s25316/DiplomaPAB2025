@@ -19,32 +19,32 @@ namespace RegonPlugin.ValueObjects
 
 
         private static Raport _prawna = new Prawna(
-            ConfigureData.RAPORT_PRAWNA,
-            ConfigureData.RAPORT_PRAWNA_PKD);
+            ConfigurationData.RAPORT_PRAWNA,
+            ConfigurationData.RAPORT_PRAWNA_PKD);
 
         private static Raport _lokalnaPrawna = new LokalnaPrawna(
-            ConfigureData.RAPORT_LOKALNA_PRAWNEJ,
-            ConfigureData.RAPORT_LOKALNA_PRAWNEJ_PKD);
+            ConfigurationData.RAPORT_LOKALNA_PRAWNEJ,
+            ConfigurationData.RAPORT_LOKALNA_PRAWNEJ_PKD);
 
         private static Raport _lokalnaFizyczna = new LokalnaFizyczna(
-            ConfigureData.RAPORT_LOKALNA_FIZYCZNEJ,
-            ConfigureData.RAPORT_LOKALNA_FIZYCZNEJ_PKD);
+            ConfigurationData.RAPORT_LOKALNA_FIZYCZNEJ,
+            ConfigurationData.RAPORT_LOKALNA_FIZYCZNEJ_PKD);
 
         private static Raport _fizycznaCEIDG = new Ceidg(
-            ConfigureData.RAPORT_FIZYCZNA_CEIDG,
-            ConfigureData.RAPORT_FIZYCZNA_PKD);
+            ConfigurationData.RAPORT_FIZYCZNA_CEIDG,
+            ConfigurationData.RAPORT_FIZYCZNA_PKD);
 
         private static Raport _fizycznaRolnicza = new Rolnicza(
-            ConfigureData.RAPORT_FIZYCZNA_ROLNICZA,
-            ConfigureData.RAPORT_FIZYCZNA_PKD);
+            ConfigurationData.RAPORT_FIZYCZNA_ROLNICZA,
+            ConfigurationData.RAPORT_FIZYCZNA_PKD);
 
         private static Raport _fizycznaPozostala = new Pozostala(
-            ConfigureData.RAPORT_FIZYCZNA_POZOSTALA,
-            ConfigureData.RAPORT_FIZYCZNA_PKD);
+            ConfigurationData.RAPORT_FIZYCZNA_POZOSTALA,
+            ConfigurationData.RAPORT_FIZYCZNA_PKD);
 
         private static Raport _fizycznaKRUPGN = new Krupgn(
-            ConfigureData.RAPORT_FIZYCZNA_W_KRUPGN,
-            ConfigureData.RAPORT_FIZYCZNA_PKD);
+            ConfigurationData.RAPORT_FIZYCZNA_W_KRUPGN,
+            ConfigurationData.RAPORT_FIZYCZNA_PKD);
 
 
 
