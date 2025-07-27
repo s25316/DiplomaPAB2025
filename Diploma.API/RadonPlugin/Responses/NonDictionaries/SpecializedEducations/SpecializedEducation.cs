@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace RadonPlugin.Responses.SpecializedEducations
+namespace RadonPlugin.Responses.NonDictionaries.SpecializedEducations
 {
     public class SpecializedEducation
     {

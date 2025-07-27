@@ -8,6 +8,60 @@ namespace RadonPlugin
 
         public const int MAX_ITEMS_PER_REQUEST = 100;
 
+
+
+        // ==============================================================================================
+        // DICTIONARY DATA
+        // ==============================================================================================
+        public const string URL_SEGMENT_DICTIONARIES = "dictionaries/";
+
+        // BRANCH
+        public const string URL_SEGMENT_BRANCH_STATUSES = "branch/branchStatuses";
+
+        // COURSE
+        public const string URL_SEGMENT_COURSE_LEVELS = "course/levels";
+
+        public const string URL_SEGMENT_COURSE_PROFILES = "course/profiles";
+
+        public const string URL_SEGMENT_COURSE_CURRENT_STATUSES = "course/currentStatuses";
+
+        public const string URL_SEGMENT_COURSE_LEGAL_BASIS_TYPES = "course/legalBasisTypes";
+
+        public const string URL_SEGMENT_COURSE_PROFESSIONAL_TITLES = "course/professionalTitles";
+
+        public const string URL_SEGMENT_COURSE_INSTANCE_STATUSES = "course/instanceStatuses";
+
+        public const string URL_SEGMENT_COURSE_INSTANCE_FORMS = "course/instanceForms";
+
+        public const string URL_SEGMENT_COURSE_PHILOLOGICAL_LANGUAGES = "course/philologicalLanguages";
+
+        public const string URL_SEGMENT_COURSE_MAIN_INSTITUTION_KINDS = "course/mainInstitutionKinds";
+
+        // DOCTORAL SCHOOL
+        public const string URL_SEGMENT_DOCTORAL_SCHOOL_CURRENT_STATUSES = "doctoralSchool/currentStatuses";
+
+        // INSTITUTION
+        public const string URL_SEGMENT_INSTITUTION_KINDS = "institution/institutionKinds";
+
+        public const string URL_SEGMENT_INSTITUTION_STATUSES = "institution/institutionStatuses";
+
+        public const string URL_SEGMENT_INSTITUTION_UNIVERSITY_TYPES = "institution/universityTypes";
+
+        public const string URL_SEGMENT_INSTITUTION_SCIENTIFIC_TYPES = "institution/scientificInstitutionTypes";
+
+        // SPECIALIZED EDUCATION
+        public const string URL_SEGMENT_SPECIALIZED_EDUCATION_CERTIFICATE_KINDS = "specialized-education/certificateKinds";
+
+        // SHARED
+        public const string URL_SEGMENT_SUPERVISING_INSTITUTIONS = "shared/supervisingInstitutions";
+
+        public const string URL_SEGMENT_DISCIPLINES = "shared/disciplines";
+
+        public const string URL_SEGMENT_DOMAINS = "shared/domains";
+
+        // ==============================================================================================
+        // NON DICTIONARY DATA
+        // ==============================================================================================
         // URL SEGMENTS
         public const string URL_SEGMENT_BRANCHES = "branches?";
 

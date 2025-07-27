@@ -1,9 +1,9 @@
 ﻿// Ignore Spelling: Plugin
 using System.Text.Json.Serialization;
 
-namespace RadonPlugin.Responses.DoctoralSchools
+namespace RadonPlugin.Responses.NonDictionaries.DoctoralSchools
 {
-    public class Discipline
+    public class DoctoralSchoolDiscipline
     {
         [JsonPropertyName("disciplineCode")]
         public string DisciplineCode { get; init; } = null!;

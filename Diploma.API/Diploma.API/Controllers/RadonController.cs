@@ -17,6 +17,54 @@ namespace Diploma.API.Controllers
         }
 
 
+
+        // DICTIONARIES BRANCHES
+        [HttpGet("branch/branchStatuses")]
+        public async Task<IActionResult> GetBranchStatusesAsync(
+            CancellationToken cancellationToken)
+        {
+            var results = await _client.GetBranchStatusesAsync(cancellationToken);
+            return Ok(results);
+        }
+
+
+        // DICTIONARIES INSTITUTIONS
+        [HttpGet("institution/institutionKinds")]
+        public async Task<IActionResult> GetInstitutionKindsAsync(
+            CancellationToken cancellationToken)
+        {
+            var results = await _client.GetInstitutionKindsAsync(cancellationToken);
+            return Ok(results);
+        }
+
+
+        [HttpGet("institution/institutionStatuses")]
+        public async Task<IActionResult> GetInstitutionStatusesAsync(
+            CancellationToken cancellationToken)
+        {
+            var results = await _client.GetInstitutionStatusesAsync(cancellationToken);
+            return Ok(results);
+        }
+
+
+        [HttpGet("institution/universityTypes")]
+        public async Task<IActionResult> GetInstitutionUniversityTypesAsync(
+            CancellationToken cancellationToken)
+        {
+            var results = await _client.GetInstitutionUniversityTypesAsync(cancellationToken);
+            return Ok(results);
+        }
+
+
+        [HttpGet("institution/scientificInstitutionTypes")]
+        public async Task<IActionResult> GetInstitutionScientificTypesAsync(
+            CancellationToken cancellationToken)
+        {
+            var results = await _client.GetInstitutionScientificTypesAsync(cancellationToken);
+            return Ok(results);
+        }
+
+
         // BRANCHES
         [HttpGet("branches")]
         public async Task<IActionResult> GetInstitutionsAsync(

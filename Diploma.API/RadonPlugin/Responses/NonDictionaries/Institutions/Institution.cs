@@ -3,7 +3,7 @@ using RadonPlugin.Responses.Shared.InstitutionSnapshots;
 using RadonPlugin.Responses.Shared.NameStamps;
 using System.Text.Json.Serialization;
 
-namespace RadonPlugin.Responses.Institutions
+namespace RadonPlugin.Responses.NonDictionaries.Institutions
 {
     public record Institution
     {

@@ -2,7 +2,7 @@
 using RadonPlugin.Responses.Shared.InstitutionInfos;
 using System.Text.Json.Serialization;
 
-namespace RadonPlugin.Responses.DoctoralSchools
+namespace RadonPlugin.Responses.NonDictionaries.DoctoralSchools
 {
     public class DoctoralSchool
     {
@@ -28,7 +28,7 @@ namespace RadonPlugin.Responses.DoctoralSchools
         public IReadOnlyList<InstitutionInfo> CoLeadingInstitutions { get; init; }
 
         [JsonPropertyName("disciplines")]
-        public IReadOnlyList<Discipline> Disciplines { get; init; }
+        public IReadOnlyList<DoctoralSchoolDiscipline> Disciplines { get; init; }
 
         [JsonPropertyName("educationStopDate")]
         public string EducationStopDate { get; init; }

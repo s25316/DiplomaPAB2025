@@ -1,7 +1,7 @@
 ﻿// Ignore Spelling: Plugin
 using System.Text.Json.Serialization;
 
-namespace RadonPlugin.Responses.Courses
+namespace RadonPlugin.Responses.NonDictionaries.Courses
 {
     public class CourseInstance
     {

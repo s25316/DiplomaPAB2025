@@ -1,7 +1,7 @@
 ﻿// Ignore Spelling: Plugin
 using System.Text.Json.Serialization;
 
-namespace RadonPlugin.Responses.Institutions
+namespace RadonPlugin.Responses.NonDictionaries.Institutions
 {
     public class SupervisingInstitution
     {

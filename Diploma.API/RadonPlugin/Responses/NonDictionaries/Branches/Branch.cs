@@ -3,7 +3,7 @@ using RadonPlugin.Responses.Shared;
 using RadonPlugin.Responses.Shared.NameStamps;
 using System.Text.Json.Serialization;
 
-namespace RadonPlugin.Responses.Branches
+namespace RadonPlugin.Responses.NonDictionaries.Branches
 {
     public class Branch
     {

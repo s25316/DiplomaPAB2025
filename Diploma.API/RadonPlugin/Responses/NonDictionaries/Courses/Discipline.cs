@@ -2,7 +2,7 @@
 using RadonPlugin.Converters;
 using System.Text.Json.Serialization;
 
-namespace RadonPlugin.Responses.Courses
+namespace RadonPlugin.Responses.NonDictionaries.Courses
 {
     public class Discipline
     {
