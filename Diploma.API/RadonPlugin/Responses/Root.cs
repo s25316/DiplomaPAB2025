@@ -6,7 +6,7 @@ namespace RadonPlugin.Responses
     public record Root<T>
     {
         [JsonPropertyName("results")]
-        public List<T> Results { get; init; } = [];
+        public IReadOnlyList<T> Results { get; init; } = [];
 
         [JsonPropertyName("pagination")]
         public Pagination Pagination { get; init; } = null!;

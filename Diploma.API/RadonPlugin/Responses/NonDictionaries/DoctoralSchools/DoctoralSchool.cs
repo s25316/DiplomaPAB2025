@@ -10,7 +10,7 @@ namespace RadonPlugin.Responses.NonDictionaries.DoctoralSchools
         public string Uuid { get; init; }
 
         [JsonPropertyName("doctoralSchoolCode")]
-        public string Code { get; init; }
+        public int Code { get; init; }
 
         [JsonPropertyName("doctoralSchoolName")]
         public string Name { get; init; }
@@ -34,7 +34,7 @@ namespace RadonPlugin.Responses.NonDictionaries.DoctoralSchools
         public string EducationStopDate { get; init; }
 
         [JsonPropertyName("statusCode")]
-        public string StatusCode { get; init; }
+        public int StatusCode { get; init; }
 
         [JsonPropertyName("statusName")]
         public string StatusName { get; init; }

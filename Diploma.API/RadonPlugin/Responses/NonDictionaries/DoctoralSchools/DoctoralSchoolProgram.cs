@@ -19,7 +19,7 @@ namespace RadonPlugin.Responses.NonDictionaries.DoctoralSchools
         public string EducationStartDate { get; init; }
 
         [JsonPropertyName("numberOfSemesters")]
-        public string NumberOfSemesters { get; init; }
+        public int NumberOfSemesters { get; init; }
 
         [JsonPropertyName("iscedCode")]
         public string IscedCode { get; init; }
