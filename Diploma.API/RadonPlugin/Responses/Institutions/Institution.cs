@@ -1,4 +1,5 @@
-﻿using RadonPlugin.Responses.Shared.InstitutionSnapshots;
+﻿using RadonPlugin.Responses.Shared;
+using RadonPlugin.Responses.Shared.InstitutionSnapshots;
 using RadonPlugin.Responses.Shared.NameStamps;
 using System.Text.Json.Serialization;
 
@@ -109,7 +110,7 @@ namespace RadonPlugin.Responses.Institutions
         public string VoivodeshipCode { get; init; }
 
         [JsonPropertyName("branches")]
-        public List<Branch> Branches { get; init; }
+        public List<InstitutionBranchInfo> Branches { get; init; }
 
         [JsonPropertyName("managerName")]
         public string ManagerName { get; init; }

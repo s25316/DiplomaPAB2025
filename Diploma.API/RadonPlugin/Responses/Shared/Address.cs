@@ -1,7 +1,7 @@
 ﻿// Ignore Spelling: Plugin, Voivodeship
 using System.Text.Json.Serialization;
 
-namespace RadonPlugin.Responses.Institutions
+namespace RadonPlugin.Responses.Shared
 {
     public class Address
     {

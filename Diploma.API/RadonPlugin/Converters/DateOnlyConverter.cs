@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace RadonPlugin.Responses.Shared
+namespace RadonPlugin.Converters
 {
     public class DateOnlyConverter : JsonConverter<DateOnly?>
     {

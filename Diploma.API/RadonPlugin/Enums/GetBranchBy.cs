@@ -1,14 +1,14 @@
 ﻿// Ignore Spelling: Plugin, Enums
 namespace RadonPlugin.Enums
 {
-    public enum GetInstitutionBy
+    public enum GetBranchBy
     {
-        Id,
-        Uuid,
-        OldId,
+        BranchUuid,
+        Name,
+        MainInstitutionUuid,
+        MainInstitutionName,
         Regon,
         Nip,
         Krs,
-        Name
     }
 }

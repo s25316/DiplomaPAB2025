@@ -1,5 +1,5 @@
 ﻿// Ignore Spelling: Plugin
-using RadonPlugin.Responses.Shared;
+using RadonPlugin.Converters;
 using System.Text.Json.Serialization;
 
 namespace RadonPlugin.Responses.Courses

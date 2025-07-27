@@ -1,24 +1,42 @@
 ﻿// Ignore Spelling: Plugin
-
+using RadonPlugin.Converters;
 using RadonPlugin.Enums;
 using RadonPlugin.Responses;
+using RadonPlugin.Responses.Branches;
 using RadonPlugin.Responses.Courses;
+using RadonPlugin.Responses.DoctoralSchools;
 using RadonPlugin.Responses.Institutions;
+using RadonPlugin.Responses.Shared.InstitutionInfos;
 using RadonPlugin.Responses.Shared.InstitutionSnapshots;
 using RadonPlugin.Responses.Shared.NameStamps;
 using System.Text.Json;
+
 
 namespace RadonPlugin
 {
     public class RadonClient : HttpClient
     {
-        public async Task<IEnumerable<Institution>> GetInstitutionsAsync(
-            GetInstitutionBy by,
+        // Fields
+        private static readonly JsonSerializerOptions _options = new JsonSerializerOptions
+        {
+            Converters =
+                {
+                    new NameStampConverter(),
+                    new PolishBoolConverter(),
+                    new InstitutionInfoConverter(),
+                    new InstitutionSnapshotConverter(),
+                }
+        };
+
+
+        // Methods
+        public async Task<IEnumerable<Branch>> GetBranchesAsync(
+            GetBranchBy by,
             string value,
             CancellationToken cancellationToken = default)
         {
-            var endpoint = Factory.CreateInstitutionUrl(by, value);
-            var root = await SendAsync<Institution>(endpoint, cancellationToken);
+            var endpoint = Factory.CreateBranchUrl(by, value);
+            var root = await SendAsync<Branch>(endpoint, cancellationToken);
             return root.Results;
         }
 
@@ -29,6 +47,37 @@ namespace RadonPlugin
         {
             var endpoint = Factory.CreateCourseUrl(by, value);
             var root = await SendAsync<Course>(endpoint, cancellationToken);
+            return root.Results;
+        }
+
+        public async Task<IEnumerable<DoctoralSchool>> GetDoctoralSchoolsAsync(
+            GetDoctoralSchoolBy by,
+            string value,
+            CancellationToken cancellationToken = default)
+        {
+            var endpoint = Factory.CreateDoctoralSchoolUrl(by, value);
+            var root = await SendAsync<DoctoralSchool>(endpoint, cancellationToken);
+            return root.Results;
+        }
+
+
+        public async Task<IEnumerable<Institution>> GetInstitutionsAsync(
+            GetInstitutionBy by,
+            string value,
+            CancellationToken cancellationToken = default)
+        {
+            var endpoint = Factory.CreateInstitutionUrl(by, value);
+            var root = await SendAsync<Institution>(endpoint, cancellationToken);
+            return root.Results;
+        }
+
+        public async Task<IEnumerable<Institution>> GetSpecializedEducationsAsync(
+            GetSpecializedEducationBy by,
+            string value,
+            CancellationToken cancellationToken = default)
+        {
+            var endpoint = Factory.CreateSpecializedEducationUrl(by, value);
+            var root = await SendAsync<Institution>(endpoint, cancellationToken);
             return root.Results;
         }
 
@@ -49,15 +98,7 @@ namespace RadonPlugin
             request.Dispose();
             response.Dispose();
 
-            var options = new JsonSerializerOptions
-            {
-                Converters =
-                {
-                    new NameStampConverter(),
-                    new InstitutionSnapshotConverter(),
-                }
-            };
-            return JsonSerializer.Deserialize<Root<T>>(body, options)
+            return JsonSerializer.Deserialize<Root<T>>(body, _options)
                 ?? throw new JsonException($"Type: {nameof(T)}, Body: {body};");
         }
     }

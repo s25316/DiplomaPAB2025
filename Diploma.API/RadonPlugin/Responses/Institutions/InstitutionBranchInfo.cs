@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace RadonPlugin.Responses.Institutions
 {
-    public record Branch
+    public record InstitutionBranchInfo
     {
         [JsonPropertyName("branchUuid")]
         public string Id { get; init; } = null!;

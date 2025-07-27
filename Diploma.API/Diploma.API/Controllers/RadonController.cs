@@ -16,6 +16,74 @@ namespace Diploma.API.Controllers
             _client = client;
         }
 
+
+        // BRANCHES
+        [HttpGet("branches")]
+        public async Task<IActionResult> GetInstitutionsAsync(
+            GetBranchBy by,
+            string value,
+            CancellationToken cancellationToken)
+        {
+            var results = await _client.GetBranchesAsync(by, value, cancellationToken);
+            return Ok(results);
+        }
+
+        [HttpGet("branchesBy")]
+        public IActionResult GetBranchBy()
+        {
+            var list = Enum.GetValues(typeof(GetBranchBy))
+                   .Cast<GetBranchBy>()
+                   .Select(e => new { Id = (int)e, Name = e.GetDisplayName() })
+                   .ToList();
+            return Ok(list);
+        }
+
+
+        // COURSES
+        [HttpGet("courses")]
+        public async Task<IActionResult> GetCoursesAsync(
+            GetCoursesBy by,
+            string value,
+            CancellationToken cancellationToken)
+        {
+            var results = await _client.GetCoursesAsync(by, value, cancellationToken);
+            return Ok(results);
+        }
+
+        [HttpGet("coursesBy")]
+        public IActionResult GetCoursesBy()
+        {
+            var list = Enum.GetValues(typeof(GetCoursesBy))
+                   .Cast<GetCoursesBy>()
+                   .Select(e => new { Id = (int)e, Name = e.GetDisplayName() })
+                   .ToList();
+            return Ok(list);
+        }
+
+
+        // DOCTORAL SCHOOLS
+        [HttpGet("doctoralSchools")]
+        public async Task<IActionResult> GetCoursesAsync(
+            GetDoctoralSchoolBy by,
+            string value,
+            CancellationToken cancellationToken)
+        {
+            var results = await _client.GetDoctoralSchoolsAsync(by, value, cancellationToken);
+            return Ok(results);
+        }
+
+        [HttpGet("doctoralSchoolsBy")]
+        public IActionResult GetDoctoralSchoolBy()
+        {
+            var list = Enum.GetValues(typeof(GetDoctoralSchoolBy))
+                   .Cast<GetDoctoralSchoolBy>()
+                   .Select(e => new { Id = (int)e, Name = e.GetDisplayName() })
+                   .ToList();
+            return Ok(list);
+        }
+
+
+        // INSTITUTIONS
         [HttpGet("institutions")]
         public async Task<IActionResult> GetInstitutionsAsync(
             GetInstitutionBy by,
@@ -36,21 +104,23 @@ namespace Diploma.API.Controllers
             return Ok(list);
         }
 
-        [HttpGet("courses")]
+
+        // SPECIALIZED EDUCATIONS
+        [HttpGet("specializedEducations")]
         public async Task<IActionResult> GetInstitutionsAsync(
-            GetCoursesBy by,
+            GetSpecializedEducationBy by,
             string value,
             CancellationToken cancellationToken)
         {
-            var results = await _client.GetCoursesAsync(by, value, cancellationToken);
+            var results = await _client.GetSpecializedEducationsAsync(by, value, cancellationToken);
             return Ok(results);
         }
 
-        [HttpGet("coursesBy")]
-        public IActionResult GetCoursesBy()
+        [HttpGet("specializedEducationsBy")]
+        public IActionResult GetSpecializedEducationBy()
         {
-            var list = Enum.GetValues(typeof(GetCoursesBy))
-                   .Cast<GetCoursesBy>()
+            var list = Enum.GetValues(typeof(GetSpecializedEducationBy))
+                   .Cast<GetSpecializedEducationBy>()
                    .Select(e => new { Id = (int)e, Name = e.GetDisplayName() })
                    .ToList();
             return Ok(list);
