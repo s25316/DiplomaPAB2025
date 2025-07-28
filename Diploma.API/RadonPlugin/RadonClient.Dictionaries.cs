@@ -6,7 +6,7 @@ namespace RadonPlugin
     public partial class RadonClient : HttpClient
     {
         // BRANCH
-        public async Task<IEnumerable<DictionaryData>> GetBranchStatusesAsync(
+        public async Task<IEnumerable<DictionaryIntData>> GetBranchStatusesAsync(
             CancellationToken cancellationToken = default)
         {
             return await GetDictionariesAsync(
@@ -15,7 +15,7 @@ namespace RadonPlugin
         }
 
         // COURSE
-        public async Task<IEnumerable<DictionaryData>> GetCourseLevelsAsync(
+        public async Task<IEnumerable<DictionaryIntData>> GetCourseLevelsAsync(
             CancellationToken cancellationToken = default)
         {
             return await GetDictionariesAsync(
@@ -24,7 +24,7 @@ namespace RadonPlugin
         }
 
 
-        public async Task<IEnumerable<DictionaryData>> GetCourseProfilesAsync(
+        public async Task<IEnumerable<DictionaryIntData>> GetCourseProfilesAsync(
             CancellationToken cancellationToken = default)
         {
             return await GetDictionariesAsync(
@@ -33,7 +33,7 @@ namespace RadonPlugin
         }
 
 
-        public async Task<IEnumerable<DictionaryData>> GetCourseCurrentStatusesAsync(
+        public async Task<IEnumerable<DictionaryIntData>> GetCourseCurrentStatusesAsync(
             CancellationToken cancellationToken = default)
         {
             return await GetDictionariesAsync(
@@ -42,7 +42,7 @@ namespace RadonPlugin
         }
 
 
-        public async Task<IEnumerable<DictionaryData>> GetCourseLegalBasisTypesAsync(
+        public async Task<IEnumerable<DictionaryIntData>> GetCourseLegalBasisTypesAsync(
             CancellationToken cancellationToken = default)
         {
             return await GetDictionariesAsync(
@@ -51,7 +51,7 @@ namespace RadonPlugin
         }
 
 
-        public async Task<IEnumerable<DictionaryData>> GetCourseProfessionalTitlesAsync(
+        public async Task<IEnumerable<DictionaryIntData>> GetCourseProfessionalTitlesAsync(
             CancellationToken cancellationToken = default)
         {
             return await GetDictionariesAsync(
@@ -60,7 +60,7 @@ namespace RadonPlugin
         }
 
 
-        public async Task<IEnumerable<DictionaryData>> GetCourseInstanceStatusesAsync(
+        public async Task<IEnumerable<DictionaryIntData>> GetCourseInstanceStatusesAsync(
             CancellationToken cancellationToken = default)
         {
             return await GetDictionariesAsync(
@@ -69,7 +69,7 @@ namespace RadonPlugin
         }
 
 
-        public async Task<IEnumerable<DictionaryData>> GetCourseInstanceFormsAsync(
+        public async Task<IEnumerable<DictionaryIntData>> GetCourseInstanceFormsAsync(
             CancellationToken cancellationToken = default)
         {
             return await GetDictionariesAsync(
@@ -78,16 +78,16 @@ namespace RadonPlugin
         }
 
 
-        public async Task<IEnumerable<DictionaryData>> GetCoursePhilologicalLanguagesAsync(
+        public async Task<IEnumerable<DictionaryStringData>> GetCoursePhilologicalLanguagesAsync(
             CancellationToken cancellationToken = default)
         {
-            return await GetDictionariesAsync(
+            return await GetDictionariesAsync<DictionaryStringData>(
                 ConfigurationData.URL_SEGMENT_COURSE_PHILOLOGICAL_LANGUAGES,
                 cancellationToken);
         }
 
 
-        public async Task<IEnumerable<DictionaryData>> GetCourseMainInstitutionKindsAsync(
+        public async Task<IEnumerable<DictionaryIntData>> GetCourseMainInstitutionKindsAsync(
             CancellationToken cancellationToken = default)
         {
             return await GetDictionariesAsync(
@@ -97,7 +97,7 @@ namespace RadonPlugin
 
 
         // DOCTORAL SCHOOL
-        public async Task<IEnumerable<DictionaryData>> GetDoctoralSchoolCurrentStatusesAsync(
+        public async Task<IEnumerable<DictionaryIntData>> GetDoctoralSchoolCurrentStatusesAsync(
             CancellationToken cancellationToken = default)
         {
             return await GetDictionariesAsync(
@@ -107,7 +107,7 @@ namespace RadonPlugin
 
 
         // INSTITUTION
-        public async Task<IEnumerable<DictionaryData>> GetInstitutionKindsAsync(
+        public async Task<IEnumerable<DictionaryIntData>> GetInstitutionKindsAsync(
             CancellationToken cancellationToken = default)
         {
             return await GetDictionariesAsync(
@@ -116,7 +116,7 @@ namespace RadonPlugin
         }
 
 
-        public async Task<IEnumerable<DictionaryData>> GetInstitutionStatusesAsync(
+        public async Task<IEnumerable<DictionaryIntData>> GetInstitutionStatusesAsync(
             CancellationToken cancellationToken = default)
         {
             return await GetDictionariesAsync(
@@ -125,7 +125,7 @@ namespace RadonPlugin
         }
 
 
-        public async Task<IEnumerable<DictionaryData>> GetInstitutionUniversityTypesAsync(
+        public async Task<IEnumerable<DictionaryIntData>> GetInstitutionUniversityTypesAsync(
             CancellationToken cancellationToken = default)
         {
             return await GetDictionariesAsync(
@@ -134,7 +134,7 @@ namespace RadonPlugin
         }
 
 
-        public async Task<IEnumerable<DictionaryData>> GetInstitutionScientificTypesAsync(
+        public async Task<IEnumerable<DictionaryIntData>> GetInstitutionScientificTypesAsync(
             CancellationToken cancellationToken = default)
         {
             return await GetDictionariesAsync(
@@ -144,7 +144,7 @@ namespace RadonPlugin
 
 
         // SPECIALIZED EDUCATION
-        public async Task<IEnumerable<DictionaryData>> GetSpecializedEducationCertificateKindsAsync(
+        public async Task<IEnumerable<DictionaryIntData>> GetSpecializedEducationCertificateKindsAsync(
             CancellationToken cancellationToken = default)
         {
             return await GetDictionariesAsync(
@@ -154,28 +154,28 @@ namespace RadonPlugin
 
 
         // SHARED
-        public async Task<IEnumerable<DictionaryData>> GetSupervisingInstitutionsAsync(
+        public async Task<IEnumerable<DictionaryGuidData>> GetSupervisingInstitutionsAsync(
             CancellationToken cancellationToken = default)
         {
-            return await GetDictionariesAsync(
+            return await GetDictionariesAsync<DictionaryGuidData>(
                 ConfigurationData.URL_SEGMENT_SUPERVISING_INSTITUTIONS,
                 cancellationToken);
         }
 
 
-        public async Task<IEnumerable<DictionaryData>> GetDisciplinesAsync(
+        public async Task<IEnumerable<DictionaryStringData>> GetDisciplinesAsync(
             CancellationToken cancellationToken = default)
         {
-            return await GetDictionariesAsync(
+            return await GetDictionariesAsync<DictionaryStringData>(
                 ConfigurationData.URL_SEGMENT_DISCIPLINES,
                 cancellationToken);
         }
 
 
-        public async Task<IEnumerable<DictionaryData>> GetDomainsAsync(
+        public async Task<IEnumerable<DictionaryStringData>> GetDomainsAsync(
             CancellationToken cancellationToken = default)
         {
-            return await GetDictionariesAsync(
+            return await GetDictionariesAsync<DictionaryStringData>(
                 ConfigurationData.URL_SEGMENT_DOMAINS,
                 cancellationToken);
         }

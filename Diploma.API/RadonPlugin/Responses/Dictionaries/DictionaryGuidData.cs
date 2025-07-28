@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace RadonPlugin.Responses.Dictionaries
 {
-    public class DictionaryData
+    public class DictionaryGuidData
     {
         [JsonPropertyName("namePl")]
         public string NamePl { get; init; } = null!;
@@ -12,6 +12,6 @@ namespace RadonPlugin.Responses.Dictionaries
         public string NameEn { get; init; } = null!;
 
         [JsonPropertyName("code")]
-        public string Code { get; init; } = null!;
+        public Guid Code { get; init; }
     }
 }

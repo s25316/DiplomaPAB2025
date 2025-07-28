@@ -26,11 +26,11 @@ namespace RadonPlugin
 
 
         // Methods
-        private async Task<IEnumerable<DictionaryData>> GetDictionariesAsync(
+        private async Task<IEnumerable<DictionaryIntData>> GetDictionariesAsync(
             string urlSegment,
             CancellationToken cancellationToken = default)
         {
-            return await GetDictionariesAsync<DictionaryData>(urlSegment, cancellationToken);
+            return await GetDictionariesAsync<DictionaryIntData>(urlSegment, cancellationToken);
         }
 
 
