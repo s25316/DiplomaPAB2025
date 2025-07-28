@@ -1,34 +1,35 @@
-﻿using System.Text.Json.Serialization;
+﻿// Ignore Spelling: Plugin, Uuid
+using System.Text.Json.Serialization;
 
 namespace RadonPlugin.Responses.NonDictionaries.SpecializedEducations
 {
     public class SpecializedEducation
     {
         [JsonPropertyName("specializedEducationUuid")]
-        public string SpecializedEducationUuid { get; init; }
+        public Guid Uuid { get; init; }
 
         [JsonPropertyName("specializedEducationName")]
-        public string SpecializedEducationName { get; init; }
+        public string Name { get; init; } = null!;
 
         [JsonPropertyName("certificateCode")]
-        public string CertificateCode { get; init; }
+        public int CertificateCode { get; init; }
 
         [JsonPropertyName("certificateName")]
-        public string CertificateName { get; init; }
+        public string CertificateName { get; init; } = null!;
 
         [JsonPropertyName("semesterStart")]
-        public string SemesterStart { get; init; }
+        public string SemesterStart { get; init; } = null!;
 
         [JsonPropertyName("institutionUuid")]
-        public string InstitutionUuid { get; init; }
+        public Guid InstitutionUuid { get; init; }
 
         [JsonPropertyName("institutionName")]
-        public string InstitutionName { get; init; }
+        public string InstitutionName { get; init; } = null!;
 
         [JsonPropertyName("dataSource")]
-        public string DataSource { get; init; }
+        public string DataSource { get; init; } = null!;
 
         [JsonPropertyName("lastRefresh")]
-        public string LastRefresh { get; init; }
+        public string LastRefresh { get; init; } = null!;
     }
 }

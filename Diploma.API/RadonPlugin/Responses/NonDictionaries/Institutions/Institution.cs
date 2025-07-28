@@ -149,28 +149,28 @@ namespace RadonPlugin.Responses.NonDictionaries.Institutions
         public string FederationNumber { get; init; }
 
         [JsonPropertyName("federationComposition")]
-        public List<FederationComposition> FederationComposition { get; init; } = [];
+        public IReadOnlyList<FederationComposition> FederationComposition { get; init; } = [];
 
         [JsonPropertyName("transformedInstitutions")]
-        public List<InstitutionSnapshot> TransformedInstitutions { get; init; } = [];
+        public IReadOnlyList<InstitutionSnapshot> TransformedInstitutions { get; init; } = [];
 
         [JsonPropertyName("targetInstitutions")]
-        public List<InstitutionSnapshot> TargetInstitutions { get; init; } = [];
+        public IReadOnlyList<InstitutionSnapshot> TargetInstitutions { get; init; } = [];
 
         [JsonPropertyName("names")]
-        public List<NameStamp> Names { get; init; } = [];
+        public IReadOnlyList<NameStamp> Names { get; init; } = [];
 
         [JsonPropertyName("supervisingInstitutions")]
-        public List<SupervisingInstitution> SupervisingInstitutions { get; init; } = [];
+        public IReadOnlyList<SupervisingInstitution> SupervisingInstitutions { get; init; } = [];
 
         [JsonPropertyName("statuses")]
-        public List<NameStamp> Statuses { get; init; } = [];
+        public IReadOnlyList<NameStamp> Statuses { get; init; } = [];
 
         [JsonPropertyName("types")]
-        public List<NameStamp> Types { get; init; } = [];
+        public IReadOnlyList<NameStamp> Types { get; init; } = [];
 
         [JsonPropertyName("addresses")]
-        public List<Address> Addresses { get; init; } = [];
+        public IReadOnlyList<Address> Addresses { get; init; } = [];
 
         [JsonPropertyName("dataSource")]
         public string DataSource { get; init; } = null!;

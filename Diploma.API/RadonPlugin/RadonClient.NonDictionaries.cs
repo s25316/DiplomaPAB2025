@@ -4,6 +4,7 @@ using RadonPlugin.Responses.NonDictionaries.Branches;
 using RadonPlugin.Responses.NonDictionaries.Courses;
 using RadonPlugin.Responses.NonDictionaries.DoctoralSchools;
 using RadonPlugin.Responses.NonDictionaries.Institutions;
+using RadonPlugin.Responses.NonDictionaries.SpecializedEducations;
 
 namespace RadonPlugin
 {
@@ -53,13 +54,13 @@ namespace RadonPlugin
         }
 
 
-        public async Task<IEnumerable<Institution>> GetSpecializedEducationsAsync(
+        public async Task<IEnumerable<SpecializedEducation>> GetSpecializedEducationsAsync(
             GetSpecializedEducationBy by,
             string value,
             CancellationToken cancellationToken = default)
         {
             var endpoint = Factory.CreateSpecializedEducationUrl(by, value);
-            var root = await GetAsync<Institution>(endpoint, cancellationToken);
+            var root = await GetAsync<SpecializedEducation>(endpoint, cancellationToken);
             return root.Results;
         }
     }
