@@ -6,7 +6,7 @@ namespace RadonPlugin.Responses.NonDictionaries.Institutions
     public record FederationComposition
     {
         [JsonPropertyName("institutionUuid")]
-        public string Id { get; init; } = null!;
+        public Guid Id { get; init; }
 
         [JsonPropertyName("institutionName")]
         public string Name { get; init; } = null!;

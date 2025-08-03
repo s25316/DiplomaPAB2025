@@ -6,9 +6,9 @@ namespace RadonPlugin.Responses.NonDictionaries.DoctoralSchools
     public class DoctoralSchoolDiscipline
     {
         [JsonPropertyName("disciplineCode")]
-        public string DisciplineCode { get; init; } = null!;
+        public string Code { get; init; } = null!;
 
         [JsonPropertyName("disciplineName")]
-        public string DisciplineName { get; init; } = null!;
+        public string Name { get; init; } = null!;
     }
 }

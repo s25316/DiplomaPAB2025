@@ -3,6 +3,7 @@ namespace RadonPlugin.Enums
 {
     public enum GetBranchBy
     {
+        None = 0,
         BranchUuid,
         Name,
         MainInstitutionUuid,

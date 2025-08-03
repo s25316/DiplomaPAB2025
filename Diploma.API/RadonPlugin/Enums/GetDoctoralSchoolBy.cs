@@ -3,6 +3,7 @@ namespace RadonPlugin.Enums
 {
     public enum GetDoctoralSchoolBy
     {
+        None = 0,
         DoctoralSchoolUuid,
         DoctoralSchoolCode,
         DoctoralSchoolName,

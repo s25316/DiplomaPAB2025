@@ -3,65 +3,78 @@ using RadonPlugin.Enums;
 using RadonPlugin.Responses.NonDictionaries.Branches;
 using RadonPlugin.Responses.NonDictionaries.Courses;
 using RadonPlugin.Responses.NonDictionaries.DoctoralSchools;
-using RadonPlugin.Responses.NonDictionaries.Institutions;
 using RadonPlugin.Responses.NonDictionaries.SpecializedEducations;
+using ModelInstitution = RadonPlugin.Models.Institutions.Institution;
+using ResponseInstitution = RadonPlugin.Responses.NonDictionaries.Institutions.Institution;
 
 namespace RadonPlugin
 {
     public partial class RadonClient : HttpClient
     {
         public async Task<IEnumerable<Branch>> GetBranchesAsync(
-            GetBranchBy by,
-            string value,
+            GetBranchBy by = GetBranchBy.None,
+            string? value = null,
             CancellationToken cancellationToken = default)
         {
-            var endpoint = Factory.CreateBranchUrl(by, value);
-            var root = await GetAsync<Branch>(endpoint, cancellationToken);
-            return root.Results;
+            return await GetAsync<Branch, GetBranchBy>(
+                by,
+                value,
+                Factory.CreateBranchUrl,
+                cancellationToken);
         }
 
 
         public async Task<IEnumerable<Course>> GetCoursesAsync(
-            GetCoursesBy by,
-            string value,
+            GetCoursesBy by = GetCoursesBy.None,
+            string? value = null,
             CancellationToken cancellationToken = default)
         {
-            var endpoint = Factory.CreateCourseUrl(by, value);
-            var root = await GetAsync<Course>(endpoint, cancellationToken);
-            return root.Results;
+            return await GetAsync<Course, GetCoursesBy>(
+                 by,
+                 value,
+                 Factory.CreateCourseUrl,
+                 cancellationToken);
         }
 
 
         public async Task<IEnumerable<DoctoralSchool>> GetDoctoralSchoolsAsync(
-            GetDoctoralSchoolBy by,
-            string value,
+            GetDoctoralSchoolBy by = GetDoctoralSchoolBy.None,
+            string? value = null,
             CancellationToken cancellationToken = default)
         {
-            var endpoint = Factory.CreateDoctoralSchoolUrl(by, value);
-            var root = await GetAsync<DoctoralSchool>(endpoint, cancellationToken);
-            return root.Results;
+            return await GetAsync<DoctoralSchool, GetDoctoralSchoolBy>(
+                by,
+                 value,
+                 Factory.CreateDoctoralSchoolUrl,
+                 cancellationToken);
         }
 
 
-        public async Task<IEnumerable<Institution>> GetInstitutionsAsync(
-            GetInstitutionBy by,
-            string value,
+        public async Task<IEnumerable<ModelInstitution>> GetInstitutionsAsync(
+            GetInstitutionBy by = GetInstitutionBy.None,
+            string? value = null,
             CancellationToken cancellationToken = default)
         {
-            var endpoint = Factory.CreateInstitutionUrl(by, value);
-            var root = await GetAsync<Institution>(endpoint, cancellationToken);
-            return root.Results;
+            var items = await GetAsync<ResponseInstitution, GetInstitutionBy>(
+                by,
+                value,
+                Factory.CreateInstitutionUrl,
+                cancellationToken);
+
+            return items.Select(item => (ModelInstitution)item);
         }
 
 
         public async Task<IEnumerable<SpecializedEducation>> GetSpecializedEducationsAsync(
-            GetSpecializedEducationBy by,
-            string value,
+            GetSpecializedEducationBy by = GetSpecializedEducationBy.None,
+            string? value = null,
             CancellationToken cancellationToken = default)
         {
-            var endpoint = Factory.CreateSpecializedEducationUrl(by, value);
-            var root = await GetAsync<SpecializedEducation>(endpoint, cancellationToken);
-            return root.Results;
+            return await GetAsync<SpecializedEducation, GetSpecializedEducationBy>(
+                by,
+                value,
+                Factory.CreateSpecializedEducationUrl,
+                cancellationToken);
         }
     }
 }

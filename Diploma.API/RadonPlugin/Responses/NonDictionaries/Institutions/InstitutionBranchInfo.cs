@@ -6,7 +6,7 @@ namespace RadonPlugin.Responses.NonDictionaries.Institutions
     public record InstitutionBranchInfo
     {
         [JsonPropertyName("branchUuid")]
-        public string Id { get; init; } = null!;
+        public Guid Id { get; init; }
 
         [JsonPropertyName("branchName")]
         public string Name { get; init; } = null!;

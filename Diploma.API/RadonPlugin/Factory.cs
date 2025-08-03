@@ -12,11 +12,12 @@ namespace RadonPlugin
         // https://radon.nauka.gov.pl/api/katalog-udostepniania-danych/dane-polon/polon/reports_branch
         public static string CreateBranchUrl(
             GetBranchBy by,
-            string value,
+            string? value,
             string? token = null)
         {
             var queryParameter = by switch
             {
+                GetBranchBy.None => null,
                 GetBranchBy.BranchUuid => ConfigurationData.QUERY_PARAMETER_BRANCH_ID,
                 GetBranchBy.Name => ConfigurationData.QUERY_PARAMETER_NAME,
                 GetBranchBy.MainInstitutionUuid => ConfigurationData.QUERY_PARAMETER_MAIN_INSTITUTION_UUID,
@@ -37,11 +38,12 @@ namespace RadonPlugin
         // https://radon.nauka.gov.pl/api/katalog-udostepniania-danych/dane-polon/polon/reports_course
         public static string CreateCourseUrl(
             GetCoursesBy by,
-            string value,
+            string? value,
             string? token = null)
         {
             var queryParameter = by switch
             {
+                GetCoursesBy.None => null,
                 GetCoursesBy.InstitutionUuid => ConfigurationData.QUERY_PARAMETER_LEADING_INSTITUTION_UUID,
                 _ => throw new NotImplementedException()
             };
@@ -57,11 +59,13 @@ namespace RadonPlugin
         // https://radon.nauka.gov.pl/api/katalog-udostepniania-danych/dane-polon/polon/reports_doctoral_school
         public static string CreateDoctoralSchoolUrl(
             GetDoctoralSchoolBy by,
-            string value,
+            string? value,
             string? token = null)
         {
             var queryParameter = by switch
             {
+                GetDoctoralSchoolBy.None => null,
+
                 GetDoctoralSchoolBy.DoctoralSchoolUuid => ConfigurationData.QUERY_PARAMETER_DOCTORAL_SCHOOL_UUID,
                 GetDoctoralSchoolBy.DoctoralSchoolCode => ConfigurationData.QUERY_PARAMETER_DOCTORAL_SCHOOL_CODE,
                 GetDoctoralSchoolBy.DoctoralSchoolName => ConfigurationData.QUERY_PARAMETER_DOCTORAL_SCHOOL_NAME,
@@ -88,11 +92,12 @@ namespace RadonPlugin
         // https://radon.nauka.gov.pl/api/katalog-udostepniania-danych/dane-polon/polon/reports_institution
         public static string CreateInstitutionUrl(
             GetInstitutionBy by,
-            string value,
+            string? value,
             string? token = null)
         {
             var queryParameter = by switch
             {
+                GetInstitutionBy.None => null,
                 GetInstitutionBy.Id => ConfigurationData.QUERY_PARAMETER_ID,
                 GetInstitutionBy.Uuid => ConfigurationData.QUERY_PARAMETER_INSTITUTION_UUID,
                 GetInstitutionBy.OldId => ConfigurationData.QUERY_PARAMETER_INSTITUTION_OLD_ID,
@@ -114,11 +119,12 @@ namespace RadonPlugin
         // https://radon.nauka.gov.pl/api/katalog-udostepniania-danych/dane-polon/polon/reports_specialized_education
         public static string CreateSpecializedEducationUrl(
             GetSpecializedEducationBy by,
-            string value,
+            string? value,
             string? token = null)
         {
             var queryParameter = by switch
             {
+                GetSpecializedEducationBy.None => null,
                 GetSpecializedEducationBy.SpecializedEducationUuid => ConfigurationData.QUERY_PARAMETER_SPECIALIZED_EDUCATION_UUID,
                 GetSpecializedEducationBy.InstitutionUuid => ConfigurationData.QUERY_PARAMETER_INSTITUTION_UUID,
                 _ => throw new NotImplementedException()
@@ -133,8 +139,8 @@ namespace RadonPlugin
 
         private static string Create(
             string urlSegment,
-            string queryParameter,
-            string value,
+            string? queryParameter,
+            string? value,
             string? token = null)
         {
             var builder = new StringBuilder();
@@ -151,8 +157,12 @@ namespace RadonPlugin
                 builder.Append(QUERY_AND);
             }
 
-            builder.Append(queryParameter);
-            builder.Append(value);
+            if (!string.IsNullOrWhiteSpace(queryParameter) &&
+                !string.IsNullOrWhiteSpace(value))
+            {
+                builder.Append(queryParameter);
+                builder.Append(value);
+            }
 
             return builder.ToString();
         }

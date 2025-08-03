@@ -13,7 +13,7 @@ namespace RadonPlugin.Responses.Dictionaries
         public string NameEn { get; init; } = null!;
 
         [JsonPropertyName("code")]
-        [JsonConverter(typeof(StringIntConverter))]
+        [JsonConverter(typeof(IntegerConverter))]
         public int Code { get; init; }
     }
 }

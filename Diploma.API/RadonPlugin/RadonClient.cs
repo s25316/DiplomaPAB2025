@@ -17,6 +17,8 @@ namespace RadonPlugin
         {
             Converters =
                 {
+                    new IntegerConverter(),
+                    new IntegerNullConverter(),
                     new NameStampConverter(),
                     new PolishBoolConverter(),
                     new InstitutionInfoConverter(),
@@ -57,7 +59,7 @@ namespace RadonPlugin
         }
 
 
-        private async Task<Root<T>> GetAsync<T>(
+        private async Task<Root<T>> MakeRequestNonDictionariesAsync<T>(
             string endpoint,
             CancellationToken cancellationToken = default)
             where T : class
@@ -76,6 +78,32 @@ namespace RadonPlugin
 
             return JsonSerializer.Deserialize<Root<T>>(body, _options)
                 ?? throw new JsonException($"Type: {nameof(T)}, Body: {body};");
+        }
+
+        private async Task<IEnumerable<T>> GetAsync<T, TEnum>(
+            TEnum getBy,
+            string? value,
+            Func<TEnum, string?, string?, string> createEndPoint,
+            CancellationToken cancellationToken = default)
+            where T : class
+            where TEnum : Enum
+        {
+            string? token = null;
+            var maxCount = 0;
+            var list = new List<T>();
+
+            do
+            {
+                var baseUrl = createEndPoint(getBy, value, token);
+                var root = await MakeRequestNonDictionariesAsync<T>(baseUrl, cancellationToken);
+
+                list.AddRange(root.Results);
+                token = root.Pagination.Token;
+                maxCount = root.Pagination.MaxCount;
+            }
+            while (list.Count < maxCount);
+
+            return list;
         }
     }
 }

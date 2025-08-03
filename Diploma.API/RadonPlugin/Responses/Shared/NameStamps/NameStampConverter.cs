@@ -48,10 +48,7 @@ namespace RadonPlugin.Responses.Shared.NameStamps
 
         public override void Write(Utf8JsonWriter writer, NameStamp value, JsonSerializerOptions options)
         {
-            writer.WriteStartObject();
-            writer.WriteString(nameof(value.Name), value.Name);
-            writer.WriteString(nameof(value.DateFrom), value.DateFrom.ToString());
-            writer.WriteEndObject();
+            throw new NotImplementedException();
         }
     }
 }

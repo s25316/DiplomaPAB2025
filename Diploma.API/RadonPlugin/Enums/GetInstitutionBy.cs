@@ -3,6 +3,7 @@ namespace RadonPlugin.Enums
 {
     public enum GetInstitutionBy
     {
+        None = 0,
         Id,
         Uuid,
         OldId,

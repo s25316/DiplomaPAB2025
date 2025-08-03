@@ -1,4 +1,6 @@
-﻿using RadonPlugin.Responses.Shared;
+﻿// Ignore spelling: Plugin, Uuid, Voivodeship, Regon, Krs, www, Pib, Eun
+using RadonPlugin.Converters;
+using RadonPlugin.Responses.Shared;
 using RadonPlugin.Responses.Shared.InstitutionSnapshots;
 using RadonPlugin.Responses.Shared.NameStamps;
 using System.Text.Json.Serialization;
@@ -8,76 +10,88 @@ namespace RadonPlugin.Responses.NonDictionaries.Institutions
     public record Institution
     {
         [JsonPropertyName("id")]
-        public string Id { get; init; }
+        public string Id { get; init; } = null!;
 
         [JsonPropertyName("institutionUuid")]
         public Guid Uuid { get; init; }
 
         [JsonPropertyName("institutionUid")]
-        public string OldId { get; init; }
+        public string OldId { get; init; } = null!;
 
         [JsonPropertyName("name")]
-        public string Name { get; init; }
+        public string Name { get; init; } = null!;
 
         [JsonPropertyName("iKindCd")]
-        public string IKindCd { get; init; }
+        [JsonConverter(typeof(IntegerConverter))]
+        public int IKindCd { get; init; }
 
         [JsonPropertyName("iKindName")]
-        public string IKindName { get; init; }
+        public string IKindName { get; init; } = null!;
 
         [JsonPropertyName("uTypeCd")]
-        public string UTypeCd { get; init; }
+        [JsonConverter(typeof(IntegerNullConverter))]
+        public int? UTypeCd { get; init; }
 
         [JsonPropertyName("uTypeName")]
-        public string UTypeName { get; init; }
+        public string? UTypeName { get; init; }
 
         [JsonPropertyName("siTypeCd")]
-        public string SiTypeCd { get; init; }
+        [JsonConverter(typeof(IntegerNullConverter))]
+        public int? SiTypeCd { get; init; }
 
         [JsonPropertyName("siTypeName")]
-        public string SiTypeName { get; init; }
+        public string? SiTypeName { get; init; }
+
+        [JsonPropertyName("statusCode")]
+        [JsonConverter(typeof(IntegerConverter))]
+        public int StatusCode { get; init; }
 
         [JsonPropertyName("status")]
-        public string Status { get; init; }
+        public string Status { get; init; } = null!;
 
         [JsonPropertyName("supervisingInstitutionID")]
-        public string SupervisingInstitutionID { get; init; }
+        public Guid? SupervisingInstitutionID { get; init; }
 
         [JsonPropertyName("supervisingInstitutionName")]
-        public string SupervisingInstitutionName { get; init; }
+        public string? SupervisingInstitutionName { get; init; }
 
         [JsonPropertyName("countryCd")]
-        public string CountryCd { get; init; }
+        [JsonConverter(typeof(IntegerConverter))]
+        public int CountryCd { get; init; }
 
         [JsonPropertyName("country")]
-        public string Country { get; init; }
+        public string Country { get; init; } = null!;
+
+        [JsonPropertyName("voivodeshipCode")]
+        [JsonConverter(typeof(IntegerNullConverter))]
+        public int? VoivodeshipCode { get; init; }
 
         [JsonPropertyName("voivodeship")]
-        public string Voivodeship { get; init; }
+        public string? VoivodeshipName { get; init; } = null!;
 
         [JsonPropertyName("city")]
-        public string City { get; init; }
+        public string City { get; init; } = null!;
 
         [JsonPropertyName("postalCd")]
-        public string PostalCd { get; init; }
+        public string PostalCd { get; init; } = null!;
 
         [JsonPropertyName("street")]
-        public string Street { get; init; }
+        public string? Street { get; init; }
 
         [JsonPropertyName("bNumber")]
-        public string BNumber { get; init; }
+        public string BNumber { get; init; } = null!;
 
         [JsonPropertyName("lNumber")]
-        public string LNumber { get; init; }
+        public string? LNumber { get; init; }
 
         [JsonPropertyName("regon")]
-        public string Regon { get; init; }
+        public string? Regon { get; init; }
 
         [JsonPropertyName("nip")]
-        public string Nip { get; init; }
+        public string? Nip { get; init; }
 
         [JsonPropertyName("krs")]
-        public string Krs { get; init; }
+        public string? Krs { get; init; }
 
         [JsonPropertyName("iStartDT")]
         public DateOnly StartDate { get; init; }
@@ -89,64 +103,59 @@ namespace RadonPlugin.Responses.NonDictionaries.Institutions
         public DateOnly? LiquidationDate { get; init; }
 
         [JsonPropertyName("www")]
-        public string Www { get; init; }
+        public string? Www { get; init; }
 
         [JsonPropertyName("eMail")]
-        public string EMail { get; init; }
+        public string? Email { get; init; }
 
         [JsonPropertyName("phone")]
-        public string Phone { get; init; }
+        public string? Phone { get; init; }
 
         [JsonPropertyName("pib")]
-        public string Pib { get; init; }
+        [JsonConverter(typeof(IntegerConverter))]
+        public int Pib { get; init; }
 
         [JsonPropertyName("yearPib")]
-        public string YearPib { get; init; }
-
-        [JsonPropertyName("statusCode")]
-        public string StatusCode { get; init; }
-
-        [JsonPropertyName("voivodeshipCode")]
-        public string VoivodeshipCode { get; init; }
-
-        [JsonPropertyName("branches")]
-        public List<InstitutionBranchInfo> Branches { get; init; }
+        public int? YearPib { get; init; }
 
         [JsonPropertyName("managerName")]
-        public string ManagerName { get; init; }
+        public string? ManagerName { get; init; }
 
         [JsonPropertyName("managerSurname")]
-        public string ManagerSurname { get; init; }
+        public string? ManagerSurname { get; init; }
 
         [JsonPropertyName("managerOtherNames")]
-        public string ManagerOtherNames { get; init; }
+        public string? ManagerOtherNames { get; init; }
 
         [JsonPropertyName("managerSurnamePrefix")]
-        public string ManagerSurnamePrefix { get; init; }
+        public string? ManagerSurnamePrefix { get; init; }
 
         [JsonPropertyName("managerEmployeeInInstitutionUuid")]
-        public string ManagerEmployeeInInstitutionUuid { get; init; }
+        public Guid? ManagerEmployeeInInstitutionUuid { get; init; }
 
         [JsonPropertyName("managerFunction")]
-        public string ManagerFunction { get; init; }
+        public string? ManagerFunction { get; init; }
 
         [JsonPropertyName("espAddress")]
-        public string EspAddress { get; init; }
+        public string? EspAddress { get; init; }
 
         [JsonPropertyName("edaAddress")]
-        public string EdaAddress { get; init; }
+        public string? EdaAddress { get; init; }
 
         [JsonPropertyName("panNumber")]
-        public string PanNumber { get; init; }
+        public string? PanNumber { get; init; }
 
         [JsonPropertyName("ministryNumber")]
-        public string MinistryNumber { get; init; }
+        public string? MinistryNumber { get; init; }
 
         [JsonPropertyName("eunNumber")]
-        public string EunNumber { get; init; }
+        public string? EunNumber { get; init; }
 
         [JsonPropertyName("federationNumber")]
-        public string FederationNumber { get; init; }
+        public string? FederationNumber { get; init; }
+
+        [JsonPropertyName("branches")]
+        public IReadOnlyList<InstitutionBranchInfo> Branches { get; init; } = [];
 
         [JsonPropertyName("federationComposition")]
         public IReadOnlyList<FederationComposition> FederationComposition { get; init; } = [];

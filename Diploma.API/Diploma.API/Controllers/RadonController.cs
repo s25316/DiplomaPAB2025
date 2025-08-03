@@ -19,9 +19,9 @@ namespace Diploma.API.Controllers
         // BRANCHES
         [HttpGet("branches")]
         public async Task<IActionResult> GetInstitutionsAsync(
-            GetBranchBy by,
-            string value,
-            CancellationToken cancellationToken)
+            GetBranchBy by = RadonPlugin.Enums.GetBranchBy.None,
+            string? value = null,
+            CancellationToken cancellationToken = default)
         {
             var results = await _client.GetBranchesAsync(by, value, cancellationToken);
             return Ok(results);
@@ -42,7 +42,7 @@ namespace Diploma.API.Controllers
         [HttpGet("courses")]
         public async Task<IActionResult> GetCoursesAsync(
             GetCoursesBy by,
-            string value,
+            string? value,
             CancellationToken cancellationToken)
         {
             var results = await _client.GetCoursesAsync(by, value, cancellationToken);
@@ -64,7 +64,7 @@ namespace Diploma.API.Controllers
         [HttpGet("doctoralSchools")]
         public async Task<IActionResult> GetCoursesAsync(
             GetDoctoralSchoolBy by,
-            string value,
+            string? value,
             CancellationToken cancellationToken)
         {
             var results = await _client.GetDoctoralSchoolsAsync(by, value, cancellationToken);
@@ -86,7 +86,7 @@ namespace Diploma.API.Controllers
         [HttpGet("institutions")]
         public async Task<IActionResult> GetInstitutionsAsync(
             GetInstitutionBy by,
-            string value,
+            string? value,
             CancellationToken cancellationToken)
         {
             var results = await _client.GetInstitutionsAsync(by, value, cancellationToken);
@@ -107,9 +107,9 @@ namespace Diploma.API.Controllers
         // SPECIALIZED EDUCATIONS
         [HttpGet("specializedEducations")]
         public async Task<IActionResult> GetInstitutionsAsync(
-            GetSpecializedEducationBy by,
-            string value,
-            CancellationToken cancellationToken)
+            GetSpecializedEducationBy by = RadonPlugin.Enums.GetSpecializedEducationBy.None,
+            string? value = null,
+            CancellationToken cancellationToken = default)
         {
             var results = await _client.GetSpecializedEducationsAsync(by, value, cancellationToken);
             return Ok(results);
