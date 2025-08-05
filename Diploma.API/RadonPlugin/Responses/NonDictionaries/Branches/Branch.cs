@@ -44,13 +44,13 @@ namespace RadonPlugin.Responses.NonDictionaries.Branches
         public string? Krs { get; init; } = null;
 
         [JsonPropertyName("www")]
-        public string Www { get; init; }
+        public string? Www { get; init; }
 
         [JsonPropertyName("eMail")]
-        public string EMail { get; init; }
+        public string? EMail { get; init; }
 
         [JsonPropertyName("phone")]
-        public string Phone { get; init; }
+        public string? Phone { get; init; }
 
         [JsonPropertyName("countryCd")]
         public string CountryCd { get; init; }
@@ -58,11 +58,11 @@ namespace RadonPlugin.Responses.NonDictionaries.Branches
         [JsonPropertyName("country")]
         public string Country { get; init; }
 
-        [JsonPropertyName("voivodeship")]
-        public string Voivodeship { get; init; }
-
         [JsonPropertyName("voivodeshipCode")]
-        public string VoivodeshipCode { get; init; }
+        public string? VoivodeshipCode { get; init; }
+
+        [JsonPropertyName("voivodeship")]
+        public string? Voivodeship { get; init; }
 
         [JsonPropertyName("city")]
         public string City { get; init; }
@@ -89,7 +89,7 @@ namespace RadonPlugin.Responses.NonDictionaries.Branches
         public IReadOnlyList<NameStamp> Statuses { get; init; } = [];
 
         [JsonPropertyName("addresses")]
-        public IReadOnlyList<Address> Addresses { get; init; } = [];
+        public IReadOnlyList<AddressStamp> Addresses { get; init; } = [];
 
         [JsonPropertyName("dataSource")]
         public string DataSource { get; init; } = null!;

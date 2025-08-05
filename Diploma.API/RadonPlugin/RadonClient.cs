@@ -19,8 +19,10 @@ namespace RadonPlugin
                 {
                     new IntegerConverter(),
                     new IntegerNullConverter(),
-                    new NameStampConverter(),
+                    new DateOnlyConverter(),
                     new PolishBoolConverter(),
+
+                    new NameStampConverter(),
                     new InstitutionInfoConverter(),
                     new InstitutionSnapshotConverter(),
                 }

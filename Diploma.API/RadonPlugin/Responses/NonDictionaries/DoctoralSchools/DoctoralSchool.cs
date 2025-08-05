@@ -1,4 +1,5 @@
-﻿// Ignore Spelling: Plugin
+﻿// Ignore Spelling: Plugin, Uuid, Voivodeship, www
+using RadonPlugin.Converters;
 using RadonPlugin.Responses.Shared.InstitutionInfos;
 using System.Text.Json.Serialization;
 
@@ -7,78 +8,80 @@ namespace RadonPlugin.Responses.NonDictionaries.DoctoralSchools
     public class DoctoralSchool
     {
         [JsonPropertyName("doctoralSchoolUuid")]
-        public string Uuid { get; init; }
+        public Guid Uuid { get; init; }
 
         [JsonPropertyName("doctoralSchoolCode")]
         public int Code { get; init; }
 
         [JsonPropertyName("doctoralSchoolName")]
-        public string Name { get; init; }
+        public string Name { get; init; } = null!;
 
         [JsonPropertyName("creationDate")]
-        public string CreationDate { get; init; }
-
-        [JsonPropertyName("responsibleInstitutionUuid")]
-        public string ResponsibleInstitutionUuid { get; init; }
-
-        [JsonPropertyName("responsibleInstitutionName")]
-        public string ResponsibleInstitutionName { get; init; }
-
-        [JsonPropertyName("coLeadingInstitutions")]
-        public IReadOnlyList<InstitutionInfo> CoLeadingInstitutions { get; init; }
-
-        [JsonPropertyName("disciplines")]
-        public IReadOnlyList<DoctoralSchoolDiscipline> Disciplines { get; init; }
+        public DateOnly CreationDate { get; init; }
 
         [JsonPropertyName("educationStopDate")]
-        public string EducationStopDate { get; init; }
+        public DateOnly? EducationStopDate { get; init; }
+
+        [JsonPropertyName("responsibleInstitutionUuid")]
+        public Guid ResponsibleInstitutionUuid { get; init; }
+
+        [JsonPropertyName("responsibleInstitutionName")]
+        public string ResponsibleInstitutionName { get; init; } = null!;
 
         [JsonPropertyName("statusCode")]
         public int StatusCode { get; init; }
 
         [JsonPropertyName("statusName")]
-        public string StatusName { get; init; }
-
-        [JsonPropertyName("programs")]
-        public IReadOnlyList<DoctoralSchoolProgram> Programs { get; init; }
+        public string StatusName { get; init; } = null!;
 
         [JsonPropertyName("countryCd")]
-        public string CountryCd { get; init; }
+        [JsonConverter(typeof(IntegerNullConverter))]
+        public int? CountryCode { get; init; } = null;
 
         [JsonPropertyName("country")]
-        public string Country { get; init; }
-
-        [JsonPropertyName("voivodeship")]
-        public string Voivodeship { get; init; }
+        public string? Country { get; init; } = null!;
 
         [JsonPropertyName("voivodeshipCode")]
-        public string VoivodeshipCode { get; init; }
+        [JsonConverter(typeof(IntegerNullConverter))]
+        public int? VoivodeshipCode { get; init; }
+
+        [JsonPropertyName("voivodeship")]
+        public string? Voivodeship { get; init; }
 
         [JsonPropertyName("city")]
-        public string City { get; init; }
+        public string? City { get; init; } = null!;
 
         [JsonPropertyName("postalCode")]
-        public string PostalCode { get; init; }
+        public string? PostalCode { get; init; } = null!;
 
         [JsonPropertyName("street")]
-        public string Street { get; init; }
+        public string? Street { get; init; }
 
         [JsonPropertyName("buildingNumber")]
-        public string BuildingNumber { get; init; }
+        public string? BuildingNumber { get; init; } = null!;
 
         [JsonPropertyName("apartmentNumber")]
-        public string ApartmentNumber { get; init; }
+        public string? ApartmentNumber { get; init; }
 
         [JsonPropertyName("www")]
-        public string Www { get; init; }
+        public string? Www { get; init; }
 
         [JsonPropertyName("eMail")]
-        public string EMail { get; init; }
+        public string? Email { get; init; }
+
+        [JsonPropertyName("disciplines")]
+        public IReadOnlyList<DoctoralSchoolDiscipline> Disciplines { get; init; } = [];
+
+        [JsonPropertyName("programs")]
+        public IReadOnlyList<DoctoralSchoolProgram> Programs { get; init; } = [];
+
+        [JsonPropertyName("coLeadingInstitutions")]
+        public IReadOnlyList<InstitutionInfo> CoLeadingInstitutions { get; init; } = [];
 
         [JsonPropertyName("dataSource")]
-        public string DataSource { get; init; }
+        public string DataSource { get; init; } = null!;
 
         [JsonPropertyName("lastRefresh")]
-        public string LastRefresh { get; init; }
+        public string LastRefresh { get; init; } = null!;
     }
 }

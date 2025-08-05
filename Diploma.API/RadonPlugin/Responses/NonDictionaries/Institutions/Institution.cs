@@ -10,7 +10,8 @@ namespace RadonPlugin.Responses.NonDictionaries.Institutions
     public record Institution
     {
         [JsonPropertyName("id")]
-        public string Id { get; init; } = null!;
+        [JsonConverter(typeof(IntegerNullConverter))]
+        public int? Id { get; init; }
 
         [JsonPropertyName("institutionUuid")]
         public Guid Uuid { get; init; }
@@ -155,10 +156,10 @@ namespace RadonPlugin.Responses.NonDictionaries.Institutions
         public string? FederationNumber { get; init; }
 
         [JsonPropertyName("branches")]
-        public IReadOnlyList<InstitutionBranchInfo> Branches { get; init; } = [];
+        public IReadOnlyList<InstitutionBranch> Branches { get; init; } = [];
 
         [JsonPropertyName("federationComposition")]
-        public IReadOnlyList<FederationComposition> FederationComposition { get; init; } = [];
+        public IReadOnlyList<InstitutionFederation> FederationComposition { get; init; } = [];
 
         [JsonPropertyName("transformedInstitutions")]
         public IReadOnlyList<InstitutionSnapshot> TransformedInstitutions { get; init; } = [];
@@ -179,7 +180,7 @@ namespace RadonPlugin.Responses.NonDictionaries.Institutions
         public IReadOnlyList<NameStamp> Types { get; init; } = [];
 
         [JsonPropertyName("addresses")]
-        public IReadOnlyList<Address> Addresses { get; init; } = [];
+        public IReadOnlyList<AddressStamp> Addresses { get; init; } = [];
 
         [JsonPropertyName("dataSource")]
         public string DataSource { get; init; } = null!;

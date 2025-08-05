@@ -1,5 +1,5 @@
 ﻿// Ignore Spelling: Plugin
-using ResponseInstitution = RadonPlugin.Responses.NonDictionaries.Institutions.Institution;
+using InstitutionResponse = RadonPlugin.Responses.NonDictionaries.Institutions.Institution;
 
 namespace RadonPlugin.Models.Institutions
 {
@@ -10,7 +10,7 @@ namespace RadonPlugin.Models.Institutions
         public string? Phone { get; init; }
 
 
-        public static implicit operator InstitutionContactInfo?(ResponseInstitution response)
+        public static implicit operator InstitutionContactInfo?(InstitutionResponse response)
         {
             var www = response.Www;
             var email = response.Email;

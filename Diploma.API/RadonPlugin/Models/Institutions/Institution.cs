@@ -1,5 +1,6 @@
 ﻿// Ignore Spelling: Plugin, Regon, Krs, Uuid, Pib, Eun
-using RadonPlugin.Models.DTOs;
+using RadonPlugin.Models.Shared;
+using RadonPlugin.Providers;
 using RadonPlugin.Responses.NonDictionaries.Institutions;
 using RadonPlugin.Responses.Shared;
 using RadonPlugin.Responses.Shared.InstitutionSnapshots;
@@ -10,7 +11,7 @@ namespace RadonPlugin.Models.Institutions
 {
     public class Institution
     {
-        public string Id { get; init; } = null!;
+        public int? Id { get; init; }
         public Guid Uuid { get; init; }
         public string OldId { get; init; } = null!;
         public string? Regon { get; init; }
@@ -32,10 +33,10 @@ namespace RadonPlugin.Models.Institutions
         public IReadOnlyList<NameStamp> Names { get; init; } = [];
         public IReadOnlyList<NameStamp> Statuses { get; init; } = [];
         public IReadOnlyList<NameStamp> Types { get; init; } = [];
-        public IReadOnlyList<Address> Addresses { get; init; } = [];
+        public IReadOnlyList<AddressStamp> Addresses { get; init; } = [];
         public IReadOnlyList<SupervisingInstitution> SupervisingInstitutions { get; init; } = [];
-        public IReadOnlyList<InstitutionBranchInfo> Branches { get; init; } = [];
-        public IReadOnlyList<FederationComposition> FederationComposition { get; init; } = [];
+        public IReadOnlyList<InstitutionBranch> Branches { get; init; } = [];
+        public IReadOnlyList<InstitutionFederation> Federations { get; init; } = [];
         public IReadOnlyList<InstitutionSnapshot> TransformedInstitutions { get; init; } = [];
         public IReadOnlyList<InstitutionSnapshot> TargetInstitutions { get; init; } = [];
         public string DataSource { get; init; } = null!;
@@ -89,12 +90,12 @@ namespace RadonPlugin.Models.Institutions
                 Statuses = response.Statuses,
                 Types = response.Types,
                 Addresses = response.Addresses,
-                FederationComposition = response.FederationComposition,
+                Federations = response.FederationComposition,
                 TransformedInstitutions = response.TransformedInstitutions,
                 TargetInstitutions = response.TargetInstitutions,
                 SupervisingInstitutions = response.SupervisingInstitutions,
                 DataSource = response.DataSource,
-                LastRefresh = DateTime.UnixEpoch.AddMilliseconds(long.Parse(response.LastRefresh))
+                LastRefresh = CustomTimeProvider.ParseFromUnixEpoch(response.LastRefresh)
             };
         }
     }

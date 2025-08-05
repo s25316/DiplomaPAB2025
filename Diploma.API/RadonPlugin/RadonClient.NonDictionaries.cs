@@ -2,11 +2,11 @@
 using RadonPlugin.Enums;
 using RadonPlugin.Responses.NonDictionaries.Branches;
 using RadonPlugin.Responses.NonDictionaries.Courses;
-using RadonPlugin.Responses.NonDictionaries.DoctoralSchools;
 using RadonPlugin.Responses.NonDictionaries.SpecializedEducations;
-using ModelInstitution = RadonPlugin.Models.Institutions.Institution;
-using ResponseInstitution = RadonPlugin.Responses.NonDictionaries.Institutions.Institution;
-
+using DoctoralSchoolModel = RadonPlugin.Models.DoctoralSchools.DoctoralSchool;
+using DoctoralSchoolResponse = RadonPlugin.Responses.NonDictionaries.DoctoralSchools.DoctoralSchool;
+using InstitutionModel = RadonPlugin.Models.Institutions.Institution;
+using InstitutionResponse = RadonPlugin.Responses.NonDictionaries.Institutions.Institution;
 namespace RadonPlugin
 {
     public partial class RadonClient : HttpClient
@@ -37,31 +37,32 @@ namespace RadonPlugin
         }
 
 
-        public async Task<IEnumerable<DoctoralSchool>> GetDoctoralSchoolsAsync(
+        public async Task<IEnumerable<DoctoralSchoolModel>> GetDoctoralSchoolsAsync(
             GetDoctoralSchoolBy by = GetDoctoralSchoolBy.None,
             string? value = null,
             CancellationToken cancellationToken = default)
         {
-            return await GetAsync<DoctoralSchool, GetDoctoralSchoolBy>(
+            var items = await GetAsync<DoctoralSchoolResponse, GetDoctoralSchoolBy>(
                 by,
                  value,
                  Factory.CreateDoctoralSchoolUrl,
                  cancellationToken);
+            return items.Select(item => (DoctoralSchoolModel)item);
         }
 
 
-        public async Task<IEnumerable<ModelInstitution>> GetInstitutionsAsync(
+        public async Task<IEnumerable<InstitutionModel>> GetInstitutionsAsync(
             GetInstitutionBy by = GetInstitutionBy.None,
             string? value = null,
             CancellationToken cancellationToken = default)
         {
-            var items = await GetAsync<ResponseInstitution, GetInstitutionBy>(
+            var items = await GetAsync<InstitutionResponse, GetInstitutionBy>(
                 by,
                 value,
                 Factory.CreateInstitutionUrl,
                 cancellationToken);
 
-            return items.Select(item => (ModelInstitution)item);
+            return items.Select(item => (InstitutionModel)item);
         }
 
 

@@ -1,5 +1,5 @@
 ﻿// Ignore Spelling: Plugin
-namespace RadonPlugin.Models.DTOs
+namespace RadonPlugin.Models.Shared
 {
     public record Pair<T>
         where T : notnull

@@ -1,5 +1,5 @@
 ﻿// Ignore Spelling: Plugin, Uuid
-using ResponseInstitution = RadonPlugin.Responses.NonDictionaries.Institutions.Institution;
+using InstitutionResponse = RadonPlugin.Responses.NonDictionaries.Institutions.Institution;
 
 namespace RadonPlugin.Models.Institutions
 {
@@ -13,7 +13,7 @@ namespace RadonPlugin.Models.Institutions
         public string? SurnamePrefix { get; init; }
 
 
-        public static implicit operator InstitutionManagerInfo?(ResponseInstitution response)
+        public static implicit operator InstitutionManagerInfo?(InstitutionResponse response)
         {
             var id = response.ManagerEmployeeInInstitutionUuid;
             var function = response.ManagerFunction;

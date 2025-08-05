@@ -1,5 +1,5 @@
 ﻿// Ignore Spelling: Plugin
-using ResponseInstitution = RadonPlugin.Responses.NonDictionaries.Institutions.Institution;
+using InstitutionResponse = RadonPlugin.Responses.NonDictionaries.Institutions.Institution;
 
 namespace RadonPlugin.Models.Institutions
 {
@@ -10,7 +10,7 @@ namespace RadonPlugin.Models.Institutions
         public DateOnly? LiquidationDate { get; init; }
 
 
-        public static implicit operator InstitutionDates(ResponseInstitution response)
+        public static implicit operator InstitutionDates(InstitutionResponse response)
         {
             return new InstitutionDates
             {
