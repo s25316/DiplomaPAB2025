@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace RadonPlugin.Responses.NonDictionaries.Courses
 {
-    public class Course
+    public record Course
     {
         [JsonPropertyName("courseUuid")]
         public Guid Id { get; init; }
@@ -62,7 +62,7 @@ namespace RadonPlugin.Responses.NonDictionaries.Courses
         public bool CoLed { get; init; }
 
         [JsonPropertyName("philologicalLanguages")]
-        public IReadOnlyList<Language> PhilologicalLanguages { get; init; } = new List<Language>();
+        public IReadOnlyList<Language> PhilologicalLanguages { get; init; } = [];
 
         [JsonPropertyName("coLedDataFrom")]
         public string CoLedDataFrom { get; init; } = string.Empty; // ?? Dateonly? ""
@@ -78,7 +78,7 @@ namespace RadonPlugin.Responses.NonDictionaries.Courses
         public string CurrentStatusName { get; init; } = null!;
 
         [JsonPropertyName("disciplines")]
-        public IReadOnlyList<Discipline> Disciplines { get; init; } = new List<Discipline>();
+        public IReadOnlyList<Discipline> Disciplines { get; init; } = [];
 
         [JsonPropertyName("leadingInstitutionUuid")]
         public Guid LeadingInstitutionUuid { get; init; }
@@ -120,10 +120,10 @@ namespace RadonPlugin.Responses.NonDictionaries.Courses
         public string SupervisingInstitutionName { get; init; } = null!;
 
         [JsonPropertyName("coLeadingInstitutions")]
-        public IReadOnlyList<CoLeadingInstitution> CoLeadingInstitutions { get; init; } = new List<CoLeadingInstitution>();
+        public IReadOnlyList<CoLeadingInstitution> CoLeadingInstitutions { get; init; } = [];
 
         [JsonPropertyName("organizationalUnits")]
-        public IReadOnlyList<OrganizationalUnit> OrganizationalUnits { get; init; } = new List<OrganizationalUnit>();
+        public IReadOnlyList<OrganizationalUnit> OrganizationalUnits { get; init; } = [];
 
         [JsonPropertyName("legalBasisTypeCode")]
         [JsonConverter(typeof(IntegerConverter))]
@@ -139,7 +139,7 @@ namespace RadonPlugin.Responses.NonDictionaries.Courses
         public DateOnly? LegalBasisDate { get; init; }
 
         [JsonPropertyName("courseInstances")]
-        public IReadOnlyList<CourseInstance> CourseInstances { get; init; } = new List<CourseInstance>();
+        public IReadOnlyList<CourseInstance> CourseInstances { get; init; } = [];
 
         [JsonPropertyName("dataSource")]
         public string DataSource { get; init; } = string.Empty;

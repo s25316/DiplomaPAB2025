@@ -1,9 +1,10 @@
 ﻿// Ignore Spelling: Plugin
 using RadonPlugin.Enums;
-using RadonPlugin.Responses.NonDictionaries.Courses;
 using RadonPlugin.Responses.NonDictionaries.SpecializedEducations;
 using BranchModel = RadonPlugin.Models.Branches.Branch;
 using BranchResponse = RadonPlugin.Responses.NonDictionaries.Branches.Branch;
+using CourseModel = RadonPlugin.Models.Courses.Course;
+using CourseResponse = RadonPlugin.Responses.NonDictionaries.Courses.Course;
 using DoctoralSchoolModel = RadonPlugin.Models.DoctoralSchools.DoctoralSchool;
 using DoctoralSchoolResponse = RadonPlugin.Responses.NonDictionaries.DoctoralSchools.DoctoralSchool;
 using InstitutionModel = RadonPlugin.Models.Institutions.Institution;
@@ -26,16 +27,17 @@ namespace RadonPlugin
         }
 
 
-        public async Task<IEnumerable<Course>> GetCoursesAsync(
+        public async Task<IEnumerable<CourseModel>> GetCoursesAsync(
             GetCoursesBy by = GetCoursesBy.None,
             string? value = null,
             CancellationToken cancellationToken = default)
         {
-            return await GetAsync<Course, GetCoursesBy>(
+            var items = await GetAsync<CourseResponse, GetCoursesBy>(
                  by,
                  value,
                  Factory.CreateCourseUrl,
                  cancellationToken);
+            return items.SelectMany(item => CourseModel.Parse(item));
         }
 
 

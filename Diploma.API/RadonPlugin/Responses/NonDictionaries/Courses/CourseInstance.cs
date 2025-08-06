@@ -44,7 +44,7 @@ namespace RadonPlugin.Responses.NonDictionaries.Courses
         public string LanguageName { get; init; } = null!;
 
         [JsonPropertyName("philologicalLanguages")]
-        public IReadOnlyList<Language> PhilologicalLanguages { get; init; } = new List<Language>();
+        public IReadOnlyList<Language> PhilologicalLanguages { get; init; } = [];
 
         [JsonPropertyName("educationStartDate")]
         public DateOnly EducationStartDate { get; init; }
