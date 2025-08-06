@@ -4,28 +4,18 @@ using System.Globalization;
 
 namespace RadonPlugin.Responses.Shared.InstitutionSnapshots
 {
-    public class InstitutionSnapshot
+    public record InstitutionSnapshot
     {
         public Guid Id { get; init; }
-
         public string Name { get; init; } = null!;
-
         public string? Regon { get; init; } = null;
-
         public string? Nip { get; init; } = null;
-
         public string? Krs { get; init; } = null;
-
         public string EunNumber { get; init; } = null!;
-
         public string PanNumber { get; init; } = null!;
-
         public string SupervisingInstitutionId { get; init; } = null!;
-
         public string SupervisingInstitutionName { get; init; } = null!;
-
         public string TransformationKind { get; init; } = null!;
-
         public DateOnly TransformationDate { get; init; }
 
 

@@ -2,7 +2,7 @@
 using DoctoralSchoolResponse = RadonPlugin.Responses.NonDictionaries.DoctoralSchools.DoctoralSchool;
 namespace RadonPlugin.Models.DoctoralSchools
 {
-    public class DoctoralSchoolDates
+    public record DoctoralSchoolDates
     {
         public DateOnly CreationDate { get; init; }
         public DateOnly? EducationStopDate { get; init; }

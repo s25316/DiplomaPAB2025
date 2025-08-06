@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿// Ignore Spelling 
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -10,40 +10,32 @@ namespace RadonPlugin.Responses.Shared.NameStamps
         {
             if (reader.TokenType != JsonTokenType.StartObject)
             {
-                throw new JsonException("Oczekiwano początkowego obiektu JSON.");
+                throw new JsonException();
             }
 
-            var name = string.Empty;
-            DateOnly date = DateOnly.MinValue;
-
+            var builder = new NameStamp.Builder();
             while (reader.Read() && reader.TokenType == JsonTokenType.PropertyName)
             {
-                string propertyName = reader.GetString()
-                    ?? throw new ArgumentException("Property: empty");
+                var propertyName = reader.GetString();
                 reader.Read();
-                string value = reader.GetString()
-                    ?? throw new ArgumentException("Property Value: empty");
+                var value = reader.GetString();
 
                 switch (propertyName)
                 {
                     case "name":
                     case "statusName":
                     case "typeName":
-                        name = value;
+                        builder.SetName(value);
                         break;
                     case "dateFrom":
-                        date = DateOnly.Parse(value, CultureInfo.InvariantCulture);
+                        builder.SetDateFrom(value);
                         break;
                     default:
                         throw new JsonException($"{propertyName} : {value}");
                 }
             }
 
-            return new NameStamp
-            {
-                Name = name,
-                DateFrom = date,
-            };
+            return builder.Build();
         }
 
         public override void Write(Utf8JsonWriter writer, NameStamp value, JsonSerializerOptions options)

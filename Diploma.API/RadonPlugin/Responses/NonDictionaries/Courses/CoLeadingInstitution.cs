@@ -1,20 +1,23 @@
-﻿using System.Text.Json.Serialization;
+﻿// Ignore Spelling: Plugin, Uuid, Fos
+using RadonPlugin.Converters;
+using System.Text.Json.Serialization;
 
 namespace RadonPlugin.Responses.NonDictionaries.Courses
 {
-    public class CoLeadingInstitutionDto
+    public record CoLeadingInstitution
     {
         [JsonPropertyName("coLeadingInstitutionUuid")]
-        public string CoLeadingInstitutionUuid { get; init; } = string.Empty;
+        public Guid? Uuid { get; init; }
 
         [JsonPropertyName("coLeadingInstitutionName")]
-        public string CoLeadingInstitutionName { get; init; } = string.Empty;
+        public string Name { get; init; } = string.Empty;
 
         [JsonPropertyName("isForeign")]
-        public string IsForeign { get; init; } = string.Empty;
+        [JsonConverter(typeof(PolishBoolConverter))]
+        public bool IsForeign { get; init; }
 
         [JsonPropertyName("courseUuid")]
-        public string CourseUuid { get; init; } = string.Empty;
+        public Guid? CourseUuid { get; init; }
 
         [JsonPropertyName("courseName")]
         public string CourseName { get; init; } = string.Empty;
@@ -26,6 +29,6 @@ namespace RadonPlugin.Responses.NonDictionaries.Courses
         public DateOnly? DateTo { get; init; }
 
         [JsonPropertyName("coLedFosConfirmationStatus")]
-        public string CoLedFosConfirmationStatus { get; init; } = string.Empty;
+        public string CoLedFosConfirmationStatus { get; init; } = null!;
     }
 }

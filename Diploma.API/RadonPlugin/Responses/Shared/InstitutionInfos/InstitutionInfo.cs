@@ -1,10 +1,9 @@
 ﻿// Ignore Spelling: Plugin, Uuid
 namespace RadonPlugin.Responses.Shared.InstitutionInfos
 {
-    public class InstitutionInfo
+    public record InstitutionInfo
     {
         public Guid Uuid { get; init; }
-
         public string Name { get; init; } = null!;
 
 
@@ -26,7 +25,7 @@ namespace RadonPlugin.Responses.Shared.InstitutionInfos
 
             public Builder SetName(string? value)
             {
-                _name = value;
+                _name = value ?? String.Empty;
                 return this;
             }
 

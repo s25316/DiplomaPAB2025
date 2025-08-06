@@ -9,7 +9,7 @@ using ResponseInstitution = RadonPlugin.Responses.NonDictionaries.Institutions.I
 
 namespace RadonPlugin.Models.Institutions
 {
-    public class Institution
+    public record Institution
     {
         public int? Id { get; init; }
         public Guid Uuid { get; init; }
@@ -19,7 +19,7 @@ namespace RadonPlugin.Models.Institutions
         public string? Krs { get; init; }
         public Pair<int> Kind { get; init; } = null!;
         public Pair<int>? SiType { get; init; }
-        public InstitutionContactInfo? Contacts { get; init; }
+        public ContactInfo? Contacts { get; init; }
         public InstitutionManagerInfo? Manager { get; init; }
         public InstitutionDates Dates { get; init; } = null!;
         public bool IsPib { get; init; }

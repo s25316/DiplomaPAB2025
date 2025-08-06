@@ -1,11 +1,12 @@
-﻿// iGnore spelling: Plugin, Uuid, Regon, Krs
+﻿// iGnore spelling: Plugin, Uuid, Regon, Krs, www, Voivodeship
+using RadonPlugin.Converters;
 using RadonPlugin.Responses.Shared;
 using RadonPlugin.Responses.Shared.NameStamps;
 using System.Text.Json.Serialization;
 
 namespace RadonPlugin.Responses.NonDictionaries.Branches
 {
-    public class Branch
+    public record Branch
     {
         [JsonPropertyName("branchUuid")]
         public Guid Uuid { get; init; }
@@ -47,40 +48,42 @@ namespace RadonPlugin.Responses.NonDictionaries.Branches
         public string? Www { get; init; }
 
         [JsonPropertyName("eMail")]
-        public string? EMail { get; init; }
+        public string? Email { get; init; }
 
         [JsonPropertyName("phone")]
         public string? Phone { get; init; }
 
         [JsonPropertyName("countryCd")]
-        public string CountryCd { get; init; }
+        [JsonConverter(typeof(IntegerNullConverter))]
+        public int? CountryCode { get; init; }
 
         [JsonPropertyName("country")]
-        public string Country { get; init; }
+        public string? Country { get; init; }
 
         [JsonPropertyName("voivodeshipCode")]
-        public string? VoivodeshipCode { get; init; }
+        [JsonConverter(typeof(IntegerNullConverter))]
+        public int? VoivodeshipCode { get; init; }
 
         [JsonPropertyName("voivodeship")]
-        public string? Voivodeship { get; init; }
+        public string? Voivodeship { get; init; } = null;
 
         [JsonPropertyName("city")]
-        public string City { get; init; }
+        public string City { get; init; } = null!;
 
         [JsonPropertyName("postalCode")]
-        public string PostalCode { get; init; }
+        public string PostalCode { get; init; } = null!;
 
         [JsonPropertyName("street")]
-        public string Street { get; init; }
+        public string? Street { get; init; }
 
         [JsonPropertyName("buildingNumber")]
-        public string BuildingNumber { get; init; }
+        public string BuildingNumber { get; init; } = null!;
 
         [JsonPropertyName("apartmentNumber")]
-        public string ApartmentNumber { get; init; }
+        public string? ApartmentNumber { get; init; }
 
         [JsonPropertyName("espAddress")]
-        public string EspAddress { get; init; }
+        public string? EspAddress { get; init; }
 
         [JsonPropertyName("names")]
         public IReadOnlyList<NameStamp> Names { get; init; } = [];

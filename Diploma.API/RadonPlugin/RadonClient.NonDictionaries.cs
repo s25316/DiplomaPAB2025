@@ -1,8 +1,9 @@
 ﻿// Ignore Spelling: Plugin
 using RadonPlugin.Enums;
-using RadonPlugin.Responses.NonDictionaries.Branches;
 using RadonPlugin.Responses.NonDictionaries.Courses;
 using RadonPlugin.Responses.NonDictionaries.SpecializedEducations;
+using BranchModel = RadonPlugin.Models.Branches.Branch;
+using BranchResponse = RadonPlugin.Responses.NonDictionaries.Branches.Branch;
 using DoctoralSchoolModel = RadonPlugin.Models.DoctoralSchools.DoctoralSchool;
 using DoctoralSchoolResponse = RadonPlugin.Responses.NonDictionaries.DoctoralSchools.DoctoralSchool;
 using InstitutionModel = RadonPlugin.Models.Institutions.Institution;
@@ -11,16 +12,17 @@ namespace RadonPlugin
 {
     public partial class RadonClient : HttpClient
     {
-        public async Task<IEnumerable<Branch>> GetBranchesAsync(
+        public async Task<IEnumerable<BranchModel>> GetBranchesAsync(
             GetBranchBy by = GetBranchBy.None,
             string? value = null,
             CancellationToken cancellationToken = default)
         {
-            return await GetAsync<Branch, GetBranchBy>(
+            var items = await GetAsync<BranchResponse, GetBranchBy>(
                 by,
                 value,
                 Factory.CreateBranchUrl,
                 cancellationToken);
+            return items.Select(item => (BranchModel)item);
         }
 
 

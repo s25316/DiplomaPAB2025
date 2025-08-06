@@ -2,7 +2,7 @@
 using DoctoralSchoolResponse = RadonPlugin.Responses.NonDictionaries.DoctoralSchools.DoctoralSchool;
 namespace RadonPlugin.Models.DoctoralSchools
 {
-    public class DoctoralSchoolContactInfo
+    public record DoctoralSchoolContactInfo
     {
         public string? Www { get; init; }
         public string? Email { get; init; }

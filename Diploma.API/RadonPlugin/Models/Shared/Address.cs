@@ -3,7 +3,7 @@ using DoctoralSchoolResponse = RadonPlugin.Responses.NonDictionaries.DoctoralSch
 
 namespace RadonPlugin.Models.Shared
 {
-    public class Address
+    public record Address
     {
         public Pair<int>? Country { get; init; } = null!;
         public Pair<int>? Voivodeship { get; init; } = null!;

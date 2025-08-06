@@ -10,7 +10,7 @@ namespace RadonPlugin.Responses.Shared.InstitutionInfos
         {
             if (reader.TokenType != JsonTokenType.StartObject)
             {
-                throw new JsonException("Oczekiwano początkowego obiektu JSON.");
+                throw new JsonException();
             }
 
             var builder = new InstitutionInfo.Builder(); while (reader.Read() && reader.TokenType == JsonTokenType.PropertyName)

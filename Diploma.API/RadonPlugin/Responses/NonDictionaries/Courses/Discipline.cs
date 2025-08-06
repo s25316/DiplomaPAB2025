@@ -4,16 +4,17 @@ using System.Text.Json.Serialization;
 
 namespace RadonPlugin.Responses.NonDictionaries.Courses
 {
-    public class Discipline
+    public record Discipline
     {
         [JsonPropertyName("disciplineCode")]
-        public string DisciplineCode { get; init; } = string.Empty;
+        public string Code { get; init; } = null!;
 
         [JsonPropertyName("disciplineName")]
-        public string DisciplineName { get; init; } = string.Empty;
+        public string Name { get; init; } = null!;
 
         [JsonPropertyName("disciplinePercentageShare")]
-        public string Percentage { get; init; }
+        [JsonConverter(typeof(IntegerConverter))]
+        public int Percentage { get; init; }
 
         [JsonPropertyName("disciplineLeading")]
         [JsonConverter(typeof(PolishBoolConverter))]

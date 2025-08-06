@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace RadonPlugin.Responses.NonDictionaries.Courses
 {
-    public class OrganizationalUnit
+    public record OrganizationalUnit
     {
         [JsonPropertyName("organizationalUnitUuid")]
         public Guid Id { get; init; }

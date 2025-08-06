@@ -3,12 +3,12 @@ using System.Text.Json.Serialization;
 
 namespace RadonPlugin.Responses.NonDictionaries.Courses
 {
-    public class Language
+    public record Language
     {
         [JsonPropertyName("languageCode")]
-        public string LanguageCode { get; init; } = null!;
+        public string Code { get; init; } = null!;
 
         [JsonPropertyName("languageName")]
-        public string LanguageName { get; init; } = null!;
+        public string Name { get; init; } = null!;
     }
 }

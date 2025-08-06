@@ -9,7 +9,7 @@ namespace RadonPlugin.Responses.Shared.InstitutionSnapshots
         {
             if (reader.TokenType != JsonTokenType.StartObject)
             {
-                throw new JsonException("Oczekiwano początkowego obiektu JSON.");
+                throw new JsonException();
             }
 
             var builder = new InstitutionSnapshot.Builder();

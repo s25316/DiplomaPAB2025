@@ -9,7 +9,7 @@ namespace RadonPlugin.Converters
         public override bool Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var value = reader.GetString();
-            if (string.IsNullOrEmpty(value)) throw new ArgumentException();
+            if (string.IsNullOrEmpty(value)) throw new JsonException();
             return value.ToLowerInvariant() switch
             {
                 "tak" => true,
@@ -20,7 +20,7 @@ namespace RadonPlugin.Converters
 
         public override void Write(Utf8JsonWriter writer, bool value, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(value.ToString());
+            writer.WriteBooleanValue(value);
         }
     }
 }

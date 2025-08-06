@@ -7,7 +7,7 @@ using DoctoralSchoolResponse = RadonPlugin.Responses.NonDictionaries.DoctoralSch
 
 namespace RadonPlugin.Models.DoctoralSchools
 {
-    public class DoctoralSchool
+    public record DoctoralSchool
     {
         public int Id { get; init; }
         public Guid Uuid { get; init; }
