@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\RadonPlugin\RadonPlugin.csproj" />
     <ProjectReference Include="..\RegonPlugin\RegonPlugin.csproj" />
+    <ProjectReference Include="..\TerytPlugin\TerytPlugin.csproj" />
   </ItemGroup>
 
 </Project>
