@@ -1,4 +1,5 @@
-﻿// Ignore Spelling: Teryt, Plugin, Terc, Simc
+﻿// Ignore Spelling: Teryt, Plugin, Terc, Simc, Ulic
+using TerytPlugin.FileModels;
 using TerytPlugin.Models;
 
 namespace TerytPlugin
@@ -7,6 +8,28 @@ namespace TerytPlugin
     {
         private readonly string tercFile = "C:\\01Mine\\git\\DiplomaPAB2025\\Diploma.API\\TerytPlugin\\FIles\\TERC.csv";
         private readonly string simcFile = "C:\\01Mine\\git\\DiplomaPAB2025\\Diploma.API\\TerytPlugin\\FIles\\SIMC.csv";
+        private readonly string ulicFile = "C:\\01Mine\\git\\DiplomaPAB2025\\Diploma.API\\TerytPlugin\\FIles\\ULIC.csv";
+
+        public async Task GetAsync()
+        {
+
+
+            // Streets Preparation
+            var ulicData = await GetUlicInfoAsync();
+
+            var streets = new List<Street>();
+            var connections = new List<Connection>();
+            var streetTypes = new HashSet<string>();
+            foreach (var item in ulicData)
+            {
+                if (!string.IsNullOrWhiteSpace(item.Type))
+                {
+                    streetTypes.Add(item.Type);
+                }
+                streets.Add(item.GetStreet());
+                connections.Add(item.GetConnection());
+            }
+        }
 
         public async Task<IEnumerable<TercInfo>> GetTercInfoAsync()
         {
@@ -21,6 +44,14 @@ namespace TerytPlugin
             return await ReadFileAsync(
                 simcFile,
                 str => (SimcInfo)str
+                );
+        }
+
+        public async Task<IEnumerable<UlicInfo>> GetUlicInfoAsync()
+        {
+            return await ReadFileAsync(
+                ulicFile,
+                str => (UlicInfo)str
                 );
         }
 
@@ -62,7 +93,6 @@ namespace TerytPlugin
                             }
                             items.Add(parse(line));
                         }
-
                         while (line != null);
                     }
                 }

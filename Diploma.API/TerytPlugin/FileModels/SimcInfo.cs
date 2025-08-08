@@ -2,7 +2,7 @@
 // Ignore Spelling: Zwyczajowa, Miejscowosc
 using System.Globalization;
 
-namespace TerytPlugin.Models
+namespace TerytPlugin.FileModels
 {
     public class SimcInfo
     {
@@ -21,6 +21,10 @@ namespace TerytPlugin.Models
         public static implicit operator SimcInfo(string value)
         {
             var items = value.Split(';');
+            if (items.Length != 10)
+            {
+                throw new NotImplementedException();
+            }
 
             return new SimcInfo
             {
@@ -32,12 +36,20 @@ namespace TerytPlugin.Models
                 HasNazwaZwyczajowa = int.Parse(items[5].Trim()) > 0,
                 Nazwa = items[6].Trim(),
                 MiejscowoscId = items[7].Trim(),
-                ParentId = items[7].Trim() != items[8].Trim()
-                    ? items[8].Trim()
-                    : null,
-                Date = DateOnly.Parse(items[9], CultureInfo.InvariantCulture),
+                ParentId = CheckDuplicate(items[7], items[8]),
+                Date = DateOnly.Parse(items[9].Trim(), CultureInfo.InvariantCulture),
             };
         }
-    }
 
+        private static string? CheckDuplicate(string value1, string value2)
+        {
+            value1 = value1.Trim();
+            value2 = value2.Trim();
+            if (value1 == value2)
+            {
+                return null;
+            }
+            return value2;
+        }
+    }
 }

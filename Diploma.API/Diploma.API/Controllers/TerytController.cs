@@ -20,5 +20,13 @@ namespace Diploma.API.Controllers
             var items = await new TerytPlugin.TerytClient().GetSimcInfoAsync();
             return Ok(items.Take(500));
         }
+
+
+        [HttpGet("ulic")]
+        public async Task<IActionResult> GetUlicInfoAsync()
+        {
+            var items = await new TerytPlugin.TerytClient().GetUlicInfoAsync();
+            return Ok(items.Take(500));
+        }
     }
 }

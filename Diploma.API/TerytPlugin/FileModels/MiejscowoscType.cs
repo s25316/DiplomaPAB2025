@@ -1,7 +1,7 @@
 ﻿// ignore Spelling: Teryt, Plugin, Miejscowosc
 // ignore Spelling: część, miejscowości, wieś, kolonia, przysiółek, osada, leśna, osiedle, schronisko, turystyczne,
 // ignore Spelling: dzielnica, Warszawy, miasto, delegatura, miasta, Czesc, Przysiolek, Wies
-namespace TerytPlugin.Models
+namespace TerytPlugin.FileModels
 {
     public record MiejscowoscType(int Id, string Name)
     {
@@ -17,7 +17,7 @@ namespace TerytPlugin.Models
         public static MiejscowoscType Miasto => new MiejscowoscType(96, "miasto");
         public static MiejscowoscType Delegatura => new MiejscowoscType(98, "delegatura");
         public static MiejscowoscType CzescMiasta => new MiejscowoscType(99, "część miasta");
-        public static Dictionary<int, MiejscowoscType> Types => new Dictionary<int, MiejscowoscType>
+        public static IReadOnlyDictionary<int, MiejscowoscType> Types => new Dictionary<int, MiejscowoscType>
         {
             { 0, Czesc},
             { 1, Wies},
