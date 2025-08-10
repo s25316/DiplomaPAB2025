@@ -1,5 +1,7 @@
 ﻿// Ignore Spelling: Teryt, Plugin, Terc,  Wojewodstwo, Powiat, Gmina, Rodzaj, Nazwa
 using System.Globalization;
+using TerytPlugin.Models;
+using TerytPlugin.Providers;
 
 namespace TerytPlugin.FileModels
 {
@@ -25,20 +27,55 @@ namespace TerytPlugin.FileModels
             return new TercInfo
             {
                 WojewodstwoId = items[0].Trim(),
-                PowiatId = Adapt(items[1]),
-                GminaId = Adapt(items[2]),
+                PowiatId = CustomStringProvider.Adapt(items[1]),
+                GminaId = CustomStringProvider.Adapt(items[2]),
                 Type = items[3].Trim(),
                 Nazwa1 = items[4].Trim(),
-                TypeName = Adapt(items[5]) ?? throw new ArgumentException(items[5]),
+                TypeName = CustomStringProvider.Adapt(items[5]) ?? throw new ArgumentException(items[5]),
                 Date = DateOnly.Parse(items[6], CultureInfo.InvariantCulture)
             };
         }
 
-        private static string? Adapt(string? value)
+
+        public static implicit operator Division(TercInfo item)
         {
-            return !string.IsNullOrWhiteSpace(value)
-                    ? value.Trim()
-                    : null;
+            string? parentId = null;
+            string id;
+
+            if (string.IsNullOrWhiteSpace(item.PowiatId))
+            {
+                parentId = null;
+                id = item.WojewodstwoId;
+            }
+            else if (string.IsNullOrWhiteSpace(item.GminaId))
+            {
+                parentId = item.WojewodstwoId;
+                id = CustomStringProvider.DivisionIdGenerator(
+                    item.WojewodstwoId,
+                    item.PowiatId);
+            }
+            else if (item.Type is not null)
+            {
+                parentId = CustomStringProvider.DivisionIdGenerator(
+                    item.WojewodstwoId,
+                    item.PowiatId);
+                id = CustomStringProvider.DivisionIdGenerator(
+                    item.WojewodstwoId,
+                    item.PowiatId,
+                    $"{item.GminaId}{item.Type.Id}");
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+
+            return new Division
+            {
+                ParentId = parentId,
+                Id = id,
+                Name = item.Nazwa1,
+                Type = item.TypeName,
+            };
         }
     }
 }

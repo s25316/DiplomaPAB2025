@@ -6,12 +6,49 @@ namespace TerytPlugin
 {
     public class TerytClient
     {
-        private readonly string tercFile = "C:\\01Mine\\git\\DiplomaPAB2025\\Diploma.API\\TerytPlugin\\FIles\\TERC.csv";
-        private readonly string simcFile = "C:\\01Mine\\git\\DiplomaPAB2025\\Diploma.API\\TerytPlugin\\FIles\\SIMC.csv";
-        private readonly string ulicFile = "C:\\01Mine\\git\\DiplomaPAB2025\\Diploma.API\\TerytPlugin\\FIles\\ULIC.csv";
+        private readonly string tercFile;
+        private readonly string simcFile;
+        private readonly string ulicFile;
 
-        public async Task GetAsync()
+
+        public TerytClient(string tercFile, string simcFile, string ulicFile)
         {
+            this.tercFile = tercFile;
+            this.simcFile = simcFile;
+            this.ulicFile = ulicFile;
+        }
+
+
+        public async Task<TerytInfo> GetAsync()
+        {
+            // Main Divisions
+            var tercItems = await GetTercInfoAsync();
+            var simcItems = await GetSimcInfoAsync();
+            var divisions = new Dictionary<string, Division>();
+            var divisionTypes = new HashSet<string>();
+            foreach (var item in tercItems)
+            {
+                var division = (Division)item; ;
+
+                if (divisions.ContainsKey(division.Id))
+                {
+                    throw new ArgumentException(division.Id);
+                }
+
+                divisions.Add(division.Id, division);
+                divisionTypes.Add(division.Type);
+            }
+            foreach (var item in simcItems)
+            {
+                var division = (Division)item;
+                if (divisions.ContainsKey(division.Id))
+                {
+                    throw new ArgumentException(division.Id);
+                }
+
+                divisions.Add(division.Id, division);
+                divisionTypes.Add(division.Type);
+            }
 
 
             // Streets Preparation
@@ -20,6 +57,7 @@ namespace TerytPlugin
             var streets = new List<Street>();
             var connections = new List<Connection>();
             var streetTypes = new HashSet<string>();
+
             foreach (var item in ulicData)
             {
                 if (!string.IsNullOrWhiteSpace(item.Type))
@@ -29,9 +67,20 @@ namespace TerytPlugin
                 streets.Add(item.GetStreet());
                 connections.Add(item.GetConnection());
             }
+
+            return new TerytInfo
+            {
+                DivisionTypes = divisionTypes,
+                Divisions = divisions.Values,
+
+                StreetTypes = streetTypes,
+                Streets = streets,
+
+                Connections = connections,
+            };
         }
 
-        public async Task<IEnumerable<TercInfo>> GetTercInfoAsync()
+        private async Task<IEnumerable<TercInfo>> GetTercInfoAsync()
         {
             return await ReadFileAsync(
                 tercFile,
@@ -39,7 +88,7 @@ namespace TerytPlugin
                 );
         }
 
-        public async Task<IEnumerable<SimcInfo>> GetSimcInfoAsync()
+        private async Task<IEnumerable<SimcInfo>> GetSimcInfoAsync()
         {
             return await ReadFileAsync(
                 simcFile,
@@ -47,7 +96,7 @@ namespace TerytPlugin
                 );
         }
 
-        public async Task<IEnumerable<UlicInfo>> GetUlicInfoAsync()
+        private async Task<IEnumerable<UlicInfo>> GetUlicInfoAsync()
         {
             return await ReadFileAsync(
                 ulicFile,
