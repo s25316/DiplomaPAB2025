@@ -28,7 +28,7 @@ namespace TerytPlugin
             var divisionTypes = new HashSet<string>();
             foreach (var item in tercItems)
             {
-                var division = (Division)item; ;
+                var division = (Division)item;
 
                 if (divisions.ContainsKey(division.Id))
                 {
@@ -54,7 +54,7 @@ namespace TerytPlugin
             // Streets Preparation
             var ulicData = await GetUlicInfoAsync();
 
-            var streets = new List<Street>();
+            var streets = new Dictionary<string, Street>();
             var connections = new List<Connection>();
             var streetTypes = new HashSet<string>();
 
@@ -64,8 +64,13 @@ namespace TerytPlugin
                 {
                     streetTypes.Add(item.Type);
                 }
-                streets.Add(item.GetStreet());
-                connections.Add(item.GetConnection());
+                var connection = item.GetConnection();
+                connections.Add(connection);
+                if (!streets.ContainsKey(connection.UlicaId))
+                {
+                    var street = item.GetStreet();
+                    streets[street.Id] = street;
+                }
             }
 
             return new TerytInfo
@@ -74,7 +79,7 @@ namespace TerytPlugin
                 Divisions = divisions.Values,
 
                 StreetTypes = streetTypes,
-                Streets = streets,
+                Streets = streets.Values,
 
                 Connections = connections,
             };

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Diploma.Seeder": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
