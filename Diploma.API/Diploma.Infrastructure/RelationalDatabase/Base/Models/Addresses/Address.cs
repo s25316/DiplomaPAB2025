@@ -1,4 +1,6 @@
-﻿namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.Addresses
+﻿using Diploma.Infrastructure.RelationalDatabase.Base.Models.Companies;
+
+namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.Addresses
 {
     public class Address
     {
@@ -12,5 +14,7 @@
 
         public int? StreetId { get; set; }
         public virtual Street? Street { get; set; }
+
+        public virtual ICollection<CompanyAddress> CompanyAddresses { get; set; } = new List<CompanyAddress>();
     }
 }

@@ -29,6 +29,8 @@ namespace Diploma.Seeder
             logger.LogInformation("Start");
             var sw = new Stopwatch();
             sw.Start();
+
+
             await SeedTerytDataAsync(db);
 
 
@@ -48,7 +50,6 @@ namespace Diploma.Seeder
             await db.Streets.ExecuteDeleteAsync();
             await db.DivisionTypes.ExecuteDeleteAsync();
             await db.StreetTypes.ExecuteDeleteAsync();
-            await db.Countries.ExecuteDeleteAsync();
             await db.SaveChangesAsync();
 
             terytLogger.LogInformation("Removed Database Data");
@@ -67,14 +68,6 @@ namespace Diploma.Seeder
             var dbDivision = new Dictionary<string, Division>();
             var dbStreetTypes = new Dictionary<string, StreetType>();
             var dbStreets = new Dictionary<string, Street>();
-
-            var poland = new Country
-            {
-                Name = "Polska",
-            };
-            await db.Countries.AddAsync(poland);
-            terytLogger.LogInformation($"Add {nameof(Country)}");
-
 
             foreach (var divisionType in data.DivisionTypes)
             {
@@ -107,7 +100,6 @@ namespace Diploma.Seeder
                     ParentDivisionId = division.ParentId,
                     DivisionType = dbDivisionTypes[division.Type],
                     Name = division.Name,
-                    Country = poland,
                 };
                 dbDivision[division.Id] = item;
                 db.Divisions.Add(item);
@@ -123,7 +115,6 @@ namespace Diploma.Seeder
                         ? dbStreetTypes[street.Type]
                         : null,
                     Name = street.Name,
-                    Country = poland,
                 };
                 dbStreets[street.Id] = item;
                 db.Streets.Add(item);
@@ -141,5 +132,6 @@ namespace Diploma.Seeder
             }
             terytLogger.LogInformation($"Add {nameof(Division)} and {nameof(Street)} connections");
         }
+
     }
 }

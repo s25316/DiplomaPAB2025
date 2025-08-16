@@ -1,7 +1,13 @@
 ﻿// ignore Spelling: Sql
 using Diploma.Infrastructure.RelationalDatabase.Base;
 using Diploma.Infrastructure.RelationalDatabase.Base.Models.Addresses;
+using Diploma.Infrastructure.RelationalDatabase.Base.Models.Companies;
+using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations;
+using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations.Courses;
 using Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.Addresses;
+using Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.Companies;
+using Diploma.Infrastructure.RelationalDatabase.MsSql.HighEducations;
+using Diploma.Infrastructure.RelationalDatabase.MsSql.HighEducations.Courses;
 using Microsoft.EntityFrameworkCore;
 
 namespace Diploma.Infrastructure.RelationalDatabase.MsSql
@@ -19,11 +25,33 @@ namespace Diploma.Infrastructure.RelationalDatabase.MsSql
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration<Country>(new CountryEFConfiguration());
             modelBuilder.ApplyConfiguration<Division>(new DivisionEFConfiguration());
             modelBuilder.ApplyConfiguration<DivisionType>(new DivisionTypeEFConfiguration());
             modelBuilder.ApplyConfiguration<Street>(new StreetEFConfiguration());
             modelBuilder.ApplyConfiguration<StreetType>(new StreetTypeEFConfiguration());
+            modelBuilder.ApplyConfiguration<Address>(new AddressEFConfiguration());
+
+
+            modelBuilder.ApplyConfiguration<Company>(new CompanyEFConfiguration());
+            modelBuilder.ApplyConfiguration<CompanyName>(new CompanyNameEFConfiguration());
+            modelBuilder.ApplyConfiguration<CompanyAddress>(new CompanyAddressEFConfiguration());
+
+
+            modelBuilder.ApplyConfiguration<Discipline>(new DisciplineEFConfiguration());
+            modelBuilder.ApplyConfiguration<EducationInstitution>(new EducationInstitutionEFConfiguration());
+            modelBuilder.ApplyConfiguration<EducationInstitutionKind>(new EducationInstitutionKindEFConfiguration());
+
+            modelBuilder.ApplyConfiguration<Course>(new CourseEFConfiguration());
+            modelBuilder.ApplyConfiguration<CourseForm>(new CourseFormEFConfiguration());
+            modelBuilder.ApplyConfiguration<CourseLanguage>(new CourseLanguageEFConfiguration());
+            modelBuilder.ApplyConfiguration<CourseLevel>(new CourseLevelEFConfiguration());
+            modelBuilder.ApplyConfiguration<CourseProfile>(new CourseProfileEFConfiguration());
+            modelBuilder.ApplyConfiguration<CourseTitle>(new CourseTitleEFConfiguration());
+            modelBuilder.ApplyConfiguration<DisciplineCourse>(new DisciplineCourseEFConfiguration());
+            modelBuilder.ApplyConfiguration<EducationInstitutionCourse>(new EducationInstitutionCourseEFConfiguration());
+
+            //modelBuilder.ApplyConfiguration<>(new EFConfiguration());
+
             base.OnModelCreating(modelBuilder);
         }
     }

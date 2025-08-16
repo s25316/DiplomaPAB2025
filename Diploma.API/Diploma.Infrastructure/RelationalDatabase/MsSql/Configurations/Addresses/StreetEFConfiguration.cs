@@ -12,13 +12,6 @@ namespace Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.Address
             builder.HasKey(x => x.StreetId).HasName($"{nameof(Street)}_pk");
             builder.Property(x => x.StreetId).ValueGeneratedNever();
 
-            builder.HasOne(x => x.Country)
-                .WithMany(x => x.Streets)
-                .HasForeignKey(x => x.CountryId)
-                .HasConstraintName($"{nameof(Country)}_{nameof(Street)}_fk")
-                .OnDelete(DeleteBehavior.Restrict);
-
-
             builder.HasOne(x => x.StreetType)
                 .WithMany(x => x.Streets)
                 .HasForeignKey(x => x.StreetTypeId)

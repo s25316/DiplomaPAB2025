@@ -5,9 +5,6 @@
         public string StreetId { get; set; } = null!;
         public string Name { get; set; } = null!;
 
-        public int CountryId { get; set; }
-        public virtual Country Country { get; set; } = null!;
-
         public int? StreetTypeId { get; set; }
         public virtual StreetType? StreetType { get; set; }
 
