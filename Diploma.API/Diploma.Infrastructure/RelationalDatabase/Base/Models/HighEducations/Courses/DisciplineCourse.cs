@@ -3,7 +3,8 @@
     public class DisciplineCourse
     {
         public Guid DisciplineCourseId { get; set; }
-        public bool IsMain { get; set; }
+        public bool? IsMain { get; set; }
+        public int Percentage { get; set; }
 
         public Guid CourseId { get; set; }
         public virtual Course Course { get; set; } = null!;

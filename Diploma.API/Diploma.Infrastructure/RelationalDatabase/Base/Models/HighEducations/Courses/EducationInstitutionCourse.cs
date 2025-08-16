@@ -3,7 +3,9 @@
     public class EducationInstitutionCourse
     {
         public Guid InstitutionCourseId { get; set; }
-        public bool IsMain { get; set; }
+        public bool IsMainInstitution { get; set; }
+        public DateOnly DateFrom { get; init; }
+        public DateOnly? DateTo { get; init; }
 
         public Guid InstitutionId { get; set; }
         public virtual EducationInstitution Institution { get; set; } = null!;

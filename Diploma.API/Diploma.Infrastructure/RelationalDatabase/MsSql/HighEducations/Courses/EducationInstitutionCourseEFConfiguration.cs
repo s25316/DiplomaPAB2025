@@ -12,7 +12,7 @@ namespace Diploma.Infrastructure.RelationalDatabase.MsSql.HighEducations.Courses
             builder.ToTable(nameof(EducationInstitutionCourse));
             builder.HasKey(x => x.InstitutionCourseId).HasName($"{nameof(EducationInstitutionCourse)}_pk");
             builder.Property(x => x.InstitutionCourseId).HasDefaultValueSql("(newid())");
-            builder.Property(x => x.IsMain).HasDefaultValue(false);
+            builder.Property(x => x.IsMainInstitution).HasDefaultValue(false);
 
             builder.HasOne(x => x.Course)
                 .WithMany(x => x.Institutions)

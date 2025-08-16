@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace RadonPlugin.Responses.Shared
 {
-    public class AddressStamp
+    public record AddressStamp
     {
         [JsonPropertyName("country")]
         public string Country { get; init; } = null!;
