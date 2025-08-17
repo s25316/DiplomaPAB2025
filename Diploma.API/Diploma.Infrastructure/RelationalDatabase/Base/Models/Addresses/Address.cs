@@ -9,10 +9,10 @@ namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.Addresses
         public string? FlatNumber { get; set; } = null!;
 
 
-        public int DivisionId { get; set; }
+        public string DivisionId { get; set; } = null!;
         public virtual Division Division { get; set; } = null!;
 
-        public int? StreetId { get; set; }
+        public string? StreetId { get; set; } = null!;
         public virtual Street? Street { get; set; }
 
         public virtual ICollection<CompanyAddress> CompanyAddresses { get; set; } = new List<CompanyAddress>();

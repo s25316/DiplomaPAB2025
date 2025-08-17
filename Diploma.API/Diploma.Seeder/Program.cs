@@ -7,18 +7,25 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RadonPlugin;
 using System.Diagnostics;
+using System.Text.Json;
+using RadonInstitution = RadonPlugin.Models.Institutions.Institution;
 
 namespace Diploma.Seeder
 {
-    internal class Program
+    public class Program
     {
         private const string TERC_FILE = "C:\\01Mine\\git\\DiplomaPAB2025\\Diploma.API\\TerytPlugin\\FIles\\TERC.csv";
         private const string SIMC_FILE = "C:\\01Mine\\git\\DiplomaPAB2025\\Diploma.API\\TerytPlugin\\FIles\\SIMC.csv";
         private const string ULIC_FILE = "C:\\01Mine\\git\\DiplomaPAB2025\\Diploma.API\\TerytPlugin\\FIles\\ULIC.csv";
+
         private static ILoggerFactory? loggerFactory;
         private static MsSqlDiplomaDbContext? db;
 
-        static async Task Main(string[] args)
+        private static Dictionary<string, Division> dbDivisions = [];
+        private static Dictionary<string, Street> dbStreets = [];
+
+
+        public static async Task Main(string[] args)
         {
             loggerFactory = LoggerFactory.Create(b =>
             {
@@ -33,13 +40,14 @@ namespace Diploma.Seeder
             logger.LogInformation("Start");
             var sw = new Stopwatch();
             sw.Start();
+            /*
+                        await RemoveRadonDataAsync();
+                        await RemoveTerytDataAsync();
 
-            await RemoveRadonDataAsync();
-            await RemoveTerytDataAsync();
+                        await SeedTerytDataAsync();
+                        await SeedRadonDataAsync();*/
 
-            await SeedTerytDataAsync();
-            await SeedRadonDataAsync();
-
+            await AddressesAsync();
             sw.Stop();
 
             string resultMessage = $"End, spend Time: {new TimeSpan(sw.ElapsedTicks)}";
@@ -65,9 +73,7 @@ namespace Diploma.Seeder
         {
             var terytLogger = loggerFactory!.CreateLogger("TERYT");
             var dbDivisionTypes = new Dictionary<string, DivisionType>();
-            var dbDivision = new Dictionary<string, Division>();
             var dbStreetTypes = new Dictionary<string, StreetType>();
-            var dbStreets = new Dictionary<string, Street>();
 
 
             var teryt = new TerytPlugin.TerytClient(
@@ -114,7 +120,7 @@ namespace Diploma.Seeder
                     DivisionType = dbDivisionTypes[division.Type],
                     Name = division.Name,
                 };
-                dbDivision[division.Id] = item;
+                dbDivisions[division.Id] = item;
                 db.Divisions.Add(item);
             }
             terytLogger.LogInformation($"Add {nameof(Division)}");
@@ -139,7 +145,7 @@ namespace Diploma.Seeder
                 var street = dbStreets[pair.Key];
                 foreach (var divisionId in pair)
                 {
-                    var division = dbDivision[divisionId.MiejscowoscId];
+                    var division = dbDivisions[divisionId.MiejscowoscId];
                     street.Divisions.Add(division);
                 }
             }
@@ -175,6 +181,7 @@ namespace Diploma.Seeder
             await db.Database.CommitTransactionAsync();
             radonLogger.LogInformation("Removed Database Data");
         }
+
         private static async Task SeedRadonDataAsync()
         {
             var radonLogger = loggerFactory!.CreateLogger("RADON");
@@ -402,6 +409,163 @@ namespace Diploma.Seeder
 
             await db.SaveChangesAsync();
             await db.Database.CommitTransactionAsync();
+        }
+
+        private static async Task AddressesAsync()// AddressStamp address
+        {
+            var teryt = new TerytPlugin.TerytClient(
+                    TERC_FILE,
+                    SIMC_FILE,
+                    ULIC_FILE
+                    );
+            var data = await teryt.GetAsync();
+
+            var divisions = data.Divisions.ToDictionary(k => k.Id);
+            var streets = data.Streets;
+            var connections = data.Connections;
+
+            var json = File.ReadAllText("C:\\Users\\User\\Desktop\\response_1754589310627.json");
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            var institutions = JsonSerializer.Deserialize<IEnumerable<RadonInstitution>>(json, options)
+                ?? throw new NotImplementedException();
+
+
+            var polishInstitutions = institutions.SelectMany(x => x.Addresses)
+                .Where(x => x.Country.ToLowerInvariant() == "polska")
+                .ToHashSet();
+
+            var streetNames = polishInstitutions
+                .Select(x => x.Street ?? "")
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .ToHashSet();
+
+            var streetsDictionary = streetNames
+                .ToDictionary(
+                    k => k.ToLowerInvariant(),
+                    v => streets.Where(x =>
+                        v.ToLowerInvariant() == x.Name.ToLowerInvariant() ||
+                        v.ToLowerInvariant().Contains(x.Name.ToLowerInvariant())
+                    ).ToList()
+                );
+
+            if (streetsDictionary.Count != streetNames.Count)
+            {
+                throw new NotImplementedException();
+            }
+
+            var streetsIds = streetsDictionary.Values
+                .SelectMany(x => x.Select(y => y.Id))
+                .ToHashSet();
+
+            var connectionsDictionary = connections
+                .Where(x => streetsIds.Contains(x.UlicaId))
+                .GroupBy(x => x.UlicaId)
+                .ToDictionary(
+                    k => k.Key.ToLowerInvariant(),
+                    v => v.Select(x => x.MiejscowoscId).ToHashSet()
+                );
+
+
+            if (streetsIds.Count != connectionsDictionary.Count)
+            {
+                throw new NotImplementedException();
+            }
+
+
+            var voivodeships = divisions.Values
+                .Where(x => x.ParentId == null)
+                .ToDictionary(k => k.Name.ToLowerInvariant());
+
+            foreach (var address in polishInstitutions)
+            {
+                if (address.Country.ToLowerInvariant() != "polska")
+                {
+                    continue;
+                }
+                var voivodeship = voivodeships[address.Voivodeship.ToLowerInvariant()];
+
+                // Try find the same Divisions
+                var addressDivisions = divisions.Values
+                    .Where(x =>
+                        x.Id.Length == 7 &&
+                        x.Name.ToLowerInvariant() == address.City.ToLowerInvariant() &&
+                        x.ParentId != null &&
+                        x.ParentId.StartsWith(voivodeship.Id)
+                    ).ToList();
+
+                // Try find similar Divisions
+                if (addressDivisions.Count == 0)
+                {
+                    addressDivisions = divisions.Values
+                        .Where(x =>
+                            x.Id.Length > 5 &&
+                            x.ParentId != null &&
+                            x.ParentId.StartsWith(voivodeship.Id) &&
+                            (
+                                address.City.ToLowerInvariant().Contains(x.Name.ToLowerInvariant()) ||
+                                x.Name.ToLowerInvariant().Contains(address.City.ToLowerInvariant())
+                            )
+                        ).ToList();
+                }
+
+                if (addressDivisions.Count == 0)
+                {
+                    throw new NotImplementedException();
+                }
+
+                Address? dbAddress = null;
+                if (string.IsNullOrWhiteSpace(address.Street))
+                {
+                    dbAddress = new Address
+                    {
+                        DivisionId = addressDivisions.OrderBy(x => x.Id).First().Id,
+                        StreetId = null,
+                        BuildingNumber = address.HouseNumber,
+                        FlatNumber = address.FlatNumber,
+                    };
+                }
+                else
+                {
+                    var streetName = address.Street.ToLowerInvariant();
+                    var addressStreet = streetsDictionary[streetName];
+                    var addressStreetIds = addressStreet.Select(x => x.Id);
+                    var divisionIds = addressDivisions.Select(x => x.Id);
+
+                    var dbAddresses = new List<Address>();
+                    foreach (var addressStreetId in addressStreetIds)
+                    {
+                        var streetDivisionIds = connectionsDictionary[addressStreetId];
+                        var intersectIds = divisionIds.Intersect(streetDivisionIds);
+
+                        foreach (var divisionId in intersectIds)
+                        {
+                            dbAddress = new Address
+                            {
+                                DivisionId = divisionId,
+                                StreetId = addressStreetId,
+                            };
+                            dbAddresses.Add(dbAddress);
+                        }
+                    }
+
+                    // 1 or many or 0 
+                    if (!dbAddresses.Any())
+                    {
+
+                    }
+                    Console.WriteLine($"{dbAddresses.Count}");
+                }
+
+                var adddrStam = new CompanyAddress
+                {
+                    Address = dbAddress!,
+                    Date = address.DateFrom,
+                };
+            }
         }
     }
 }
