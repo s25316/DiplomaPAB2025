@@ -531,9 +531,9 @@ namespace Diploma.Seeder
                 else
                 {
                     var streetName = address.Street.ToLowerInvariant();
-                    var addressStreet = streetsDictionary[streetName];
-                    var addressStreetIds = addressStreet.Select(x => x.Id);
-                    var divisionIds = addressDivisions.Select(x => x.Id);
+                    var addressStreets = streetsDictionary[streetName];
+                    var addressStreetIds = addressStreets.Select(x => x.Id).ToHashSet();
+                    var divisionIds = addressDivisions.Select(x => x.Id).ToHashSet();
 
                     var dbAddresses = new List<Address>();
                     foreach (var addressStreetId in addressStreetIds)
@@ -552,19 +552,48 @@ namespace Diploma.Seeder
                         }
                     }
 
-                    // 1 or many or 0 
-                    if (!dbAddresses.Any())
+                    // list 0 probably invalid 
+                    if (dbAddresses.Count > 1)
                     {
+                        addressStreetIds = dbAddresses.Select(x => x.StreetId).ToHashSet();
+                        var charArray = streetName.ToCharArray();
 
+                        var intersectCount = -1;
+                        var streetId = string.Empty;
+                        foreach (var addressStreet in addressStreets)
+                        {
+                            if (addressStreetIds.Contains(addressStreet.Id))
+                            {
+                                var streetFullName = $"{addressStreet.Type} {addressStreet.Name}";
+                                var streetCharArray = streetFullName.ToCharArray();
+                                var count = streetCharArray.Intersect(charArray).Count();
+
+                                if (count > intersectCount)
+                                {
+                                    streetId = addressStreet.Id;
+                                }
+                            }
+                        }
+
+                        dbAddress = dbAddresses
+                            .Where(x => x.StreetId == streetId)
+                            .OrderBy(x => x.DivisionId)
+                            .FirstOrDefault();
                     }
-                    Console.WriteLine($"{dbAddresses.Count}");
                 }
 
-                var adddrStam = new CompanyAddress
+                if (dbAddress is not null)
                 {
-                    Address = dbAddress!,
-                    Date = address.DateFrom,
-                };
+                    var adddrStam = new CompanyAddress
+                    {
+                        Address = dbAddress,
+                        Date = address.DateFrom,
+                    };
+                }
+                else
+                {
+                    Console.WriteLine($"Not found for {address}");
+                }
             }
         }
     }
