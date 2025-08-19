@@ -7,9 +7,9 @@ namespace RadonPlugin.Models.Courses
 {
     public record Course
     {
+        public Guid Id { get; init; }
         public Pair<Guid> MainInstitution { get; init; } = null!;
         public Pair<Guid> LeadingInstitution { get; init; } = null!;
-        public Guid Id { get; init; }
         public int Code { get; init; }
         public int? OldCode { get; init; }
         public string CourseName { get; init; } = null!;

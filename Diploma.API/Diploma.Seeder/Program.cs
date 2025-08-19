@@ -6,9 +6,13 @@ using Diploma.Infrastructure.RelationalDatabase.MsSql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RadonPlugin;
+using RadonPlugin.Responses.Shared;
 using System.Diagnostics;
-using System.Text.Json;
+using RadonCourse = RadonPlugin.Models.Courses.Course;
 using RadonInstitution = RadonPlugin.Models.Institutions.Institution;
+using TerytConnection = TerytPlugin.Models.Connection;
+using TerytDivision = TerytPlugin.Models.Division;
+using TerytStreet = TerytPlugin.Models.Street;
 
 namespace Diploma.Seeder
 {
@@ -21,9 +25,9 @@ namespace Diploma.Seeder
         private static ILoggerFactory? loggerFactory;
         private static MsSqlDiplomaDbContext? db;
 
-        private static Dictionary<string, Division> dbDivisions = [];
-        private static Dictionary<string, Street> dbStreets = [];
-
+        private static IEnumerable<TerytDivision> divisions = [];
+        private static IEnumerable<TerytStreet> streets = [];
+        private static IEnumerable<TerytConnection> connections = [];
 
         public static async Task Main(string[] args)
         {
@@ -40,14 +44,12 @@ namespace Diploma.Seeder
             logger.LogInformation("Start");
             var sw = new Stopwatch();
             sw.Start();
-            /*
-                        await RemoveRadonDataAsync();
-                        await RemoveTerytDataAsync();
 
-                        await SeedTerytDataAsync();
-                        await SeedRadonDataAsync();*/
+            await RemoveRadonDataAsync();
+            await RemoveTerytDataAsync();
 
-            await AddressesAsync();
+            await SeedTerytDataAsync();
+            await SeedRadonDataAsync();
             sw.Stop();
 
             string resultMessage = $"End, spend Time: {new TimeSpan(sw.ElapsedTicks)}";
@@ -74,6 +76,8 @@ namespace Diploma.Seeder
             var terytLogger = loggerFactory!.CreateLogger("TERYT");
             var dbDivisionTypes = new Dictionary<string, DivisionType>();
             var dbStreetTypes = new Dictionary<string, StreetType>();
+            var dbDivisions = new Dictionary<string, Division>();
+            var dbStreets = new Dictionary<string, Street>();
 
 
             var teryt = new TerytPlugin.TerytClient(
@@ -111,7 +115,8 @@ namespace Diploma.Seeder
             }
             terytLogger.LogInformation($"Add {nameof(StreetType)}");
 
-            foreach (var division in data.Divisions)
+            divisions = data.Divisions;
+            foreach (var division in divisions)
             {
                 var item = new Division
                 {
@@ -125,7 +130,8 @@ namespace Diploma.Seeder
             }
             terytLogger.LogInformation($"Add {nameof(Division)}");
 
-            foreach (var street in data.Streets)
+            streets = data.Streets;
+            foreach (var street in streets)
             {
                 var item = new Street
                 {
@@ -140,7 +146,8 @@ namespace Diploma.Seeder
             }
             terytLogger.LogInformation($"Add {nameof(Street)}");
 
-            foreach (var pair in data.Connections.GroupBy(x => x.UlicaId))
+            connections = data.Connections;
+            foreach (var pair in connections.GroupBy(x => x.UlicaId))
             {
                 var street = dbStreets[pair.Key];
                 foreach (var divisionId in pair)
@@ -281,7 +288,8 @@ namespace Diploma.Seeder
             radonLogger.LogInformation($"Add {nameof(Discipline)}");
 
             // EducationInstitution
-            foreach (var item in await radon.GetInstitutionsAsync())
+            var institutions = await radon.GetInstitutionsAsync();
+            foreach (var item in institutions)
             {
                 var company = new Company
                 {
@@ -316,7 +324,19 @@ namespace Diploma.Seeder
             }
             radonLogger.LogInformation($"Add {nameof(EducationInstitution)}");
 
-            foreach (var item in await radon.GetCoursesAsync())
+            await AddEducationInstitutionAddressesAsync(institutions, radonLogger);
+            radonLogger.LogInformation($"Add {nameof(EducationInstitution)} adddresses");
+
+            // sometimes we have duplicates in Courses
+            var courses = await radon.GetCoursesAsync();
+            var coursesDictionary = new Dictionary<Guid, RadonCourse>();
+            foreach (var course in courses)
+            {
+                coursesDictionary[course.Id] = course;
+            }
+            courses = coursesDictionary.Values;
+
+            foreach (var item in courses)
             {
                 var dbItem = new Course
                 {
@@ -411,29 +431,11 @@ namespace Diploma.Seeder
             await db.Database.CommitTransactionAsync();
         }
 
-        private static async Task AddressesAsync()// AddressStamp address
+        private static async Task AddEducationInstitutionAddressesAsync(
+            IEnumerable<RadonInstitution> institutions,
+            ILogger logger)
         {
-            var teryt = new TerytPlugin.TerytClient(
-                    TERC_FILE,
-                    SIMC_FILE,
-                    ULIC_FILE
-                    );
-            var data = await teryt.GetAsync();
-
-            var divisions = data.Divisions.ToDictionary(k => k.Id);
-            var streets = data.Streets;
-            var connections = data.Connections;
-
-            var json = File.ReadAllText("C:\\Users\\User\\Desktop\\response_1754589310627.json");
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-
-            var institutions = JsonSerializer.Deserialize<IEnumerable<RadonInstitution>>(json, options)
-                ?? throw new NotImplementedException();
-
-
+            var addressesDictionary = new Dictionary<AddressStamp, Address>();
             var polishInstitutions = institutions.SelectMany(x => x.Addresses)
                 .Where(x => x.Country.ToLowerInvariant() == "polska")
                 .ToHashSet();
@@ -476,7 +478,7 @@ namespace Diploma.Seeder
             }
 
 
-            var voivodeships = divisions.Values
+            var voivodeships = divisions
                 .Where(x => x.ParentId == null)
                 .ToDictionary(k => k.Name.ToLowerInvariant());
 
@@ -489,7 +491,7 @@ namespace Diploma.Seeder
                 var voivodeship = voivodeships[address.Voivodeship.ToLowerInvariant()];
 
                 // Try find the same Divisions
-                var addressDivisions = divisions.Values
+                var addressDivisions = divisions
                     .Where(x =>
                         x.Id.Length == 7 &&
                         x.Name.ToLowerInvariant() == address.City.ToLowerInvariant() &&
@@ -500,7 +502,7 @@ namespace Diploma.Seeder
                 // Try find similar Divisions
                 if (addressDivisions.Count == 0)
                 {
-                    addressDivisions = divisions.Values
+                    addressDivisions = divisions
                         .Where(x =>
                             x.Id.Length > 5 &&
                             x.ParentId != null &&
@@ -547,12 +549,14 @@ namespace Diploma.Seeder
                             {
                                 DivisionId = divisionId,
                                 StreetId = addressStreetId,
+                                BuildingNumber = address.HouseNumber,
+                                FlatNumber = address.FlatNumber,
                             };
                             dbAddresses.Add(dbAddress);
                         }
                     }
 
-                    // list 0 probably invalid 
+                    // list 0 probably invalid or Old
                     if (dbAddresses.Count > 1)
                     {
                         addressStreetIds = dbAddresses.Select(x => x.StreetId).ToHashSet();
@@ -584,15 +588,33 @@ namespace Diploma.Seeder
 
                 if (dbAddress is not null)
                 {
-                    var adddrStam = new CompanyAddress
-                    {
-                        Address = dbAddress,
-                        Date = address.DateFrom,
-                    };
+                    addressesDictionary[address] = dbAddress;
+                    await db!.Addresses.AddAsync(dbAddress);
                 }
                 else
                 {
-                    Console.WriteLine($"Not found for {address}");
+                    string message = $"Not found for {address}";
+                    logger.LogError(message);
+                }
+            }
+
+            foreach (var institution in institutions)
+            {
+                foreach (var address in institution.Addresses)
+                {
+                    if (!addressesDictionary.ContainsKey(address))
+                    {
+                        continue;
+                    }
+
+                    var dbItem = new CompanyAddress
+                    {
+                        CompanyId = institution.Uuid,
+                        Address = addressesDictionary[address],
+                        Date = address.DateFrom,
+                    };
+
+                    await db!.CompanyAddresses.AddAsync(dbItem);
                 }
             }
         }
