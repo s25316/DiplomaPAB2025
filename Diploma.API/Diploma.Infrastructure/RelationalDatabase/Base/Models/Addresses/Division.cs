@@ -10,8 +10,10 @@
 
         public string? ParentDivisionId { get; set; } = null;
         public virtual Division? ParentDivision { get; set; } = null;
-        public virtual ICollection<Division> Divisions { get; set; } = new List<Division>();
+        public virtual ICollection<Division> ChildDivisions { get; set; } = [];
 
-        public virtual ICollection<Street> Streets { get; set; } = new List<Street>();
+
+        public virtual ICollection<Street> Streets { get; set; } = [];
+        public virtual ICollection<Address> Addresses { get; set; } = [];
     }
 }

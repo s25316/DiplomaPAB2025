@@ -4,10 +4,12 @@ using Diploma.Infrastructure.RelationalDatabase.Base.Models.Addresses;
 using Diploma.Infrastructure.RelationalDatabase.Base.Models.Companies;
 using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations;
 using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations.Courses;
+using Diploma.Infrastructure.RelationalDatabase.Base.Models.People;
 using Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.Addresses;
 using Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.Companies;
-using Diploma.Infrastructure.RelationalDatabase.MsSql.HighEducations;
-using Diploma.Infrastructure.RelationalDatabase.MsSql.HighEducations.Courses;
+using Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.HighEducations;
+using Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.HighEducations.Courses;
+using Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.People;
 using Microsoft.EntityFrameworkCore;
 
 namespace Diploma.Infrastructure.RelationalDatabase.MsSql
@@ -42,6 +44,7 @@ namespace Diploma.Infrastructure.RelationalDatabase.MsSql
             modelBuilder.ApplyConfiguration<EducationInstitutionKind>(new EducationInstitutionKindEFConfiguration());
 
             modelBuilder.ApplyConfiguration<Course>(new CourseEFConfiguration());
+            modelBuilder.ApplyConfiguration<CourseName>(new CourseNameEFConfiguration());
             modelBuilder.ApplyConfiguration<CourseForm>(new CourseFormEFConfiguration());
             modelBuilder.ApplyConfiguration<CourseLanguage>(new CourseLanguageEFConfiguration());
             modelBuilder.ApplyConfiguration<CourseLevel>(new CourseLevelEFConfiguration());
@@ -49,6 +52,12 @@ namespace Diploma.Infrastructure.RelationalDatabase.MsSql
             modelBuilder.ApplyConfiguration<CourseTitle>(new CourseTitleEFConfiguration());
             modelBuilder.ApplyConfiguration<DisciplineCourse>(new DisciplineCourseEFConfiguration());
             modelBuilder.ApplyConfiguration<EducationInstitutionCourse>(new EducationInstitutionCourseEFConfiguration());
+
+            modelBuilder.ApplyConfiguration<Person>(new PersonEFConfiguration());
+            modelBuilder.ApplyConfiguration<PersonCompany>(new PersonCompanyEFConfiguration());
+            modelBuilder.ApplyConfiguration<PersonCourse>(new PersonCourseEFConfiguration());
+            modelBuilder.ApplyConfiguration<PersonPassword>(new PersonPasswordEFConfiguration());
+            modelBuilder.ApplyConfiguration<PersonAuthenticationLog>(new PersonAuthenticationLogEFConfiguration());
 
             //modelBuilder.ApplyConfiguration<>(new EFConfiguration());
 

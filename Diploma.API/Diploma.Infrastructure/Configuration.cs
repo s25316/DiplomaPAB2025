@@ -6,8 +6,11 @@ namespace Diploma.Infrastructure
 {
     public static class Configuration
     {
-        public static IServiceCollection Configure(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructureConfiguration(
+            this IServiceCollection services/*,
+            IConfiguration configuration*/)
         {
+            //services.AddSingleton<IConfiguration>(configuration);
             services.AddDbContext<DiplomaDbContext, MsSqlDiplomaDbContext>();
             return services;
         }

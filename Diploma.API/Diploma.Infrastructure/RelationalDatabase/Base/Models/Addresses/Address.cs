@@ -15,6 +15,6 @@ namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.Addresses
         public string? StreetId { get; set; } = null!;
         public virtual Street? Street { get; set; }
 
-        public virtual ICollection<CompanyAddress> CompanyAddresses { get; set; } = new List<CompanyAddress>();
+        public virtual ICollection<CompanyAddress> CompanyAddresses { get; set; } = [];
     }
 }

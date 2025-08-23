@@ -5,6 +5,6 @@
         public int StreetTypeId { get; set; }
         public string Name { get; set; } = null!;
 
-        public virtual ICollection<Street> Streets { get; set; } = new List<Street>();
+        public virtual ICollection<Street> Streets { get; set; } = [];
     }
 }

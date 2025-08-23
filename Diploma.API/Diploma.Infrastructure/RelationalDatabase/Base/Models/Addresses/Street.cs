@@ -8,6 +8,7 @@
         public int? StreetTypeId { get; set; }
         public virtual StreetType? StreetType { get; set; }
 
-        public virtual ICollection<Division> Divisions { get; set; } = new List<Division>();
+        public virtual ICollection<Division> Divisions { get; set; } = [];
+        public virtual ICollection<Address> Addresses { get; set; } = [];
     }
 }

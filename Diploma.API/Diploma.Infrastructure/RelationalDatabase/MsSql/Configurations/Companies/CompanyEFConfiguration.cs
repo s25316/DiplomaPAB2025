@@ -8,11 +8,14 @@ namespace Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.Compani
     {
         public void Configure(EntityTypeBuilder<Company> builder)
         {
-            builder.ToTable(nameof(Company));
-            builder.HasKey(x => x.CompanyId).HasName($"{nameof(Company)}_pk");
-            builder.Property(x => x.CompanyId).HasDefaultValueSql("(newid())");
-
-
+            builder
+                .ToTable(nameof(Company));
+            builder
+                .HasKey(x => x.CompanyId)
+                .HasName($"{nameof(Company)}_pk");
+            builder
+                .Property(x => x.CompanyId)
+                .HasDefaultValueSql("(newid())");
         }
     }
 }

@@ -1,4 +1,5 @@
 
+using Diploma.Domain;
 using RadonPlugin;
 using RegonPlugin;
 
@@ -11,6 +12,8 @@ namespace Diploma.API
             var builder = WebApplication.CreateBuilder(args);
             var regonKey = builder.Configuration["RegonKey"]
                 ?? throw new ArgumentException("RegonKey");
+
+            builder.Services.AddDomainConfiguration();
 
 
             // Add services to the container.

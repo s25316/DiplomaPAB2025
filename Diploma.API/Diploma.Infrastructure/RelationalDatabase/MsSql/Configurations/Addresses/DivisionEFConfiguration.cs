@@ -8,22 +8,31 @@ namespace Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.Address
     {
         public void Configure(EntityTypeBuilder<Division> builder)
         {
-            builder.ToTable(nameof(Division));
-            builder.HasKey(x => x.DivisionId).HasName($"{nameof(Division)}_pk");
-            builder.Property(x => x.DivisionId).ValueGeneratedNever();
+            builder
+                .ToTable(nameof(Division));
+            builder
+                .HasKey(x => x.DivisionId)
+                .HasName($"{nameof(Division)}_pk");
+            builder
+                .Property(x => x.DivisionId)
+                .ValueGeneratedNever();
 
-            builder.HasOne(x => x.DivisionType)
-                .WithMany(x => x.Divisions)
-                .HasForeignKey(x => x.DivisionTypeId)
-                .HasConstraintName($"{nameof(DivisionType)}_{nameof(Division)}_fk")
+            builder
+                .HasMany(x => x.Addresses)
+                .WithOne(x => x.Division)
+                .HasForeignKey(x => x.DivisionId)
+                .HasConstraintName($"{nameof(Address)}_{nameof(Division)}_fk")
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(x => x.ParentDivision)
-                .WithMany(x => x.Divisions)
+            builder
+                .HasOne(x => x.ParentDivision)
+                .WithMany(x => x.ChildDivisions)
+                .HasForeignKey(x => x.ParentDivisionId)
                 .HasConstraintName($"{nameof(Division)}_{nameof(Division)}_fk")
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany(x => x.Streets)
+            builder
+                .HasMany(x => x.Streets)
                 .WithMany(x => x.Divisions)
                 .UsingEntity<Dictionary<string, object>>(
                 $"{nameof(Division)}{nameof(Street)}",

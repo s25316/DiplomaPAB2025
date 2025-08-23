@@ -336,12 +336,23 @@ namespace Diploma.Seeder
             }
             courses = coursesDictionary.Values;
 
+            var courseNameDictionary = new Dictionary<string, CourseName>();
             foreach (var item in courses)
             {
+                if (!courseNameDictionary.ContainsKey(item.CourseName))
+                {
+                    var courseName = new CourseName
+                    {
+                        Name = item.CourseName,
+                    };
+                    courseNameDictionary[item.CourseName] = courseName;
+                    await db.CourseNames.AddAsync(courseName);
+                }
+
                 var dbItem = new Course
                 {
                     CourseId = item.Id,
-                    Name = item.CourseName,
+                    Name = courseNameDictionary[item.CourseName],
                     StartDate = item.EducationStartDate,
                     EndDate = item.LiquidationDate,
                     NumberOfSemesters = item.NumberOfSemesters,

@@ -8,14 +8,20 @@ namespace Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.Address
     {
         public void Configure(EntityTypeBuilder<Street> builder)
         {
-            builder.ToTable(nameof(Street));
-            builder.HasKey(x => x.StreetId).HasName($"{nameof(Street)}_pk");
-            builder.Property(x => x.StreetId).ValueGeneratedNever();
+            builder
+                .ToTable(nameof(Street));
+            builder
+                .HasKey(x => x.StreetId)
+                .HasName($"{nameof(Street)}_pk");
+            builder
+                .Property(x => x.StreetId)
+                .ValueGeneratedNever();
 
-            builder.HasOne(x => x.StreetType)
-                .WithMany(x => x.Streets)
-                .HasForeignKey(x => x.StreetTypeId)
-                .HasConstraintName($"{nameof(StreetType)}_{nameof(Street)}_fk")
+            builder
+                .HasMany(x => x.Addresses)
+                .WithOne(x => x.Street)
+                .HasForeignKey(x => x.StreetId)
+                .HasConstraintName($"{nameof(Address)}_{nameof(Street)}_fk")
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

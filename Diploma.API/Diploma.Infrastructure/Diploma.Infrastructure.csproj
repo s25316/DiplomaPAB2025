@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Diploma.UseCase\Diploma.UseCase.csproj" />
     <ProjectReference Include="..\RadonPlugin\RadonPlugin.csproj" />
     <ProjectReference Include="..\RegonPlugin\RegonPlugin.csproj" />
     <ProjectReference Include="..\TerytPlugin\TerytPlugin.csproj" />

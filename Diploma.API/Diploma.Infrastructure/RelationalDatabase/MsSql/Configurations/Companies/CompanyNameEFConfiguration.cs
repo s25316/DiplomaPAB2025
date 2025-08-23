@@ -8,14 +8,20 @@ namespace Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.Compani
     {
         public void Configure(EntityTypeBuilder<CompanyName> builder)
         {
-            builder.ToTable(nameof(CompanyName));
-            builder.HasKey(x => x.CompanyNameId).HasName($"{nameof(CompanyName)}_pk");
-            builder.Property(x => x.CompanyNameId).HasDefaultValueSql("(newid())");
+            builder
+                .ToTable(nameof(CompanyName));
+            builder
+                .HasKey(x => x.CompanyNameId)
+                .HasName($"{nameof(CompanyName)}_pk");
+            builder
+                .Property(x => x.CompanyNameId)
+                .HasDefaultValueSql("(newid())");
 
-            builder.HasOne(x => x.Company)
+            builder
+                .HasOne(x => x.Company)
                 .WithMany(x => x.CompanyNames)
                 .HasForeignKey(x => x.CompanyId)
-                .HasConstraintName($"{nameof(CompanyName)}_{nameof(Company)}_fk")
+                .HasConstraintName($"{nameof(Company)}_{nameof(CompanyName)}_fk")
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

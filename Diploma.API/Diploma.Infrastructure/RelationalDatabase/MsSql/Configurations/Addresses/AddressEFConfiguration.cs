@@ -8,9 +8,14 @@ namespace Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.Address
     {
         public void Configure(EntityTypeBuilder<Address> builder)
         {
-            builder.ToTable(nameof(Address));
-            builder.HasKey(x => x.AddressId).HasName($"{nameof(Address)}_pk");
-            builder.Property(x => x.AddressId).HasDefaultValueSql("(newid())");
+            builder
+                .ToTable(nameof(Address));
+            builder
+                .HasKey(x => x.AddressId)
+                .HasName($"{nameof(Address)}_pk");
+            builder
+                .Property(x => x.AddressId)
+                .HasDefaultValueSql("(newid())");
         }
     }
 }

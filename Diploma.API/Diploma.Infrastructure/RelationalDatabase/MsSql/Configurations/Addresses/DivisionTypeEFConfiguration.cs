@@ -8,9 +8,21 @@ namespace Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.Address
     {
         public void Configure(EntityTypeBuilder<DivisionType> builder)
         {
-            builder.ToTable(nameof(DivisionType));
-            builder.HasKey(x => x.DivisionTypeId).HasName($"{nameof(DivisionType)}_pk");
-            builder.Property(x => x.DivisionTypeId).UseIdentityColumn();
+            builder
+                .ToTable(nameof(DivisionType));
+            builder
+                .HasKey(x => x.DivisionTypeId)
+                .HasName($"{nameof(DivisionType)}_pk");
+            builder
+                .Property(x => x.DivisionTypeId)
+                .UseIdentityColumn();
+
+            builder
+                .HasMany(x => x.Divisions)
+                .WithOne(x => x.DivisionType)
+                .HasForeignKey(x => x.DivisionTypeId)
+                .HasConstraintName($"{nameof(Division)}_{nameof(DivisionType)}_fk")
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

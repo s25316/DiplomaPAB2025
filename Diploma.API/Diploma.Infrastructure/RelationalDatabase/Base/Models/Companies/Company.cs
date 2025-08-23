@@ -1,5 +1,6 @@
 ﻿// Ignore Spelling: Regon
 using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations;
+using Diploma.Infrastructure.RelationalDatabase.Base.Models.People;
 
 namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.Companies
 {
@@ -15,7 +16,8 @@ namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.Companies
         public DateOnly? EndDate { get; set; }
 
         public virtual EducationInstitution? EducationInstitution { get; set; } = null;
-        public virtual ICollection<CompanyName> CompanyNames { get; set; } = new List<CompanyName>();
-        public virtual ICollection<CompanyAddress> CompanyAddresses { get; set; } = new List<CompanyAddress>();
+        public virtual ICollection<CompanyName> CompanyNames { get; set; } = [];
+        public virtual ICollection<CompanyAddress> CompanyAddresses { get; set; } = [];
+        public virtual ICollection<PersonCompany> Employees { get; set; } = [];
     }
 }
