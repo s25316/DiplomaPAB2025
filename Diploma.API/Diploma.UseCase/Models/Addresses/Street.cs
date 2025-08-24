@@ -4,6 +4,6 @@
     {
         public string Id { get; init; } = null!;
         public string Name { get; init; } = null!;
-        public Pair<int>? Type { get; init; }
+        public PairIdName<int>? Type { get; init; }
     }
 }

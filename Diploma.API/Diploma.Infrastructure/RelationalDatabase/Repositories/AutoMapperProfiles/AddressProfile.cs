@@ -16,7 +16,7 @@ namespace Diploma.Infrastructure.RelationalDatabase.Repositories.AutoMapperProfi
                     Id = db.DivisionId,
                     ParentId = db.ParentDivisionId,
                     Name = db.Name,
-                    Type = new UseCase.Models.Pair<int>
+                    Type = new UseCase.Models.PairIdName<int>
                     {
                         Id = db.DivisionType.DivisionTypeId,
                         Name = db.DivisionType.Name,
@@ -31,7 +31,7 @@ namespace Diploma.Infrastructure.RelationalDatabase.Repositories.AutoMapperProfi
                    Name = db.Name,
                    Type = db.StreetType == null
                     ? null
-                    : new UseCase.Models.Pair<int>
+                    : new UseCase.Models.PairIdName<int>
                     {
                         Id = db.StreetType.StreetTypeId,
                         Name = db.StreetType.Name,

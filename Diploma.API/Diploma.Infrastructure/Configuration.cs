@@ -18,17 +18,21 @@ namespace Diploma.Infrastructure
             var regonKey = configuration["RegonKey"]
                 ?? throw new ArgumentException("RegonKey");
 
-            services.AddSingleton(opt => new RegonService(regonKey));
-
-            services.AddDbContext<DiplomaDbContext, MsSqlDiplomaDbContext>();
-            services.AddTransient<IAddressRepository, AddressRepository>();
-            services.AddTransient<ICompanyRepository, CompanyRepository>();
-
-
             services.AddAutoMapper(x => x.AddProfiles([
                 new AddressProfile(),
                 new CompanyProfile(),
+                new EducationInstitutionProfile(),
                 ]));
+
+            services.AddSingleton(opt => new RegonService(regonKey));
+            services.AddDbContext<DiplomaDbContext, MsSqlDiplomaDbContext>();
+
+
+            services.AddTransient<IAddressRepository, AddressRepository>();
+            services.AddTransient<ICompanyRepository, CompanyRepository>();
+            services.AddTransient<IEducationInstitutionRepository, EducationInstitutionRepository>();
+
+
             return services;
         }
     }

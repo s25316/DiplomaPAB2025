@@ -20,12 +20,24 @@ using UseCaseCompany = Diploma.UseCase.Models.Companies.Company;
 // Ignore Spelling: regon
 namespace Diploma.Infrastructure.RelationalDatabase.Repositories
 {
-    public class CompanyRepository(
-        DiplomaDbContext context,
-        RegonService regonService,
-        IMapper mapper)
-        : ICompanyRepository
+    public class CompanyRepository : ICompanyRepository
     {
+        private readonly DiplomaDbContext context;
+        private readonly RegonService regonService;
+        private readonly IMapper mapper;
+
+
+        public CompanyRepository(
+            DiplomaDbContext context,
+            RegonService regonService,
+            IMapper mapper)
+        {
+            this.context = context;
+            this.regonService = regonService;
+            this.mapper = mapper;
+        }
+
+
         public async Task<Company> GetAsync(
             Regon regon,
             CancellationToken cancellationToken = default)
@@ -51,7 +63,6 @@ namespace Diploma.Infrastructure.RelationalDatabase.Repositories
         {
             return await context.Companies
                 .Include(x => x.CompanyNames)
-                .Include(x => x.EducationInstitution)
                 .Include(x => x.CompanyAddresses)
                 .Where(c => c.Regon == regon.Value)
                 .FirstOrDefaultAsync(cancellationToken);

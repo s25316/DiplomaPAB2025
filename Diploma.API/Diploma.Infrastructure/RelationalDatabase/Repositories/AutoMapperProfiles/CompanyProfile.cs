@@ -39,7 +39,6 @@ namespace Diploma.Infrastructure.RelationalDatabase.Repositories.AutoMapperProfi
                     Email = db.Email,
                     StartDate = db.StartDate,
                     EndDate = db.EndDate,
-                    IsEductionInstitution = db.EducationInstitution != null,
                     Addresses = context.Mapper
                         .Map<ICollection<UseCaseCompanyAddress>>(db.CompanyAddresses)
                         .OrderBy(x => x.Date)

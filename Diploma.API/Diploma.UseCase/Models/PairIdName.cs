@@ -1,6 +1,6 @@
 ﻿namespace Diploma.UseCase.Models
 {
-    public record Pair<TId>
+    public record PairIdName<TId>
         where TId : notnull
     {
         public required TId Id { get; init; }

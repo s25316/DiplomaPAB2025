@@ -11,7 +11,6 @@ namespace Diploma.UseCase.Models.Companies
         public string? Email { get; init; }
         public DateOnly StartDate { get; init; }
         public DateOnly? EndDate { get; init; }
-        public bool IsEductionInstitution { get; init; }
 
         public ICollection<CompanyName> Names { get; init; } = [];
         public ICollection<CompanyAddress> Addresses { get; init; } = [];

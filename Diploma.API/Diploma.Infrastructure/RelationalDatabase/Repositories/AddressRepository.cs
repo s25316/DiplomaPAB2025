@@ -9,8 +9,19 @@ using UseCaseStreet = Diploma.UseCase.Models.Addresses.Street;
 
 namespace Diploma.Infrastructure.RelationalDatabase.Repositories
 {
-    public class AddressRepository(DiplomaDbContext context, IMapper mapper) : IAddressRepository
+    public class AddressRepository : IAddressRepository
     {
+        private readonly DiplomaDbContext context;
+        private readonly IMapper mapper;
+
+
+        public AddressRepository(DiplomaDbContext context, IMapper mapper)
+        {
+            this.context = context;
+            this.mapper = mapper;
+        }
+
+
         public async Task<UseCaseAddress> GetAsync(
             Guid addressId,
             CancellationToken cancellationToken = default)
