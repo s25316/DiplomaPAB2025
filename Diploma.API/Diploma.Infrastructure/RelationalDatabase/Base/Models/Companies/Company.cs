@@ -1,5 +1,5 @@
 ﻿// Ignore Spelling: Regon
-using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations;
+using Diploma.Infrastructure.RelationalDatabase.Base.Models.EducationInstitutions;
 using Diploma.Infrastructure.RelationalDatabase.Base.Models.People;
 
 namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.Companies

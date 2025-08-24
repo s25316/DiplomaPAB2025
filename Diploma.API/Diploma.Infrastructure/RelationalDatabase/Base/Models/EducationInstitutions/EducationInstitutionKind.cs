@@ -1,4 +1,4 @@
-﻿namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations
+﻿namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.EducationInstitutions
 {
     public class EducationInstitutionKind
     {

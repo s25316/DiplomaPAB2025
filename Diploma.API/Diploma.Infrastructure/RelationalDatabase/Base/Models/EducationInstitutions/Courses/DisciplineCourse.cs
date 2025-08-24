@@ -1,4 +1,6 @@
-﻿namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations.Courses
+﻿using Diploma.Infrastructure.RelationalDatabase.Base.Models.EducationInstitutions;
+
+namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.EducationInstitutions.Courses
 {
     public class DisciplineCourse
     {

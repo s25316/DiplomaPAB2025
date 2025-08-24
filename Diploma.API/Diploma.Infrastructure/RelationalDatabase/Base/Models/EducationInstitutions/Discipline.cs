@@ -1,7 +1,7 @@
-﻿using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations.Courses;
+﻿using Diploma.Infrastructure.RelationalDatabase.Base.Models.EducationInstitutions.Courses;
 using Diploma.Infrastructure.RelationalDatabase.Base.Models.Projects;
 
-namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations
+namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.EducationInstitutions
 {
     public class Discipline
     {

@@ -1,5 +1,5 @@
 ﻿using Diploma.Infrastructure.RelationalDatabase.Base.Models.Companies;
-using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations;
+using Diploma.Infrastructure.RelationalDatabase.Base.Models.EducationInstitutions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

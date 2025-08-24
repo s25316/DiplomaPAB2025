@@ -1,7 +1,7 @@
 ﻿using Diploma.Infrastructure.RelationalDatabase.Base.Models.Addresses;
 using Diploma.Infrastructure.RelationalDatabase.Base.Models.Companies;
-using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations;
-using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations.Courses;
+using Diploma.Infrastructure.RelationalDatabase.Base.Models.EducationInstitutions;
+using Diploma.Infrastructure.RelationalDatabase.Base.Models.EducationInstitutions.Courses;
 using Diploma.Infrastructure.RelationalDatabase.Base.Models.People;
 using Diploma.Infrastructure.RelationalDatabase.Base.Models.Projects;
 using Microsoft.EntityFrameworkCore;

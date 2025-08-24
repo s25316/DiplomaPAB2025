@@ -1,4 +1,4 @@
-﻿using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations.Courses;
+﻿using Diploma.Infrastructure.RelationalDatabase.Base.Models.EducationInstitutions.Courses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

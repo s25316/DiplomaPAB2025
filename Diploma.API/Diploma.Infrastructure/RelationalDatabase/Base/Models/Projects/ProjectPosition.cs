@@ -1,5 +1,5 @@
-﻿using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations;
-using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations.Courses;
+﻿using Diploma.Infrastructure.RelationalDatabase.Base.Models.EducationInstitutions;
+using Diploma.Infrastructure.RelationalDatabase.Base.Models.EducationInstitutions.Courses;
 
 namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.Projects
 {

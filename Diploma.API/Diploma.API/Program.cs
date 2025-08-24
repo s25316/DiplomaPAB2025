@@ -1,7 +1,7 @@
 
 using Diploma.Domain;
-using RadonPlugin;
-using RegonPlugin;
+using Diploma.Infrastructure;
+using System.Reflection;
 
 namespace Diploma.API
 {
@@ -10,15 +10,14 @@ namespace Diploma.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            var regonKey = builder.Configuration["RegonKey"]
-                ?? throw new ArgumentException("RegonKey");
 
             builder.Services.AddDomainConfiguration();
+            builder.Services.AddInfrastructureConfiguration(builder.Configuration);
 
 
+            builder.Services.AddAutoMapper(configuration => Assembly.GetExecutingAssembly());
+            //services.AddMediatR(configuration => Assembly.GetExecutingAssembly());
             // Add services to the container.
-            builder.Services.AddSingleton(opt => new RegonService(regonKey));
-            builder.Services.AddSingleton(opt => new RadonClient());
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

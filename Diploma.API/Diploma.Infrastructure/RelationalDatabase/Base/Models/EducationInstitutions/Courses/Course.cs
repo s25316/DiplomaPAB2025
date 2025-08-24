@@ -1,6 +1,6 @@
 ﻿using Diploma.Infrastructure.RelationalDatabase.Base.Models.People;
 
-namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations.Courses
+namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.EducationInstitutions.Courses
 {
     public class Course
     {

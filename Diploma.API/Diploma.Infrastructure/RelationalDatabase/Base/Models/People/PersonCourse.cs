@@ -1,4 +1,4 @@
-﻿using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations.Courses;
+﻿using Diploma.Infrastructure.RelationalDatabase.Base.Models.EducationInstitutions.Courses;
 
 namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.People
 {
