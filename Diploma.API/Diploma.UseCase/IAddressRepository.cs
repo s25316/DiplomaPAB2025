@@ -9,7 +9,8 @@ namespace Diploma.UseCase
         Task<T> GetAsync(TId id, CancellationToken cancellationToken = default);
     }
 
-    public interface IAddressRepository : IReadOnlyRepository<Guid, UseCaseAddress>
+    public interface IAddressRepository
+        : IReadOnlyRepository<Guid, UseCaseAddress>
     {
     }
 }

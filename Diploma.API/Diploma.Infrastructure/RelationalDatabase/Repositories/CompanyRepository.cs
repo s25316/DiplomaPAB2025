@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Diploma.Domain.Shared.Exceptions;
+using Diploma.Domain.Shared.ValueObjects;
 using Diploma.Infrastructure.Exceptions;
 using Diploma.Infrastructure.RelationalDatabase.Base;
 using Diploma.UseCase;
@@ -7,80 +9,62 @@ using Microsoft.EntityFrameworkCore;
 using RegonPlugin;
 using RegonPlugin.Enums;
 using RegonPlugin.Enums.GetValues;
+using RegonPlugin.Models.DTOs;
 using RegonPlugin.Models.Generics;
 using DatabaseAddress = Diploma.Infrastructure.RelationalDatabase.Base.Models.Addresses.Address;
 using DatabaseCompany = Diploma.Infrastructure.RelationalDatabase.Base.Models.Companies.Company;
 using DatabaseCompanyAddress = Diploma.Infrastructure.RelationalDatabase.Base.Models.Companies.CompanyAddress;
 using DatabaseCompanyName = Diploma.Infrastructure.RelationalDatabase.Base.Models.Companies.CompanyName;
-using UseCaseAddress = Diploma.UseCase.Models.Addresses.Address;
-using UseCaseCompanyName = Diploma.UseCase.Models.Companies.CompanyName;
+using UseCaseCompany = Diploma.UseCase.Models.Companies.Company;
 
+// Ignore Spelling: regon
 namespace Diploma.Infrastructure.RelationalDatabase.Repositories
 {
     public class CompanyRepository(
         DiplomaDbContext context,
         RegonService regonService,
-        IAddressRepository addressRepository,
         IMapper mapper)
         : ICompanyRepository
     {
-        public async Task<Company?> GetAsync(string regon, CancellationToken cancellationToken = default)
+        public async Task<Company> GetAsync(
+            Regon regon,
+            CancellationToken cancellationToken = default)
         {
-            var dbCompany = await context.Companies
-                .Include(x => x.CompanyNames)
-                .Include(x => x.EducationInstitution)
-                .Include(x => x.CompanyAddresses)
-                .Where(c => c.Regon == regon)
-                .FirstOrDefaultAsync(cancellationToken);
+            var dbCompany = await GetDatabaseCompanyAsync(regon, cancellationToken);
 
             if (dbCompany == null)
             {
                 await GetFromRegonAndSaveToDatabaseAsync(regon, cancellationToken);
-                dbCompany = await context.Companies
-                    .Include(x => x.CompanyNames)
-                    .Include(x => x.EducationInstitution)
-                    .Include(x => x.CompanyAddresses)
-                    .Where(c => c.Regon == regon)
-                    .FirstOrDefaultAsync(cancellationToken);
+                dbCompany = await GetDatabaseCompanyAsync(regon, cancellationToken);
             }
 
-            if (dbCompany == null) return null;
-
-            var lastAddressId = dbCompany.CompanyAddresses
-                .OrderByDescending(x => x.Date)
-                .FirstOrDefault()?
-                .AddressId;
-
-            UseCaseAddress? address = null;
-            if (lastAddressId is not null)
+            if (dbCompany == null)
             {
-                address = await addressRepository.GetAsync(
-                    lastAddressId.Value,
-                    cancellationToken);
+                throw new Resource.NotFoundException($"REGON: {regon}");
             }
+            return mapper.Map<UseCaseCompany>(dbCompany);
+        }
 
-            return new Company
-            {
-                CompanyId = dbCompany.CompanyId,
-                CompanyShortName = dbCompany.CompanyShortName,
-                Regon = dbCompany.Regon,
-                Website = dbCompany.Website,
-                PhoneNumber = dbCompany.PhoneNumber,
-                Email = dbCompany.Email,
-                StartDate = dbCompany.StartDate,
-                EndDate = dbCompany.EndDate,
-                IsEductionInstitution = dbCompany.EducationInstitution != null,
-                Address = address,
-                Names = mapper.Map<ICollection<UseCaseCompanyName>>(dbCompany.CompanyNames),
-            };
+        private async Task<DatabaseCompany?> GetDatabaseCompanyAsync(
+            Regon regon,
+            CancellationToken cancellationToken = default)
+        {
+            return await context.Companies
+                .Include(x => x.CompanyNames)
+                .Include(x => x.EducationInstitution)
+                .Include(x => x.CompanyAddresses)
+                .Where(c => c.Regon == regon.Value)
+                .FirstOrDefaultAsync(cancellationToken);
         }
 
         private async Task GetFromRegonAndSaveToDatabaseAsync(
-            string regon,
+            Regon regon,
             CancellationToken cancellationToken = default)
         {
-            var reportResult = await regonService
-                .GetRaportJednostkiAsync(regon, GetBy.REGON, cancellationToken);
+            var reportResult = await regonService.GetRaportJednostkiAsync(
+                regon,
+                GetBy.REGON,
+                cancellationToken);
 
             var report = reportResult.Value;
             if (report is null)
@@ -89,9 +73,15 @@ namespace Diploma.Infrastructure.RelationalDatabase.Repositories
                 throw exception;
             }
 
-            var lastUpdateDate = report.Daty.DataZmiany
-                ?? report.Daty.DataPowstania;
+            await CreateCompanyAsync(report, cancellationToken);
+        }
 
+        private async Task CreateCompanyAsync(
+            RaportJednostki report,
+            CancellationToken cancellationToken = default)
+        {
+            var lastUpdateDate = report.Daty.DataZmiany
+                   ?? report.Daty.DataPowstania;
 
             var dbCompany = new DatabaseCompany
             {
@@ -161,8 +151,9 @@ namespace Diploma.Infrastructure.RelationalDatabase.Repositories
             {
                 var r when r.StatusUslugi is StatusUslugi.UslugaNiedostepna => new InfrastructureLayer.Regon.ServiceNotWorkingException(),
                 var r when r.StatusUslugi is StatusUslugi.PrzerwaTechniczna => new InfrastructureLayer.Regon.MaintenanceBreakException(),
-                var e when e.Error is RegonError.NiepoprawneDaneWejsciowe => new InfrastructureLayer.Regon.InvalidInputException(regon),
-                var e when e.Error is RegonError.NieZnalezionoPodmiotów => new InfrastructureLayer.Regon.NotFoundException(regon),
+                var e when e.Error is RegonError.BrakUprawnienDoRaportu => new InfrastructureLayer.Regon.ForbiddenException(regon),
+                var e when e.Error is RegonError.NiepoprawneDaneWejsciowe => new Resource.InvalidInputException(regon),
+                var e when e.Error is RegonError.NieZnalezionoPodmiotów => new Resource.NotFoundException(regon),
                 _ => new InfrastructureLayer.Regon.OtherException(regon, response.Error),
             };
         }

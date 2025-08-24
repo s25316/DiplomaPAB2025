@@ -1,9 +1,12 @@
-﻿using Diploma.UseCase.Models.Companies;
+﻿using Diploma.Domain.Shared.ValueObjects;
+using Diploma.UseCase.Models.Companies;
 
 namespace Diploma.UseCase
 {
     public interface ICompanyRepository
     {
-        Task<Company?> GetAsync(string regon, CancellationToken cancellationToken = default);
+        Task<Company> GetAsync(
+            Regon regon,
+            CancellationToken cancellationToken = default);
     }
 }

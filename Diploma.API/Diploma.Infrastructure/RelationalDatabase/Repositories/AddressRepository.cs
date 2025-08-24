@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Diploma.Domain.Shared.Exceptions;
 using Diploma.Infrastructure.RelationalDatabase.Base;
 using Diploma.UseCase;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,10 @@ namespace Diploma.Infrastructure.RelationalDatabase.Repositories
                 .Where(a => a.AddressId == addressId)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (dbAddress is null) throw new Exception();
+            if (dbAddress is null)
+            {
+                throw new Resource.NotFoundException(addressId.ToString());
+            }
 
             // Street Part
             UseCaseStreet? street = null;

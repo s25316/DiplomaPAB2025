@@ -1,6 +1,4 @@
 ﻿// Ignore Spelling: Regon
-using Diploma.UseCase.Models.Addresses;
-
 namespace Diploma.UseCase.Models.Companies
 {
     public record Company
@@ -16,6 +14,6 @@ namespace Diploma.UseCase.Models.Companies
         public bool IsEductionInstitution { get; init; }
 
         public ICollection<CompanyName> Names { get; init; } = [];
-        public Address? Address { get; init; }
+        public ICollection<CompanyAddress> Addresses { get; init; } = [];
     }
 }
