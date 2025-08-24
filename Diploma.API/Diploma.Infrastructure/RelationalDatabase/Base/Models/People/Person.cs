@@ -1,4 +1,6 @@
-﻿namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.People
+﻿using Diploma.Infrastructure.RelationalDatabase.Base.Models.Projects;
+
+namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.People
 {
     public class Person
     {
@@ -9,9 +11,10 @@
         public string Email { get; set; } = null!;
         public string? Description { get; set; } = null!;
 
-        public virtual ICollection<PersonCompany> Employers { get; set; } = new List<PersonCompany>();
-        public virtual ICollection<PersonCourse> Courses { get; set; } = new List<PersonCourse>();
-        public virtual ICollection<PersonPassword> Passwords { get; set; } = new List<PersonPassword>();
-        public virtual ICollection<PersonAuthenticationLog> Authentications { get; set; } = new List<PersonAuthenticationLog>();
+        public virtual ICollection<PersonCompany> Employers { get; set; } = [];
+        public virtual ICollection<PersonCourse> Courses { get; set; } = [];
+        public virtual ICollection<PersonPassword> Passwords { get; set; } = [];
+        public virtual ICollection<PersonAuthenticationLog> Authentications { get; set; } = [];
+        public virtual ICollection<Project> Projects { get; set; } = [];
     }
 }

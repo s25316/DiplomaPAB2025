@@ -3,6 +3,7 @@ using Diploma.Infrastructure.RelationalDatabase.Base.Models.Companies;
 using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations;
 using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations.Courses;
 using Diploma.Infrastructure.RelationalDatabase.Base.Models.People;
+using Diploma.Infrastructure.RelationalDatabase.Base.Models.Projects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Diploma.Infrastructure.RelationalDatabase.Base
@@ -39,10 +40,15 @@ namespace Diploma.Infrastructure.RelationalDatabase.Base
         public virtual DbSet<DisciplineCourse> DisciplineCourses { get; set; }
         public virtual DbSet<EducationInstitutionCourse> EducationInstitutionCourses { get; set; }
 
+
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<PersonCompany> PersonCompanies { get; set; }
         public virtual DbSet<PersonCourse> PersonCourses { get; set; }
         public virtual DbSet<PersonPassword> PersonPasswords { get; set; }
         public virtual DbSet<PersonAuthenticationLog> PersonAuthentications { get; set; }
+
+
+        public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<ProjectPosition> ProjectPositions { get; set; }
     }
 }

@@ -5,11 +5,13 @@ using Diploma.Infrastructure.RelationalDatabase.Base.Models.Companies;
 using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations;
 using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations.Courses;
 using Diploma.Infrastructure.RelationalDatabase.Base.Models.People;
+using Diploma.Infrastructure.RelationalDatabase.Base.Models.Projects;
 using Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.Addresses;
 using Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.Companies;
 using Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.HighEducations;
 using Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.HighEducations.Courses;
 using Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.People;
+using Diploma.Infrastructure.RelationalDatabase.MsSql.Configurations.Projects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Diploma.Infrastructure.RelationalDatabase.MsSql
@@ -58,6 +60,9 @@ namespace Diploma.Infrastructure.RelationalDatabase.MsSql
             modelBuilder.ApplyConfiguration<PersonCourse>(new PersonCourseEFConfiguration());
             modelBuilder.ApplyConfiguration<PersonPassword>(new PersonPasswordEFConfiguration());
             modelBuilder.ApplyConfiguration<PersonAuthenticationLog>(new PersonAuthenticationLogEFConfiguration());
+
+            modelBuilder.ApplyConfiguration<Project>(new ProjectEFConfiguration());
+            modelBuilder.ApplyConfiguration<ProjectPosition>(new ProjectPositionEFConfiguration());
 
             //modelBuilder.ApplyConfiguration<>(new EFConfiguration());
 

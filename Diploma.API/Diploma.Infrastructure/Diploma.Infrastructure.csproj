@@ -18,4 +18,8 @@
     <ProjectReference Include="..\TerytPlugin\TerytPlugin.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="RelationalDatabase\MsSql\Configurations\Recruitments\" />
+  </ItemGroup>
+
 </Project>

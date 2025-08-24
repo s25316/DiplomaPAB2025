@@ -1,4 +1,5 @@
 ﻿using Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations.Courses;
+using Diploma.Infrastructure.RelationalDatabase.Base.Models.Projects;
 
 namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations
 {
@@ -8,5 +9,6 @@ namespace Diploma.Infrastructure.RelationalDatabase.Base.Models.HighEducations
         public string Name { get; set; } = null!;
 
         public virtual ICollection<DisciplineCourse> Courses { get; set; } = [];
+        public virtual ICollection<ProjectPosition> ProjectPositions { get; set; } = [];
     }
 }
