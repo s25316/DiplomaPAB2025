@@ -1,4 +1,4 @@
-﻿using Diploma.UseCase;
+﻿using Diploma.UseCase.Shared.Interfaces.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diploma.API.Controllers

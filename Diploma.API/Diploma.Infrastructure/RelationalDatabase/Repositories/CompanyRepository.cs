@@ -3,8 +3,8 @@ using Diploma.Domain.Shared.Exceptions;
 using Diploma.Domain.Shared.ValueObjects;
 using Diploma.Infrastructure.Exceptions;
 using Diploma.Infrastructure.RelationalDatabase.Base;
-using Diploma.UseCase;
-using Diploma.UseCase.Models.Companies;
+using Diploma.UseCase.Shared.Interfaces.Repositories;
+using Diploma.UseCase.Shared.Models.Companies;
 using Microsoft.EntityFrameworkCore;
 using RegonPlugin;
 using RegonPlugin.Enums;
@@ -15,7 +15,7 @@ using DatabaseAddress = Diploma.Infrastructure.RelationalDatabase.Base.Models.Ad
 using DatabaseCompany = Diploma.Infrastructure.RelationalDatabase.Base.Models.Companies.Company;
 using DatabaseCompanyAddress = Diploma.Infrastructure.RelationalDatabase.Base.Models.Companies.CompanyAddress;
 using DatabaseCompanyName = Diploma.Infrastructure.RelationalDatabase.Base.Models.Companies.CompanyName;
-using UseCaseCompany = Diploma.UseCase.Models.Companies.Company;
+using UseCaseCompany = Diploma.UseCase.Shared.Models.Companies.Company;
 
 // Ignore Spelling: regon
 namespace Diploma.Infrastructure.RelationalDatabase.Repositories

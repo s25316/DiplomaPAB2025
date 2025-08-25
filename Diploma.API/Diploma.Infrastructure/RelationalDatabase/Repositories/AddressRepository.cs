@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Diploma.Domain.Shared.Exceptions;
 using Diploma.Infrastructure.RelationalDatabase.Base;
-using Diploma.UseCase;
+using Diploma.UseCase.Shared.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
-using UseCaseAddress = Diploma.UseCase.Models.Addresses.Address;
-using UseCaseDivison = Diploma.UseCase.Models.Addresses.Division;
-using UseCaseStreet = Diploma.UseCase.Models.Addresses.Street;
+using UseCaseAddress = Diploma.UseCase.Shared.Models.Addresses.Address;
+using UseCaseDivison = Diploma.UseCase.Shared.Models.Addresses.Division;
+using UseCaseStreet = Diploma.UseCase.Shared.Models.Addresses.Street;
 
 namespace Diploma.Infrastructure.RelationalDatabase.Repositories
 {

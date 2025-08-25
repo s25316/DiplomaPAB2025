@@ -2,10 +2,10 @@
 using Diploma.Domain.Shared.Exceptions;
 using Diploma.Domain.Shared.ValueObjects;
 using Diploma.Infrastructure.RelationalDatabase.Base;
-using Diploma.UseCase;
+using Diploma.UseCase.Shared.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using DatabaseEducationInstitution = Diploma.Infrastructure.RelationalDatabase.Base.Models.EducationInstitutions.EducationInstitution;
-using UseCaseEducationInstitution = Diploma.UseCase.Models.EductionInstitutions.EducationInstitution;
+using UseCaseEducationInstitution = Diploma.UseCase.Shared.Models.EductionInstitutions.EducationInstitution;
 
 // Ignore Spelling: Regon
 namespace Diploma.Infrastructure.RelationalDatabase.Repositories

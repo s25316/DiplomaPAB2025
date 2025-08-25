@@ -1,6 +1,7 @@
 
 using Diploma.Domain;
 using Diploma.Infrastructure;
+using Diploma.UseCase;
 using System.Reflection;
 
 namespace Diploma.API
@@ -12,6 +13,7 @@ namespace Diploma.API
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddDomainConfiguration();
+            builder.Services.AddUseCaseConfiguration();
             builder.Services.AddInfrastructureConfiguration(builder.Configuration);
 
 
